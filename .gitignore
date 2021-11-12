@@ -16,8 +16,10 @@
 /build
 
 # misc
+.idea
 .DS_Store
 *.pem
+.eslintcache
 
 # debug
 npm-debug.log*
@@ -25,7 +27,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env.local
+.env
 .env.development.local
 .env.test.local
 .env.production.local
