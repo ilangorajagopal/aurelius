@@ -4,6 +4,7 @@ import {
 	Grid,
 	HStack,
 	Icon,
+	IconButton,
 	Link,
 	Modal,
 	ModalOverlay,
@@ -12,13 +13,25 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	useDisclosure,
+	useColorMode,
 	useColorModeValue,
+	useDisclosure,
 } from '@chakra-ui/react';
-import { Crosshair, Download, Edit3, Eye, Settings } from 'react-feather';
+import {
+	Crosshair,
+	Download,
+	Edit3,
+	Eye,
+	Moon,
+	Settings,
+	Sun,
+} from 'react-feather';
 
 export default function Header(props) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { toggleColorMode: toggleMode } = useColorMode();
+	const text = useColorModeValue('dark', 'light');
+	const SwitchIcon = useColorModeValue(Moon, Sun);
 
 	return (
 		<Flex
@@ -184,6 +197,21 @@ export default function Header(props) {
 							</ModalContent>
 						</Modal>
 					</>
+
+					<Button
+						aria-label={`Switch to ${text} mode`}
+						w={10}
+						h={10}
+						p={0}
+						rounded='md'
+						d='flex'
+						align='center'
+						justify='center'
+						onClick={toggleMode}
+						variant='ghost'
+					>
+						<Icon as={SwitchIcon} />
+					</Button>
 
 					<Button colorScheme='brand' size='sm'>
 						Sign In
