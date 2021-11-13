@@ -9,6 +9,7 @@ export default function Title(props) {
 				fontWeight='semibold'
 				placeholder='Title'
 				resize='none'
+				rows={1}
 				variant='unstyled'
 			/>
 		</chakra.div>

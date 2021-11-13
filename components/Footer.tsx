@@ -18,6 +18,7 @@ import {
 import { Info } from 'react-feather';
 
 export default function Footer(props) {
+	const { wordCount } = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
@@ -43,10 +44,7 @@ export default function Footer(props) {
 					color={useColorModeValue('gray.900', 'white')}
 				>
 					<Text fontSize='xs' fontWeight='light'>
-						Words: 300
-					</Text>
-					<Text fontSize='xs' fontWeight='light'>
-						Paragraphs: 3
+						{`Words: ${wordCount}`}
 					</Text>
 				</HStack>
 
