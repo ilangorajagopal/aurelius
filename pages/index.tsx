@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import { chakra } from '@chakra-ui/react';
-import { Container } from '../components/Container';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import Main from '../components/content/Main';
 import { useEditor } from '@tiptap/react';
+import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Heading from '@tiptap/extension-heading';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
-import { useState } from 'react';
+import Container from '../components/Container';
+import Header from '../components/Header';
+import Main from '../components/content/Main';
+import Footer from '../components/Footer';
 
 export default function Index() {
 	const [content, setContent] = useState('');
@@ -23,6 +24,11 @@ export default function Index() {
 			},
 		},
 		extensions: [
+			BubbleMenu.configure({
+				tippyOptions: {
+					arrow: true,
+				},
+			}),
 			Heading.configure({ levels: [1, 2, 3] }),
 			Image.configure({}),
 			Link.configure({ openOnClick: false }),

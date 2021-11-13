@@ -4,6 +4,7 @@ import {
 	Heading,
 	HStack,
 	Icon,
+	IconButton,
 	Input,
 	Menu,
 	MenuButton,
@@ -14,8 +15,14 @@ import {
 	PopoverTrigger,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import { Bold, Code, Italic, Link, List } from 'react-feather';
-import { FaFileCode, FaHeading, FaListOl, FaQuoteRight } from 'react-icons/fa';
+import {
+	FaBold,
+	FaCode,
+	FaHeading,
+	FaItalic,
+	FaLink,
+	FaQuoteRight,
+} from 'react-icons/fa';
 
 export default function Toolbar({ editor }) {
 	const [link, setLink] = useState('');
@@ -35,15 +42,24 @@ export default function Toolbar({ editor }) {
 	}
 
 	return (
-		<HStack w='full' spacing={2} mb={4}>
+		<HStack
+			bg={useColorModeValue('gray.100', 'gray.400')}
+			shadow='lg'
+			rounded='md'
+			w='auto'
+			spacing={2}
+		>
 			<Menu>
 				<MenuButton
-					as={Button}
+					as={IconButton}
+					icon={<FaHeading />}
 					bg='transparent'
 					color={useColorModeValue('gray.900', 'gray.100')}
-				>
-					<Icon as={FaHeading} />
-				</MenuButton>
+					p={0}
+					d='flex'
+					alignItems='center'
+					justifyContent='center'
+				/>
 				<MenuList>
 					<MenuItem
 						onClick={() =>
@@ -90,34 +106,32 @@ export default function Toolbar({ editor }) {
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleBold().run()}
+				p={0}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
 			>
-				<Icon as={Bold} />
+				<Icon as={FaBold} />
 			</Button>
 			<Button
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleItalic().run()}
+				p={0}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
 			>
-				<Icon as={Italic} />
-			</Button>
-			<Button
-				bg='transparent'
-				color={useColorModeValue('gray.900', 'gray.100')}
-				onClick={() => editor.chain().focus().toggleOrderedList().run()}
-			>
-				<Icon as={FaListOl} />
-			</Button>
-			<Button
-				bg='transparent'
-				color={useColorModeValue('gray.900', 'gray.100')}
-				onClick={() => editor.chain().focus().toggleBulletList().run()}
-			>
-				<Icon as={List} />
+				<Icon as={FaItalic} />
 			</Button>
 			<Button
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleBlockquote().run()}
+				p={0}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
 			>
 				<Icon as={FaQuoteRight} />
 			</Button>
@@ -127,7 +141,7 @@ export default function Toolbar({ editor }) {
 						bg='transparent'
 						color={useColorModeValue('gray.900', 'gray.100')}
 					>
-						<Icon as={Link} />
+						<Icon as={FaLink} />
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent p={4}>
@@ -144,14 +158,7 @@ export default function Toolbar({ editor }) {
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleCode().run()}
 			>
-				<Icon as={Code} />
-			</Button>
-			<Button
-				bg='transparent'
-				color={useColorModeValue('gray.900', 'gray.100')}
-				onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-			>
-				<Icon as={FaFileCode} />
+				<Icon as={FaCode} />
 			</Button>
 		</HStack>
 	);
