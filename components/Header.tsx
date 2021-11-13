@@ -40,7 +40,7 @@ export default function Header(props) {
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
 				>
-					<Link href='/'>The Writer&apos;s Space</Link>
+					<Link href='/'>Logo</Link>
 				</Flex>
 
 				{/* Tools */}

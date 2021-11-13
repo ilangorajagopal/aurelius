@@ -14,13 +14,19 @@
 		"@emotion/react": "11.1.5",
 		"@emotion/styled": "11.1.5",
 		"@prisma/client": "^3.4.2",
+		"@tiptap/extension-heading": "^2.0.0-beta.23",
+		"@tiptap/extension-image": "^2.0.0-beta.24",
+		"@tiptap/extension-link": "^2.0.0-beta.28",
+		"@tiptap/react": "^2.0.0-beta.93",
+		"@tiptap/starter-kit": "^2.0.0-beta.140",
 		"framer-motion": "^4.0.3",
 		"next": "latest",
 		"next-auth": "^3.29.0",
 		"react": "^17.0.2",
 		"react-countdown-hook": "^1.1.1",
 		"react-dom": "^17.0.2",
-		"react-feather": "^2.0.9"
+		"react-feather": "^2.0.9",
+		"react-icons": "^4.3.1"
 	},
 	"devDependencies": {
 		"@types/next-auth": "^3.15.0",

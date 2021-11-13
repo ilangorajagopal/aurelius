@@ -46,7 +46,7 @@ export default function Footer(props) {
 						Words: 300
 					</Text>
 					<Text fontSize='xs' fontWeight='light'>
-						Paragraphs: 6
+						Paragraphs: 3
 					</Text>
 				</HStack>
 
