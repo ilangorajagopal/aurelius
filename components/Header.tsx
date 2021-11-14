@@ -49,6 +49,7 @@ import Timer from './Timer';
 export default function Header(props) {
 	const {
 		distractionFreeMode,
+		downloadAsMarkdown,
 		setDistractionFreeMode,
 		session,
 		setSession,
@@ -301,45 +302,19 @@ export default function Header(props) {
 				>
 					{sessionComponent}
 
-					<>
-						<Button
-							w={10}
-							h={10}
-							p={0}
-							rounded='md'
-							d='flex'
-							align='center'
-							justify='center'
-							onClick={onOpen}
-							variant='ghost'
-						>
-							<Icon as={Download} />
-						</Button>
-
-						<Modal
-							isCentered={true}
-							isOpen={isOpen}
-							onClose={onClose}
-						>
-							<ModalOverlay />
-							<ModalContent>
-								<ModalHeader>Modal Title</ModalHeader>
-								<ModalCloseButton />
-								<ModalBody>Modal Content</ModalBody>
-
-								<ModalFooter>
-									<Button
-										variant='ghost'
-										mr={3}
-										onClick={onClose}
-									>
-										Close
-									</Button>
-									<Button colorScheme='brand'>Save</Button>
-								</ModalFooter>
-							</ModalContent>
-						</Modal>
-					</>
+					<Button
+						w={10}
+						h={10}
+						p={0}
+						rounded='md'
+						d='flex'
+						align='center'
+						justify='center'
+						onClick={downloadAsMarkdown}
+						variant='ghost'
+					>
+						<Icon as={Download} />
+					</Button>
 
 					<>
 						<Button

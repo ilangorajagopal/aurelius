@@ -29,7 +29,8 @@
 		"react-dom": "^17.0.2",
 		"react-feather": "^2.0.9",
 		"react-icons": "^4.3.1",
-		"react-timer-hook": "^3.0.5"
+		"react-timer-hook": "^3.0.5",
+		"turndown": "^7.1.1"
 	},
 	"devDependencies": {
 		"@types/next-auth": "^3.15.0",

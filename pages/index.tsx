@@ -7,6 +7,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
+import TurndownService from 'turndown';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
@@ -31,13 +32,14 @@ export default function Index() {
 					arrow: true,
 				},
 			}),
-			Heading.configure({ levels: [1, 2, 3] }),
 			Image.configure({}),
 			Link.configure({ openOnClick: false }),
 			Placeholder.configure({
 				placeholder: 'Start writing...',
 			}),
-			StarterKit,
+			StarterKit.configure({
+				heading: { levels: [1, 2, 3] },
+			}),
 		],
 		onUpdate({ editor }) {
 			const wordCount = editor.state.doc.textContent.split(' ').length;
@@ -47,10 +49,22 @@ export default function Index() {
 		},
 	});
 
+	function downloadAsMarkdown() {
+		const htmlContent = `<h1>${title}</h1>${content}`;
+		const turndownService = new TurndownService({ headingStyle: 'atx' });
+		const markdown = turndownService.turndown(htmlContent);
+		const a = document.createElement('a');
+		const blob = new Blob([markdown]);
+		a.href = URL.createObjectURL(blob);
+		a.download = `${title}.md`;
+		a.click();
+	}
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
 				distractionFreeMode={distractionFreeMode}
+				downloadAsMarkdown={downloadAsMarkdown}
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
 				setSession={setSession}
