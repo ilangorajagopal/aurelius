@@ -6,15 +6,13 @@ import {
 	FormControl,
 	FormLabel,
 	Icon,
+	IconButton,
 	Input,
 	Link,
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalHeader,
-	ModalFooter,
 	ModalBody,
-	ModalCloseButton,
 	Popover,
 	PopoverTrigger,
 	PopoverContent,
@@ -30,7 +28,7 @@ import {
 	useColorMode,
 	useColorModeValue,
 	useDisclosure,
-	IconButton,
+	useToast,
 } from '@chakra-ui/react';
 import {
 	Download,
@@ -50,6 +48,7 @@ export default function Header(props) {
 	const {
 		distractionFreeMode,
 		downloadAsMarkdown,
+		isEditorEmpty,
 		setDistractionFreeMode,
 		session,
 		setSession,
@@ -63,6 +62,7 @@ export default function Header(props) {
 	// const [sessionDuration, setSessionDuration] = useState(0);
 	const [sessionGoal, setSessionGoal] = useState('duration');
 	const [sessionTarget, setSessionTarget] = useState(0);
+	const toast = useToast();
 
 	function startSession() {
 		setSession({ goal: sessionGoal, target: sessionTarget });
@@ -302,20 +302,6 @@ export default function Header(props) {
 				>
 					{sessionComponent}
 
-					<Button
-						w={10}
-						h={10}
-						p={0}
-						rounded='md'
-						d='flex'
-						align='center'
-						justify='center'
-						onClick={downloadAsMarkdown}
-						variant='ghost'
-					>
-						<Icon as={Download} />
-					</Button>
-
 					<>
 						<Button
 							w={10}
@@ -325,10 +311,22 @@ export default function Header(props) {
 							d='flex'
 							align='center'
 							justify='center'
-							onClick={onOpen}
+							onClick={() => {
+								if (!isEditorEmpty) {
+									onOpen();
+									downloadAsMarkdown();
+								} else {
+									toast({
+										duration: 2000,
+										position: 'top',
+										status: 'info',
+										title: 'No content to export',
+									});
+								}
+							}}
 							variant='ghost'
 						>
-							<Icon as={Settings} />
+							<Icon as={Download} />
 						</Button>
 
 						<Modal
@@ -337,24 +335,89 @@ export default function Header(props) {
 							onClose={onClose}
 						>
 							<ModalOverlay />
-							<ModalContent>
-								<ModalHeader>Modal Title</ModalHeader>
-								<ModalCloseButton />
-								<ModalBody>Modal Content</ModalBody>
-
-								<ModalFooter>
-									<Button
-										variant='ghost'
-										mr={3}
-										onClick={onClose}
+							<ModalContent px={6} py={8}>
+								<ModalBody>
+									<VStack
+										align='center'
+										justify='center'
+										color={useColorModeValue(
+											'gray.900',
+											'white'
+										)}
+										textAlign='center'
+										spacing={4}
 									>
-										Close
-									</Button>
-									<Button colorScheme='brand'>Save</Button>
-								</ModalFooter>
+										<Text fontSize='7xl'>🎉</Text>
+
+										<Text
+											fontSize='lg'
+											fontWeight='semibold'
+										>
+											Markdown Generated!
+										</Text>
+
+										<Text>
+											Thanks for using readme.so! Feel
+											free to reach out to me on{' '}
+											<Link
+												href='https://twitter.com/_ilango'
+												isExternal={true}
+											>
+												Twitter
+											</Link>{' '}
+											with any feedback.
+										</Text>
+
+										<Text>
+											If you found this product helpful,
+											consider writing a few words about
+											us on Twitter!
+										</Text>
+									</VStack>
+								</ModalBody>
 							</ModalContent>
 						</Modal>
 					</>
+
+					{/*<>*/}
+					{/*	<Button*/}
+					{/*		w={10}*/}
+					{/*		h={10}*/}
+					{/*		p={0}*/}
+					{/*		rounded='md'*/}
+					{/*		d='flex'*/}
+					{/*		align='center'*/}
+					{/*		justify='center'*/}
+					{/*		onClick={onOpen}*/}
+					{/*		variant='ghost'*/}
+					{/*	>*/}
+					{/*		<Icon as={Settings} />*/}
+					{/*	</Button>*/}
+
+					{/*	<Modal*/}
+					{/*		isCentered={true}*/}
+					{/*		isOpen={isOpen}*/}
+					{/*		onClose={onClose}*/}
+					{/*	>*/}
+					{/*		<ModalOverlay />*/}
+					{/*		<ModalContent>*/}
+					{/*			<ModalHeader>Modal Title</ModalHeader>*/}
+					{/*			<ModalCloseButton />*/}
+					{/*			<ModalBody>Modal Content</ModalBody>*/}
+
+					{/*			<ModalFooter>*/}
+					{/*				<Button*/}
+					{/*					variant='ghost'*/}
+					{/*					mr={3}*/}
+					{/*					onClick={onClose}*/}
+					{/*				>*/}
+					{/*					Close*/}
+					{/*				</Button>*/}
+					{/*				<Button colorScheme='brand'>Save</Button>*/}
+					{/*			</ModalFooter>*/}
+					{/*		</ModalContent>*/}
+					{/*	</Modal>*/}
+					{/*</>*/}
 
 					<Button
 						aria-label={`Switch to ${text} mode`}

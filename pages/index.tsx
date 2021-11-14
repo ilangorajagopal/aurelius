@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { chakra, useBoolean } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
-import Heading from '@tiptap/extension-heading';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -53,10 +52,11 @@ export default function Index() {
 		const htmlContent = `<h1>${title}</h1>${content}`;
 		const turndownService = new TurndownService({ headingStyle: 'atx' });
 		const markdown = turndownService.turndown(htmlContent);
+		const filename = title || `twa_untitled_post_${Date.now()}`;
 		const a = document.createElement('a');
 		const blob = new Blob([markdown]);
 		a.href = URL.createObjectURL(blob);
-		a.download = `${title}.md`;
+		a.download = `${filename}.md`;
 		a.click();
 	}
 
@@ -65,6 +65,7 @@ export default function Index() {
 			<Header
 				distractionFreeMode={distractionFreeMode}
 				downloadAsMarkdown={downloadAsMarkdown}
+				isEditorEmpty={editor?.isEmpty}
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
 				setSession={setSession}
