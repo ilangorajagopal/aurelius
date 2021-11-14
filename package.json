@@ -26,10 +26,10 @@
 		"next": "latest",
 		"next-auth": "^3.29.0",
 		"react": "^17.0.2",
-		"react-countdown-hook": "^1.1.1",
 		"react-dom": "^17.0.2",
 		"react-feather": "^2.0.9",
-		"react-icons": "^4.3.1"
+		"react-icons": "^4.3.1",
+		"react-timer-hook": "^3.0.5"
 	},
 	"devDependencies": {
 		"@types/next-auth": "^3.15.0",

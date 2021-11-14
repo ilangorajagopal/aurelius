@@ -4050,11 +4050,6 @@ react-clientside-effect@^1.2.5:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
-react-countdown-hook@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-countdown-hook/-/react-countdown-hook-1.1.1.tgz#2536209b0d9243f75275844ae575d696f2ffbc5d"
-  integrity sha512-+/vH6zK2H0yM9dPWJOa3hnLsBWWjwwi/6KOXDBc6F65lrc8vmuMozjTOlLhG4AtyyOTJAd2bvJhlph8IPqrXxg==
-
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -4135,6 +4130,11 @@ react-style-singleton@^2.1.0:
     get-nonce "^1.0.0"
     invariant "^2.2.4"
     tslib "^1.0.0"
+
+react-timer-hook@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-timer-hook/-/react-timer-hook-3.0.5.tgz#a8d930f99b180cd88da245965a26a17df3e7457b"
+  integrity sha512-n+98SdmYvui2ne3KyWb3Ldu4k0NYQa3g/VzW6VEIfZJ8GAk/jJsIY700M8Nd2vNSTj05c7wKyQfJBqZ0x7zfiA==
 
 react@^17.0.2:
   version "17.0.2"

@@ -15,6 +15,7 @@ import Footer from '../components/Footer';
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [content, setContent] = useState('');
+	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
 	const [wordCount, setWordCount] = useState(0);
 	const editor = useEditor({
@@ -51,6 +52,9 @@ export default function Index() {
 			<Header
 				distractionFreeMode={distractionFreeMode}
 				setDistractionFreeMode={setDistractionFreeMode}
+				session={session}
+				setSession={setSession}
+				wordCount={wordCount}
 			/>
 			<chakra.main
 				w='full'

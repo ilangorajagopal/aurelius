@@ -3,8 +3,10 @@ import {
 	Flex,
 	Grid,
 	HStack,
+	FormControl,
+	FormLabel,
 	Icon,
-	IconButton,
+	Input,
 	Link,
 	Modal,
 	ModalOverlay,
@@ -13,19 +15,204 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+	PopoverBody,
+	PopoverFooter,
+	PopoverArrow,
+	Radio,
+	RadioGroup,
+	Stack,
+	Text,
+	Tooltip,
+	VStack,
 	useColorMode,
 	useColorModeValue,
 	useDisclosure,
+	IconButton,
 } from '@chakra-ui/react';
-import { Download, Edit3, Eye, Moon, Settings, Sun } from 'react-feather';
-import { MdCenterFocusStrong } from 'react-icons/all';
+import {
+	Download,
+	Edit3,
+	Eye,
+	Moon,
+	Settings,
+	Square,
+	Sun,
+	Target,
+} from 'react-feather';
+import { MdCenterFocusStrong } from 'react-icons/md';
+import { useState } from 'react';
+import Timer from './Timer';
 
 export default function Header(props) {
-	const { distractionFreeMode, setDistractionFreeMode } = props;
+	const {
+		distractionFreeMode,
+		setDistractionFreeMode,
+		session,
+		setSession,
+		wordCount,
+	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
 	const SwitchIcon = useColorModeValue(Moon, Sun);
+	// TODO: Save session duration to state and show a modal with total time spent writing in current session
+	// const [sessionDuration, setSessionDuration] = useState(0);
+	const [sessionGoal, setSessionGoal] = useState('duration');
+	const [sessionTarget, setSessionTarget] = useState(0);
+
+	function startSession() {
+		setSession({ goal: sessionGoal, target: sessionTarget });
+		setDistractionFreeMode.toggle();
+	}
+
+	function endTimedSession(totalTime) {
+		// Set total session duration in seconds
+		// setSessionDuration(totalTime);
+		console.log(totalTime);
+		setSession(null);
+		setDistractionFreeMode.toggle();
+	}
+
+	function endWordCountSession() {
+		console.log(wordCount);
+		setSession(null);
+		setDistractionFreeMode.toggle();
+	}
+
+	let sessionComponent = null;
+	if (session && session?.goal === 'duration') {
+		const time = new Date();
+		time.setSeconds(time.getSeconds() + 60 * session?.target);
+		sessionComponent = (
+			<Timer
+				endTimedSession={endTimedSession}
+				expiry={time}
+				target={session?.target}
+			/>
+		);
+	} else if (session && session?.goal === 'word-count') {
+		sessionComponent = (
+			<HStack align='center' justify='center' spacing={2}>
+				<Tooltip label='End Session'>
+					<IconButton
+						aria-label='stop session timer'
+						bg='transparent'
+						p={0}
+						size='xs'
+						icon={<Square width={14} height={14} />}
+						onClick={endWordCountSession}
+					/>
+				</Tooltip>
+				<Text
+					fontSize='sm'
+					ml={2}
+				>{`${wordCount} / ${sessionTarget}`}</Text>
+			</HStack>
+		);
+	} else {
+		sessionComponent = (
+			<Popover>
+				<PopoverTrigger>
+					<Button size='sm'>New Session</Button>
+				</PopoverTrigger>
+				<PopoverContent>
+					<PopoverArrow />
+					<PopoverBody p={4}>
+						<VStack w='full' spacing={4}>
+							<FormControl
+								d='grid'
+								gridTemplateColumns='repeat(2, 1fr)'
+							>
+								<FormLabel fontSize='md' htmlFor='session-goal'>
+									Session Goal
+								</FormLabel>
+								<RadioGroup
+									defaultValue={sessionGoal}
+									fontSize='sm'
+									name='session-goal'
+									onChange={(e) => setSessionGoal(e)}
+								>
+									<Stack spacing={2} direction='column'>
+										<Radio value='duration'>
+											<Text fontSize='sm'>Duration</Text>
+										</Radio>
+										<Radio value='word-count'>
+											<Text fontSize='sm'>
+												Word Count
+											</Text>
+										</Radio>
+									</Stack>
+								</RadioGroup>
+							</FormControl>
+							{sessionGoal === 'duration' ? (
+								<FormControl
+									d='grid'
+									gridTemplateColumns='repeat(2, 1fr)'
+								>
+									<FormLabel
+										fontSize='md'
+										htmlFor='session-duration'
+									>
+										Target
+									</FormLabel>
+									<HStack spacing={2}>
+										<Input
+											name='session-duration'
+											defaultValue={sessionTarget}
+											onChange={(e) =>
+												setSessionTarget(
+													parseInt(e.target.value, 10)
+												)
+											}
+										/>
+										<Text fontSize='sm'>minutes</Text>
+									</HStack>
+								</FormControl>
+							) : (
+								<FormControl
+									d='grid'
+									gridTemplateColumns='repeat(2, 1fr)'
+								>
+									<FormLabel
+										fontSize='md'
+										htmlFor='session-word-count'
+									>
+										Target
+									</FormLabel>
+									<HStack spacing={2}>
+										<Input
+											name='session-word-count'
+											defaultValue={sessionTarget}
+											onChange={(e) =>
+												setSessionTarget(
+													parseInt(e.target.value, 10)
+												)
+											}
+										/>
+										<Text fontSize='sm'>words</Text>
+									</HStack>
+								</FormControl>
+							)}
+						</VStack>
+					</PopoverBody>
+					<PopoverFooter>
+						<HStack w='full' justifyContent='end' spacing={4}>
+							<Button
+								colorScheme='brand'
+								onClick={startSession}
+								size='sm'
+							>
+								Start
+							</Button>
+						</HStack>
+					</PopoverFooter>
+				</PopoverContent>
+			</Popover>
+		);
+	}
 
 	return (
 		<Flex
@@ -112,7 +299,7 @@ export default function Header(props) {
 					color={useColorModeValue('gray.900', 'white')}
 					spacing={4}
 				>
-					<Button size='sm'>New Session</Button>
+					{sessionComponent}
 
 					<>
 						<Button
