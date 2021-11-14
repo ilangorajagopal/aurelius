@@ -18,7 +18,7 @@ import {
 import { Info } from 'react-feather';
 
 export default function Footer(props) {
-	const { wordCount } = props;
+	const { distractionFreeMode, wordCount } = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
@@ -31,7 +31,8 @@ export default function Footer(props) {
 			justifyContent='space-between'
 			flexShrink={0}
 			overflowY='hidden'
-			{...props}
+			opacity={distractionFreeMode ? '0.1' : '1'}
+			_hover={{ opacity: 1 }}
 		>
 			<Grid w='full' h='full' templateColumns='repeat(2, 1fr)' gap={4}>
 				{/* Details */}

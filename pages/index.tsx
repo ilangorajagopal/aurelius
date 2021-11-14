@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, useBoolean } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Heading from '@tiptap/extension-heading';
@@ -13,6 +13,7 @@ import Main from '../components/content/Main';
 import Footer from '../components/Footer';
 
 export default function Index() {
+	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [content, setContent] = useState('');
 	const [title, setTitle] = useState('');
 	const [wordCount, setWordCount] = useState(0);
@@ -47,7 +48,10 @@ export default function Index() {
 
 	return (
 		<Container height='auto' minH='100vh'>
-			<Header />
+			<Header
+				distractionFreeMode={distractionFreeMode}
+				setDistractionFreeMode={setDistractionFreeMode}
+			/>
 			<chakra.main
 				w='full'
 				h='auto'
@@ -60,7 +64,10 @@ export default function Index() {
 			>
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
-			<Footer wordCount={wordCount} />
+			<Footer
+				distractionFreeMode={distractionFreeMode}
+				wordCount={wordCount}
+			/>
 		</Container>
 	);
 }

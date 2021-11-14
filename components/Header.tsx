@@ -17,17 +17,11 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
-import {
-	Crosshair,
-	Download,
-	Edit3,
-	Eye,
-	Moon,
-	Settings,
-	Sun,
-} from 'react-feather';
+import { Download, Edit3, Eye, Moon, Settings, Sun } from 'react-feather';
+import { MdCenterFocusStrong } from 'react-icons/all';
 
 export default function Header(props) {
+	const { distractionFreeMode, setDistractionFreeMode } = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
@@ -42,7 +36,8 @@ export default function Header(props) {
 			alignItems='center'
 			justifyContent='space-between'
 			overflowY='hidden'
-			{...props}
+			opacity={distractionFreeMode ? '0.1' : '1'}
+			_hover={{ opacity: 1 }}
 		>
 			<Grid w='full' h='full' templateColumns='repeat(3, 1fr)' gap={4}>
 				{/* Logo */}
@@ -74,9 +69,10 @@ export default function Header(props) {
 						d='flex'
 						align='center'
 						justify='center'
+						onClick={setDistractionFreeMode.toggle}
 						variant='ghost'
 					>
-						<Icon as={Crosshair} />
+						<Icon as={MdCenterFocusStrong} />
 					</Button>
 
 					<Button

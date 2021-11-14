@@ -49,6 +49,16 @@
     height: 0;
 }
 
+.chakra-ui-light .ProseMirror p.blurred {
+    color: transparent;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.chakra-ui-dark .ProseMirror p.blurred {
+    color: transparent;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
 .ProseMirror ul,
 .ProseMirror ol {
     padding: 0 1rem;
