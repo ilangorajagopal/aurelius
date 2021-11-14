@@ -14,6 +14,7 @@ import Footer from '../components/Footer';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
+	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const [content, setContent] = useState('');
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
@@ -66,6 +67,7 @@ export default function Index() {
 				distractionFreeMode={distractionFreeMode}
 				downloadAsMarkdown={downloadAsMarkdown}
 				isEditorEmpty={editor?.isEmpty}
+				setMusicPlaying={setMusicPlaying}
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
 				setSession={setSession}
@@ -85,6 +87,8 @@ export default function Index() {
 			</chakra.main>
 			<Footer
 				distractionFreeMode={distractionFreeMode}
+				musicPlaying={musicPlaying}
+				setMusicPlaying={setMusicPlaying}
 				wordCount={wordCount}
 			/>
 		</Container>

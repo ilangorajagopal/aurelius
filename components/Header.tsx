@@ -23,6 +23,7 @@ import {
 	Radio,
 	RadioGroup,
 	Stack,
+	Switch,
 	Text,
 	Tooltip,
 	VStack,
@@ -31,26 +32,18 @@ import {
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
-import {
-	Download,
-	Edit3,
-	Eye,
-	Moon,
-	Settings,
-	Square,
-	Sun,
-	Target,
-} from 'react-feather';
+import { Download, Edit3, Eye, Moon, Square, Sun } from 'react-feather';
 import { MdCenterFocusStrong } from 'react-icons/md';
 import { useState } from 'react';
 import Timer from './Timer';
 
 export default function Header(props) {
 	const {
-		distractionFreeMode,
 		downloadAsMarkdown,
 		isEditorEmpty,
+		distractionFreeMode,
 		setDistractionFreeMode,
+		setMusicPlaying,
 		session,
 		setSession,
 		wordCount,
@@ -63,11 +56,15 @@ export default function Header(props) {
 	// const [sessionDuration, setSessionDuration] = useState(0);
 	const [sessionGoal, setSessionGoal] = useState('duration');
 	const [sessionTarget, setSessionTarget] = useState(0);
+	const [sessionMusic, setSessionMusic] = useState(false);
 	const toast = useToast();
 
 	function startSession() {
 		setSession({ goal: sessionGoal, target: sessionTarget });
 		setDistractionFreeMode.toggle();
+		if (sessionMusic) {
+			setMusicPlaying.on();
+		}
 	}
 
 	function endTimedSession(totalTime) {
@@ -76,6 +73,9 @@ export default function Header(props) {
 		console.log(totalTime);
 		setSession(null);
 		setDistractionFreeMode.toggle();
+		if (sessionMusic) {
+			setMusicPlaying.off();
+		}
 	}
 
 	function endWordCountSession() {
@@ -92,6 +92,8 @@ export default function Header(props) {
 			<Timer
 				endTimedSession={endTimedSession}
 				expiry={time}
+				music={sessionMusic}
+				setMusicPlaying={setMusicPlaying}
 				target={session?.target}
 			/>
 		);
@@ -198,6 +200,25 @@ export default function Header(props) {
 									</HStack>
 								</FormControl>
 							)}
+							<FormControl
+								d='grid'
+								gridTemplateColumns='repeat(2, 1fr)'
+							>
+								<FormLabel
+									fontSize='md'
+									htmlFor='session-music'
+								>
+									Music
+								</FormLabel>
+								<Switch
+									defaultChecked={false}
+									id='session-music'
+									onChange={(e) =>
+										setSessionMusic(e.target.checked)
+									}
+									value={sessionMusic}
+								/>
+							</FormControl>
 						</VStack>
 					</PopoverBody>
 					<PopoverFooter>

@@ -48,7 +48,16 @@ export default function Timer(props) {
 						p={0}
 						size='xs'
 						icon={<Pause width={14} height={14} />}
-						onClick={isRunning ? pause : stPause}
+						onClick={() => {
+							if (isRunning) {
+								pause();
+							} else {
+								stPause();
+							}
+							if (props.music) {
+								props.setMusicPlaying.off();
+							}
+						}}
 					/>
 				</Tooltip>
 			) : (
@@ -59,7 +68,16 @@ export default function Timer(props) {
 						p={0}
 						size='xs'
 						icon={<Play width={14} height={14} />}
-						onClick={isRunning ? resume : stStart}
+						onClick={() => {
+							if (isRunning) {
+								resume();
+							} else {
+								stStart();
+							}
+							if (props.music) {
+								props.setMusicPlaying.on();
+							}
+						}}
 					/>
 				</Tooltip>
 			)}
