@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import {
 	Button,
 	Flex,
@@ -374,6 +375,21 @@ export default function Header(props) {
 											consider writing a few words about
 											us on Twitter!
 										</Text>
+
+										<a
+											href='https://twitter.com/share?ref_src=twsrc%5Etfw'
+											className='twitter-share-button'
+											data-size='large'
+											data-text='Writing in The Writing App is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
+											data-url='https://thewritingapp.opencatalysts.tech/'
+											data-related='_ilango,opencatalysts'
+											data-lang='en'
+											data-dnt='true'
+											data-show-count='false'
+										>
+											Share on Twitter
+										</a>
+										<Script src='https://platform.twitter.com/widgets.js' />
 									</VStack>
 								</ModalBody>
 							</ModalContent>
