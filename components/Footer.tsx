@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
 	Button,
 	Flex,
@@ -18,25 +17,12 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player/youtube';
-import { Info, Music, Pause, Play } from 'react-feather';
+import { Info, Music, Pause } from 'react-feather';
 
 export default function Footer(props) {
 	const { distractionFreeMode, musicPlaying, setMusicPlaying, wordCount } =
 		props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
-
-	useEffect(() => {
-		if (navigator) {
-			navigator?.mediaSession?.setActionHandler(
-				'play',
-				setMusicPlaying.on
-			);
-			navigator?.mediaSession?.setActionHandler(
-				'pause',
-				setMusicPlaying.off
-			);
-		}
-	}, []);
 
 	return (
 		<Flex
