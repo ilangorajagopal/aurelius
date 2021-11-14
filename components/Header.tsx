@@ -216,7 +216,7 @@ export default function Header(props) {
 									onChange={(e) =>
 										setSessionMusic(e.target.checked)
 									}
-									value={sessionMusic}
+									checked={sessionMusic}
 								/>
 							</FormControl>
 						</VStack>
