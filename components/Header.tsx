@@ -357,9 +357,10 @@ export default function Header(props) {
 										</Text>
 
 										<Text>
-											Thanks for using readme.so! Feel
-											free to reach out to me on{' '}
+											Thanks for using The Writing App!
+											Feel free to reach out to me on{' '}
 											<Link
+												color='brand.200'
 												href='https://twitter.com/_ilango'
 												isExternal={true}
 											>
