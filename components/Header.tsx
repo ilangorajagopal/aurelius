@@ -52,6 +52,7 @@ export default function Header(props) {
 		authSession,
 		downloadAsMarkdown,
 		isEditorEmpty,
+		isSaving,
 		distractionFreeMode,
 		setDistractionFreeMode,
 		setMusicPlaying,
@@ -351,6 +352,8 @@ export default function Header(props) {
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
+					{isSaving ? <Text fontSize='sm'>Saving...</Text> : null}
+
 					{sessionComponent}
 
 					{pathname === '/' ? (

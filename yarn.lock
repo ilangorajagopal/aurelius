@@ -4194,6 +4194,11 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-autosave@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-autosave/-/react-autosave-0.3.0.tgz#09019b22b1278a54140146973f9a2a09aab8c611"
+  integrity sha512-EoLBksaCzMt8mcmeL24YvWlcEzNZ6ssOGsARXIiG/tFjuBSZm02C6D0U+pgusuD6WBe0LhA2smKkGQnkQspAvA==
+
 react-clientside-effect@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/react-clientside-effect/-/react-clientside-effect-1.2.5.tgz#e2c4dc3c9ee109f642fac4f5b6e9bf5bcd2219a3"

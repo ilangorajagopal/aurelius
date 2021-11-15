@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	chakra,
 	Modal,
@@ -14,6 +14,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
+import { Autosave } from 'react-autosave';
 import TurndownService from 'turndown';
 import Container from '../components/Container';
 import Header from '../components/Header';
@@ -21,6 +22,7 @@ import Main from '../components/content/Main';
 import Footer from '../components/Footer';
 import AuthBasic from '../components/Auth';
 import { supabase } from '../lib/supabase';
+import { savePostToDB } from '../lib/utils';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
@@ -32,6 +34,8 @@ export default function Index() {
 	} = useDisclosure();
 	const [authSession, setAuthSession] = useState(null);
 	const [content, setContent] = useState('');
+	const [post, setPost] = useState(null);
+	const [isSaving, setIsSaving] = useState(false);
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
 	const [wordCount, setWordCount] = useState(0);
@@ -85,6 +89,29 @@ export default function Index() {
 		a.click();
 	}
 
+	const savePost = useCallback(async (data) => {
+		if (data.title && data.content && data.word_count) {
+			setIsSaving(true);
+			const update = {
+				title: data.title,
+				content: data.content,
+				word_count: data.word_count,
+			};
+			const { data: postData, error } = await savePostToDB(
+				data.post,
+				update
+			);
+			if (postData) {
+				setPost(postData);
+			} else {
+				console.log(error);
+			}
+			setIsSaving(false);
+		}
+	}, []);
+
+	const autoSaveData = { post, title, content, word_count: wordCount };
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
@@ -92,6 +119,7 @@ export default function Index() {
 				distractionFreeMode={distractionFreeMode}
 				downloadAsMarkdown={downloadAsMarkdown}
 				isEditorEmpty={editor?.isEmpty}
+				isSaving={isSaving}
 				setMusicPlaying={setMusicPlaying}
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
@@ -109,6 +137,13 @@ export default function Index() {
 				flex='1 0 auto'
 				py={16}
 			>
+				{authSession ? (
+					<Autosave
+						data={autoSaveData}
+						interval={30000}
+						onSave={savePost}
+					/>
+				) : null}
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
 			<Footer
