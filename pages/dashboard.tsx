@@ -42,7 +42,7 @@ export async function getServerSideProps({ req }) {
 	const { user } = await supabase.auth.api.getUserByCookie(req);
 
 	if (!user) {
-		return { props: {} };
+		return { props: {}, redirect: { destination: '/', permanent: false } };
 	}
 
 	// @ts-ignore
@@ -50,12 +50,16 @@ export async function getServerSideProps({ req }) {
 		access_token: req.cookies['sb:token'],
 	});
 
-	const { data, error } = await supabase.from('posts').select();
+	const { data: posts, error } = await supabase
+		.from('posts')
+		.select()
+		.match({ user_id: user?.id })
+		.order('created_at', { ascending: false });
 
-	if (data && data.length > 0) {
+	if (posts && posts.length > 0) {
 		return {
 			props: {
-				posts: data,
+				posts,
 			},
 		};
 	} else {

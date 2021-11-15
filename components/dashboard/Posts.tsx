@@ -16,7 +16,7 @@ export default function Posts(props) {
 	return (
 		<VStack w='full' maxW='container.lg' align='start' spacing={8}>
 			<Heading as='h1'>Posts</Heading>
-			<VStack w='full' spacing={8}>
+			<VStack w='full' spacing={4}>
 				{posts && posts.length > 0 ? (
 					posts.map((post) => {
 						return (
