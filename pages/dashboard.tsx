@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { chakra } from '@chakra-ui/react';
+import { chakra, Flex, Grid, Heading } from '@chakra-ui/react';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import Posts from '../components/dashboard/Posts';
+import Stats from '../components/dashboard/Stats';
 
 export default function Dashboard(props) {
 	const { posts } = props;
@@ -17,6 +18,17 @@ export default function Dashboard(props) {
 			setAuthSession(session);
 		});
 	}, [authSession]);
+
+	function getGreeting() {
+		const now = new Date();
+		const hrs = now.getHours();
+
+		if (hrs > 0) return "Mornin' Sunshine!"; // REALLY early
+		if (hrs > 6) return 'Good morning'; // After 6am
+		if (hrs > 12) return 'Good afternoon'; // After 12pm
+		if (hrs > 17) return 'Good evening'; // After 5pm
+		if (hrs > 22) return 'Go to bed!'; // After 10pm
+	}
 
 	return (
 		<Container height='auto' minH='100vh'>
@@ -31,6 +43,22 @@ export default function Dashboard(props) {
 				flex='1 0 auto'
 				py={16}
 			>
+				<Grid
+					w='full'
+					maxW='container.lg'
+					templateColumns='repeat(2, 1fr)'
+					mb={8}
+				>
+					<Flex alignItems='center' justifyContent='start'>
+						<Heading
+							as='h1'
+							fontSize='5xl'
+						>{`${getGreeting()}`}</Heading>
+					</Flex>
+					<Flex alignItems='center' justifyContent='center'>
+						<Stats />
+					</Flex>
+				</Grid>
 				<Posts posts={posts} />
 			</chakra.main>
 			<Footer />
