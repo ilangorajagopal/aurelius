@@ -1,5 +1,8 @@
+import NextLink from 'next/link';
 import Script from 'next/script';
 import {
+	chakra,
+	Avatar,
 	Button,
 	Flex,
 	Grid,
@@ -10,6 +13,11 @@ import {
 	IconButton,
 	Input,
 	Link,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuDivider,
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -24,6 +32,7 @@ import {
 	RadioGroup,
 	Stack,
 	Switch,
+	Tag,
 	Text,
 	Tooltip,
 	VStack,
@@ -32,13 +41,15 @@ import {
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
-import { Download, Edit3, Eye, Moon, Square, Sun } from 'react-feather';
-import { MdCenterFocusStrong } from 'react-icons/md';
+import { Download, Edit3, Square, User } from 'react-feather';
+import { MdCenterFocusStrong, MdOutlineSpaceDashboard } from 'react-icons/md';
 import { useState } from 'react';
 import Timer from './Timer';
+import { useRouter } from 'next/router';
 
 export default function Header(props) {
 	const {
+		authSession,
 		downloadAsMarkdown,
 		isEditorEmpty,
 		distractionFreeMode,
@@ -47,11 +58,11 @@ export default function Header(props) {
 		session,
 		setSession,
 		wordCount,
+		onAuthModalOpen,
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { toggleColorMode: toggleMode } = useColorMode();
-	const text = useColorModeValue('dark', 'light');
-	const SwitchIcon = useColorModeValue(Moon, Sun);
+	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
+	const { pathname } = useRouter();
 	// TODO: Save session duration to state and show a modal with total time spent writing in current session
 	// const [sessionDuration, setSessionDuration] = useState(0);
 	const [sessionGoal, setSessionGoal] = useState('duration');
@@ -246,8 +257,6 @@ export default function Header(props) {
 			alignItems='center'
 			justifyContent='space-between'
 			overflowY='hidden'
-			opacity={distractionFreeMode ? '0.1' : '1'}
-			_hover={{ opacity: 1 }}
 		>
 			<Grid w='full' h='full' templateColumns='repeat(3, 1fr)' gap={4}>
 				{/* Logo */}
@@ -257,8 +266,11 @@ export default function Header(props) {
 					fontSize='xl'
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
+					opacity={distractionFreeMode ? '0.1' : '1'}
+					_hover={{ opacity: 1 }}
 				>
-					<Link href='/'>Logo</Link>
+					<NextLink href='/'>The Writing App</NextLink>
+					<Tag ml={4}>Beta</Tag>
 				</Flex>
 
 				{/* Tools */}
@@ -270,46 +282,61 @@ export default function Header(props) {
 					fontSize='xl'
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
+					opacity={distractionFreeMode ? '0.1' : '1'}
+					_hover={{ opacity: 1 }}
 				>
-					<Button
-						w={10}
-						h={10}
-						p={0}
-						rounded='md'
-						d='flex'
-						align='center'
-						justify='center'
-						onClick={setDistractionFreeMode.toggle}
-						variant='ghost'
-					>
-						<Icon as={MdCenterFocusStrong} />
-					</Button>
+					{authSession ? (
+						<HStack spacing={4}>
+							<NextLink href='/'>
+								<Button
+									colorScheme={
+										pathname === '/' ? 'brand' : ''
+									}
+									size='sm'
+									px={4}
+									variant={
+										pathname !== '/' ? 'ghost' : 'solid'
+									}
+								>
+									<Edit3 width={14} height={14} />
+									<Text fontSize='sm' ml={2}>
+										Write
+									</Text>
+								</Button>
+							</NextLink>
 
-					<Button
-						w={10}
-						h={10}
-						p={0}
-						rounded='md'
-						d='flex'
-						align='center'
-						justify='center'
-						variant='ghost'
-					>
-						<Icon as={Eye} />
-					</Button>
+							<NextLink href='/dashboard'>
+								<Button
+									colorScheme={
+										pathname === '/dashboard' ? 'brand' : ''
+									}
+									size='sm'
+									px={4}
+									variant={
+										pathname !== '/dashboard'
+											? 'ghost'
+											: 'solid'
+									}
+								>
+									<MdOutlineSpaceDashboard
+										width={14}
+										height={14}
+									/>
+									<Text fontSize='sm' ml={2}>
+										Dashboard
+									</Text>
+								</Button>
+							</NextLink>
 
-					<Button
-						w={10}
-						h={10}
-						p={0}
-						rounded='md'
-						d='flex'
-						align='center'
-						justify='center'
-						variant='ghost'
-					>
-						<Icon as={Edit3} />
-					</Button>
+							{/*<NextLink href='/analytics'>*/}
+							{/*	<Button size='sm' px={4} variant='ghost'>*/}
+							{/*		<BarChart2 width={14} height={14} />*/}
+							{/*		<Text fontSize='sm' ml={2}>Analytics</Text>*/}
+							{/*		<Tag ml={2}>Coming Soon</Tag>*/}
+							{/*	</Button>*/}
+							{/*</NextLink>*/}
+						</HStack>
+					) : null}
 				</HStack>
 
 				{/* Settings & Account */}
@@ -321,160 +348,184 @@ export default function Header(props) {
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
 					spacing={4}
+					opacity={distractionFreeMode ? '0.1' : '1'}
+					_hover={{ opacity: 1 }}
 				>
 					{sessionComponent}
 
-					<>
-						<Button
-							w={10}
-							h={10}
-							p={0}
-							rounded='md'
-							d='flex'
-							align='center'
-							justify='center'
-							onClick={() => {
-								if (!isEditorEmpty) {
-									onOpen();
-									downloadAsMarkdown();
-								} else {
-									toast({
-										duration: 2000,
-										position: 'top',
-										status: 'info',
-										title: 'No content to export',
-									});
-								}
-							}}
-							variant='ghost'
-						>
-							<Icon as={Download} />
-						</Button>
+					{pathname === '/' ? (
+						<>
+							<Button
+								w={10}
+								h={10}
+								p={0}
+								rounded='md'
+								d='flex'
+								align='center'
+								justify='center'
+								onClick={setDistractionFreeMode.toggle}
+								variant='ghost'
+							>
+								<Icon as={MdCenterFocusStrong} />
+							</Button>
 
-						<Modal
-							isCentered={true}
-							isOpen={isOpen}
-							onClose={onClose}
-						>
-							<ModalOverlay />
-							<ModalContent px={6} py={8}>
-								<ModalBody>
-									<VStack
-										align='center'
-										justify='center'
-										color={useColorModeValue(
-											'gray.900',
-											'white'
-										)}
-										textAlign='center'
-										spacing={4}
-									>
-										<Text fontSize='7xl'>🎉</Text>
+							<>
+								<Button
+									w={10}
+									h={10}
+									p={0}
+									rounded='md'
+									d='flex'
+									align='center'
+									justify='center'
+									onClick={() => {
+										if (!isEditorEmpty) {
+											onOpen();
+											downloadAsMarkdown();
+										} else {
+											toast({
+												duration: 2000,
+												position: 'top',
+												status: 'info',
+												title: 'No content to export',
+											});
+										}
+									}}
+									variant='ghost'
+								>
+									<Icon as={Download} />
+								</Button>
 
-										<Text
-											fontSize='lg'
-											fontWeight='semibold'
-										>
-											Markdown Generated!
-										</Text>
-
-										<Text>
-											Thanks for using The Writing App!
-											Feel free to reach out to me on{' '}
-											<Link
-												color='brand.200'
-												href='https://twitter.com/_ilango'
-												isExternal={true}
+								<Modal
+									isCentered={true}
+									isOpen={isOpen}
+									onClose={onClose}
+								>
+									<ModalOverlay />
+									<ModalContent px={6} py={8}>
+										<ModalBody>
+											<VStack
+												align='center'
+												justify='center'
+												color={useColorModeValue(
+													'gray.900',
+													'white'
+												)}
+												textAlign='center'
+												spacing={4}
 											>
-												Twitter
-											</Link>{' '}
-											with any feedback.
-										</Text>
+												<Text fontSize='7xl'>🎉</Text>
 
-										<Text>
-											If you found this product helpful,
-											consider writing a few words about
-											us on Twitter!
-										</Text>
+												<Text
+													fontSize='lg'
+													fontWeight='semibold'
+												>
+													Markdown Generated!
+												</Text>
 
-										<a
-											href='https://twitter.com/share?ref_src=twsrc%5Etfw'
-											className='twitter-share-button'
-											data-size='large'
-											data-text='Writing in The Writing App is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
-											data-url='https://thewritingapp.opencatalysts.tech/'
-											data-related='_ilango,opencatalysts'
-											data-lang='en'
-											data-dnt='true'
-											data-show-count='false'
-										>
-											Share on Twitter
-										</a>
-										<Script src='https://platform.twitter.com/widgets.js' />
-									</VStack>
-								</ModalBody>
-							</ModalContent>
-						</Modal>
-					</>
+												<Text>
+													Thanks for using The Writing
+													App! Feel free to reach out
+													to me on{' '}
+													<Link
+														color='brand.200'
+														href='https://twitter.com/_ilango'
+														isExternal={true}
+													>
+														Twitter
+													</Link>{' '}
+													with any feedback.
+												</Text>
 
-					{/*<>*/}
-					{/*	<Button*/}
-					{/*		w={10}*/}
-					{/*		h={10}*/}
-					{/*		p={0}*/}
-					{/*		rounded='md'*/}
-					{/*		d='flex'*/}
-					{/*		align='center'*/}
-					{/*		justify='center'*/}
-					{/*		onClick={onOpen}*/}
-					{/*		variant='ghost'*/}
-					{/*	>*/}
-					{/*		<Icon as={Settings} />*/}
-					{/*	</Button>*/}
+												<Text>
+													If you found this product
+													helpful, consider writing a
+													few words about us on
+													Twitter!
+												</Text>
 
-					{/*	<Modal*/}
-					{/*		isCentered={true}*/}
-					{/*		isOpen={isOpen}*/}
-					{/*		onClose={onClose}*/}
-					{/*	>*/}
-					{/*		<ModalOverlay />*/}
-					{/*		<ModalContent>*/}
-					{/*			<ModalHeader>Modal Title</ModalHeader>*/}
-					{/*			<ModalCloseButton />*/}
-					{/*			<ModalBody>Modal Content</ModalBody>*/}
+												<a
+													href='https://twitter.com/share?ref_src=twsrc%5Etfw'
+													className='twitter-share-button'
+													data-size='large'
+													data-text='Writing in The Writing App is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
+													data-url='https://thewritingapp.opencatalysts.tech/'
+													data-related='_ilango,opencatalysts'
+													data-lang='en'
+													data-dnt='true'
+													data-show-count='false'
+												>
+													Share on Twitter
+												</a>
+												<Script src='https://platform.twitter.com/widgets.js' />
+											</VStack>
+										</ModalBody>
+									</ModalContent>
+								</Modal>
+							</>
+						</>
+					) : null}
 
-					{/*			<ModalFooter>*/}
-					{/*				<Button*/}
-					{/*					variant='ghost'*/}
-					{/*					mr={3}*/}
-					{/*					onClick={onClose}*/}
-					{/*				>*/}
-					{/*					Close*/}
-					{/*				</Button>*/}
-					{/*				<Button colorScheme='brand'>Save</Button>*/}
-					{/*			</ModalFooter>*/}
-					{/*		</ModalContent>*/}
-					{/*	</Modal>*/}
-					{/*</>*/}
-
-					<Button
-						aria-label={`Switch to ${text} mode`}
-						w={10}
-						h={10}
-						p={0}
-						rounded='md'
-						d='flex'
-						align='center'
-						justify='center'
-						onClick={toggleMode}
-						variant='ghost'
-					>
-						<Icon as={SwitchIcon} />
-					</Button>
-
-					<Button colorScheme='brand' size='sm'>
-						Sign In
-					</Button>
+					{authSession ? (
+						<Menu>
+							<MenuButton
+								as={Button}
+								p={0}
+								bg='transparent'
+								_hover={{ bg: 'transparent' }}
+								_active={{ bg: 'transparent' }}
+								_focus={{ bg: 'transparent' }}
+							>
+								<Avatar
+									icon={<User width={16} height={16} />}
+									size='sm'
+								/>
+							</MenuButton>
+							<MenuList p={0}>
+								<MenuItem w='full' h={10}>
+									<NextLink href='/dashboard'>
+										<chakra.a>
+											<Text fontSize='sm'>Dashboard</Text>
+										</chakra.a>
+									</NextLink>
+								</MenuItem>
+								<MenuItem w='full' h={10}>
+									<Text fontSize='sm'>About</Text>
+								</MenuItem>
+								<MenuItem d='none'>What&apos;s New</MenuItem>
+								<MenuItem w='full' h={10}>
+									<Text fontSize='sm'>Settings</Text>
+								</MenuItem>
+								<MenuDivider m={0} />
+								<MenuItem
+									w='full'
+									h={10}
+									d='flex'
+									alignItems='center'
+									justifyContent='space-between'
+								>
+									<Text fontSize='sm'>Dark Mode</Text>
+									<Switch
+										defaultChecked={colorMode === 'dark'}
+										onChange={toggleMode}
+										size='sm'
+									/>
+								</MenuItem>
+								<MenuDivider m={0} />
+								<MenuItem w='full' h={10}>
+									<Text fontSize='sm'>Sign Out</Text>
+								</MenuItem>
+							</MenuList>
+						</Menu>
+					) : (
+						<Button
+							colorScheme='brand'
+							onClick={onAuthModalOpen}
+							size='sm'
+						>
+							Sign In
+						</Button>
+					)}
 				</HStack>
 			</Grid>
 		</Flex>

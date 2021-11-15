@@ -1,5 +1,13 @@
-import { useState } from 'react';
-import { chakra, useBoolean } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import {
+	chakra,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalBody,
+	useBoolean,
+	useDisclosure,
+} from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Image from '@tiptap/extension-image';
@@ -11,10 +19,18 @@ import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
 import Footer from '../components/Footer';
+import AuthBasic from '../components/Auth';
+import { supabase } from '../lib/supabase';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
+	const {
+		isOpen: isAuthModalOpen,
+		onOpen: onAuthModalOpen,
+		onClose: onAuthModalClose,
+	} = useDisclosure();
+	const [authSession, setAuthSession] = useState(null);
 	const [content, setContent] = useState('');
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
@@ -49,6 +65,14 @@ export default function Index() {
 		},
 	});
 
+	useEffect(() => {
+		setAuthSession(supabase.auth.user());
+
+		supabase.auth.onAuthStateChange((event, session) => {
+			setAuthSession(session);
+		});
+	}, [authSession]);
+
 	function downloadAsMarkdown() {
 		const htmlContent = `<h1>${title}</h1>${content}`;
 		const turndownService = new TurndownService({ headingStyle: 'atx' });
@@ -64,6 +88,7 @@ export default function Index() {
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
+				authSession={authSession}
 				distractionFreeMode={distractionFreeMode}
 				downloadAsMarkdown={downloadAsMarkdown}
 				isEditorEmpty={editor?.isEmpty}
@@ -72,6 +97,7 @@ export default function Index() {
 				session={session}
 				setSession={setSession}
 				wordCount={wordCount}
+				onAuthModalOpen={onAuthModalOpen}
 			/>
 			<chakra.main
 				w='full'
@@ -91,6 +117,18 @@ export default function Index() {
 				setMusicPlaying={setMusicPlaying}
 				wordCount={wordCount}
 			/>
+			<Modal
+				isCentered={true}
+				isOpen={isAuthModalOpen}
+				onClose={onAuthModalClose}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalBody>
+						<AuthBasic />
+					</ModalBody>
+				</ModalContent>
+			</Modal>
 		</Container>
 	);
 }

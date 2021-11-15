@@ -18,11 +18,13 @@ import {
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player/youtube';
 import { Info, Music, Pause } from 'react-feather';
+import { useRouter } from 'next/router';
 
 export default function Footer(props) {
 	const { distractionFreeMode, musicPlaying, setMusicPlaying, wordCount } =
 		props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { pathname } = useRouter();
 
 	return (
 		<Flex
@@ -34,8 +36,6 @@ export default function Footer(props) {
 			justifyContent='space-between'
 			flexShrink={0}
 			overflowY='hidden'
-			opacity={distractionFreeMode ? '0.1' : '1'}
-			_hover={{ opacity: 1 }}
 		>
 			<Grid w='full' h='full' templateColumns='repeat(2, 1fr)' gap={4}>
 				{/* Details */}
@@ -46,39 +46,53 @@ export default function Footer(props) {
 					fontSize='xl'
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
+					opacity={distractionFreeMode ? '0.1' : '1'}
+					_hover={{ opacity: 1 }}
 				>
-					<Text fontSize='xs' fontWeight='light'>
-						{`Words: ${wordCount}`}
-					</Text>
+					{wordCount ? (
+						<Text fontSize='xs' fontWeight='light'>
+							{`Words: ${wordCount}`}
+						</Text>
+					) : null}
 				</HStack>
 
-				<HStack h='full' align='center' justify='end'>
-					{/* Music Player */}
-					{musicPlaying ? (
-						<IconButton
-							aria-label='pause session timer'
-							bg='transparent'
-							p={0}
-							size='xs'
-							icon={<Pause width={14} height={14} />}
-							onClick={setMusicPlaying.off}
-						/>
-					) : (
-						<IconButton
-							aria-label='resume session timer'
-							bg='transparent'
-							p={0}
-							size='xs'
-							icon={<Music width={14} height={14} />}
-							onClick={setMusicPlaying.on}
-						/>
-					)}
-					<ReactPlayer
-						playing={musicPlaying}
-						url='https://www.youtube.com/watch?v=fR9BUCk79-Y'
-						width='0px'
-						height='0px'
-					/>
+				<HStack
+					h='full'
+					align='center'
+					justify='end'
+					opacity={distractionFreeMode ? '0.1' : '1'}
+					_hover={{ opacity: 1 }}
+				>
+					{pathname === '/' ? (
+						<>
+							{/* Music Player */}
+							{musicPlaying ? (
+								<IconButton
+									aria-label='pause session timer'
+									bg='transparent'
+									p={0}
+									size='xs'
+									icon={<Pause width={14} height={14} />}
+									onClick={setMusicPlaying?.off}
+								/>
+							) : (
+								<IconButton
+									aria-label='resume session timer'
+									bg='transparent'
+									p={0}
+									size='xs'
+									icon={<Music width={14} height={14} />}
+									onClick={setMusicPlaying?.on}
+								/>
+							)}
+							<ReactPlayer
+								playing={musicPlaying}
+								url='https://www.youtube.com/watch?v=fR9BUCk79-Y'
+								width='0px'
+								height='0px'
+							/>
+						</>
+					) : null}
 
 					{/* About */}
 					<Flex

@@ -14,6 +14,8 @@
 		"@emotion/react": "11.1.5",
 		"@emotion/styled": "11.1.5",
 		"@prisma/client": "^3.4.2",
+		"@supabase/supabase-js": "^1.27.0",
+		"@supabase/ui": "^0.35.0",
 		"@tiptap/extension-bubble-menu": "^2.0.0-beta.49",
 		"@tiptap/extension-floating-menu": "^2.0.0-beta.44",
 		"@tiptap/extension-heading": "^2.0.0-beta.23",
