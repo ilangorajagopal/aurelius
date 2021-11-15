@@ -23,5 +23,6 @@ module.exports = {
 		'react/prop-types': 'off',
 		'react/react-in-jsx-scope': 'off',
 		'react/display-name': 'off',
+		'@typescript-eslint/ban-ts-comment': 'off',
 	},
 };

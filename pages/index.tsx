@@ -70,12 +70,26 @@ export default function Index() {
 	});
 
 	useEffect(() => {
-		setAuthSession(supabase.auth.user());
+		setAuthSession(supabase.auth.session());
 
-		supabase.auth.onAuthStateChange((event, session) => {
-			setAuthSession(session);
-		});
-	}, [authSession]);
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				setSession(session);
+				fetch('/api/auth', {
+					method: 'POST',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+					}),
+					credentials: 'same-origin',
+					body: JSON.stringify({ event, session }),
+				}).then((res) => res.json());
+			}
+		);
+
+		return () => {
+			authListener.unsubscribe();
+		};
+	}, []);
 
 	function downloadAsMarkdown() {
 		const htmlContent = `<h1>${title}</h1>${content}`;
