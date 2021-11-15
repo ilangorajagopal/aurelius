@@ -23,6 +23,7 @@ import Footer from '../components/Footer';
 import AuthBasic from '../components/Auth';
 import { supabase } from '../lib/supabase';
 import { savePostToDB } from '../lib/utils';
+import Settings from '../components/Settings';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
@@ -31,6 +32,11 @@ export default function Index() {
 		isOpen: isAuthModalOpen,
 		onOpen: onAuthModalOpen,
 		onClose: onAuthModalClose,
+	} = useDisclosure();
+	const {
+		isOpen: isSettingsModalOpen,
+		onOpen: onSettingsModalOpen,
+		onClose: onSettingsModalClose,
 	} = useDisclosure();
 	const [authSession, setAuthSession] = useState(null);
 	const [content, setContent] = useState('');
@@ -140,6 +146,7 @@ export default function Index() {
 				setSession={setSession}
 				wordCount={wordCount}
 				onAuthModalOpen={onAuthModalOpen}
+				onSettingsModalOpen={onSettingsModalOpen}
 			/>
 			<chakra.main
 				w='full'
@@ -175,6 +182,18 @@ export default function Index() {
 				<ModalContent>
 					<ModalBody py={6}>
 						<AuthBasic />
+					</ModalBody>
+				</ModalContent>
+			</Modal>
+			<Modal
+				isCentered={true}
+				isOpen={isSettingsModalOpen}
+				onClose={onSettingsModalClose}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalBody py={6}>
+						<Settings />
 					</ModalBody>
 				</ModalContent>
 			</Modal>

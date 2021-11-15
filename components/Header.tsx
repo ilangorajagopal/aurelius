@@ -1,7 +1,6 @@
 import NextLink from 'next/link';
 import Script from 'next/script';
 import {
-	chakra,
 	Avatar,
 	Button,
 	Flex,
@@ -60,6 +59,7 @@ export default function Header(props) {
 		setSession,
 		wordCount,
 		onAuthModalOpen,
+		onSettingsModalOpen,
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
@@ -358,7 +358,7 @@ export default function Header(props) {
 
 					{sessionComponent}
 
-					{pathname === '/' ? (
+					{pathname === '/' && !authSession ? (
 						<>
 							<Button
 								w={10}
@@ -506,7 +506,11 @@ export default function Header(props) {
 									<Text fontSize='sm'>About</Text>
 								</MenuItem>
 								<MenuItem d='none'>What&apos;s New</MenuItem>
-								<MenuItem w='full' h={10}>
+								<MenuItem
+									w='full'
+									h={10}
+									onClick={onSettingsModalOpen}
+								>
 									<Text fontSize='sm'>Settings</Text>
 								</MenuItem>
 								<MenuDivider m={0} />

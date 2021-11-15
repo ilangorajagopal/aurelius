@@ -261,11 +261,13 @@
     text-transform: uppercase;
 }
 
-.chakra-ui-light .auth label {
+.chakra-ui-light .auth label,
+.chakra-ui-light .auth span {
     color: black;
 }
 
-.chakra-ui-dark .auth label {
+.chakra-ui-dark .auth label,
+.chakra-ui-dark .auth span {
     color: white;
 }
 
