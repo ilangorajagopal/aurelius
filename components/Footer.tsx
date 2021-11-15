@@ -49,7 +49,7 @@ export default function Footer(props) {
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
-					{wordCount ? (
+					{pathname === '/' ? (
 						<Text fontSize='xs' fontWeight='light'>
 							{`Words: ${wordCount}`}
 						</Text>
