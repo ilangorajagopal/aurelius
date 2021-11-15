@@ -173,7 +173,7 @@ export default function Index() {
 			>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalBody>
+					<ModalBody py={6}>
 						<AuthBasic />
 					</ModalBody>
 				</ModalContent>

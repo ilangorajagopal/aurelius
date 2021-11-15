@@ -114,3 +114,235 @@
     max-width: 100%;
     height: auto;
 }
+
+/* Grid */
+
+.auth .container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.auth .row {
+    position: relative;
+    width: 100%;
+}
+.auth .row [class^='col'] {
+    float: left;
+    margin: 0.5rem 2%;
+    min-height: 0.125rem;
+}
+.auth .col-1,
+.auth .col-2,
+.auth .col-3,
+.auth .col-4,
+.auth .col-5,
+.auth .col-6,
+.auth .col-7,
+.auth .col-8,
+.auth .col-9,
+.auth .col-10,
+.auth .col-11,
+.auth .col-12 {
+    width: 96%;
+}
+.auth .col-1-sm {
+    width: 4.33%;
+}
+.auth .col-2-sm {
+    width: 12.66%;
+}
+.auth .col-3-sm {
+    width: 21%;
+}
+.auth .col-4-sm {
+    width: 29.33%;
+}
+.auth .col-5-sm {
+    width: 37.66%;
+}
+.auth .col-6-sm {
+    width: 46%;
+}
+.auth .col-7-sm {
+    width: 54.33%;
+}
+.auth .col-8-sm {
+    width: 62.66%;
+}
+.auth .col-9-sm {
+    width: 71%;
+}
+.auth .col-10-sm {
+    width: 79.33%;
+}
+.auth .col-11-sm {
+    width: 87.66%;
+}
+.auth .col-12-sm {
+    width: 96%;
+}
+.auth .row::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.auth .hidden-sm {
+    display: none;
+}
+
+@media only screen and (min-width: 33.75em) {
+    /* 540px */
+    .auth .container {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 45em) {
+    /* 720px */
+    .auth .col-1 {
+        width: 4.33%;
+    }
+    .auth .col-2 {
+        width: 12.66%;
+    }
+    .auth .col-3 {
+        width: 21%;
+    }
+    .auth .col-4 {
+        width: 29.33%;
+    }
+    .auth .col-5 {
+        width: 37.66%;
+    }
+    .auth .col-6 {
+        width: 46%;
+    }
+    .auth .col-7 {
+        width: 54.33%;
+    }
+    .auth .col-8 {
+        width: 62.66%;
+    }
+    .auth .col-9 {
+        width: 71%;
+    }
+    .auth .col-10 {
+        width: 79.33%;
+    }
+    .auth .col-11 {
+        width: 87.66%;
+    }
+    .auth .col-12 {
+        width: 96%;
+    }
+    .hidden-sm {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 60em) {
+    /* 960px */
+    .auth .container {
+        width: 75%;
+        max-width: 60rem;
+    }
+}
+
+/* Forms */
+
+.auth > .sbui-space-y-8 > :not([hidden])~:not([hidden]) {
+    margin-top: 0 !important;
+}
+
+.auth label {
+    display: block;
+    margin: 5px 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.chakra-ui-light .auth label {
+    color: black;
+}
+
+.chakra-ui-dark .auth label {
+    color: white;
+}
+
+.auth input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    padding-left: 2.5rem;
+    font-size: 0.9rem;
+}
+
+.auth input[disabled] {
+    color: var(--custom-color-secondary);
+}
+
+/* Utils */
+
+.auth .block {
+    display: block;
+    width: 100%;
+}
+.auth .inline-block {
+    display: inline-block;
+    width: 100%;
+}
+.auth .flex {
+    display: flex;
+}
+.auth .flex.column {
+    flex-direction: column;
+}
+.auth .flex.row {
+    flex-direction: row;
+}
+.auth .flex.flex-1 {
+    flex: 1 1 0;
+}
+.auth .flex-end {
+    justify-content: flex-end;
+}
+.auth .flex-center {
+    justify-content: center;
+}
+.auth .items-center {
+    align-items: center;
+}
+.auth .text-sm {
+    font-size: 0.8rem;
+    font-weight: 300;
+}
+.auth .text-right {
+    text-align: right;
+}
+.auth .font-light {
+    font-weight: 300;
+}
+.auth .opacity-half {
+    opacity: 50%;
+}
+
+/* Button */
+
+.auth button,
+.auth .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.auth button.primary,
+.auth .button.primary {
+    background-color: var(--custom-color-brand);
+    border: 1px solid var(--custom-color-brand);
+}

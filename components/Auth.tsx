@@ -1,6 +1,5 @@
 import { Auth, Typography, Button } from '@supabase/ui';
 import { createClient } from '@supabase/supabase-js';
-import '../styles/supabase.module.css';
 
 const supabase = createClient(
 	process.env.NEXT_PUBLIC_SUPABASE_URL,
