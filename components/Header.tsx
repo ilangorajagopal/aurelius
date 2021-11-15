@@ -41,7 +41,7 @@ import {
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
-import { Download, Edit3, Square, User } from 'react-feather';
+import { Download, Edit3, Moon, Square, Sun, User } from 'react-feather';
 import { MdCenterFocusStrong, MdOutlineSpaceDashboard } from 'react-icons/md';
 import { useState } from 'react';
 import Timer from './Timer';
@@ -63,6 +63,8 @@ export default function Header(props) {
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
+	const text = useColorModeValue('dark', 'light');
+	const SwitchIcon = useColorModeValue(Moon, Sun);
 	const { pathname } = useRouter();
 	// TODO: Save session duration to state and show a modal with total time spent writing in current session
 	// const [sessionDuration, setSessionDuration] = useState(0);
@@ -466,6 +468,21 @@ export default function Header(props) {
 									</ModalContent>
 								</Modal>
 							</>
+
+							<Button
+								aria-label={`Switch to ${text} mode`}
+								w={10}
+								h={10}
+								p={0}
+								rounded='md'
+								d='flex'
+								align='center'
+								justify='center'
+								onClick={toggleMode}
+								variant='ghost'
+							>
+								<Icon as={SwitchIcon} />
+							</Button>
 						</>
 					) : null}
 
@@ -485,13 +502,6 @@ export default function Header(props) {
 								/>
 							</MenuButton>
 							<MenuList p={0}>
-								<MenuItem w='full' h={10}>
-									<NextLink href='/dashboard'>
-										<chakra.a>
-											<Text fontSize='sm'>Dashboard</Text>
-										</chakra.a>
-									</NextLink>
-								</MenuItem>
 								<MenuItem w='full' h={10}>
 									<Text fontSize='sm'>About</Text>
 								</MenuItem>
