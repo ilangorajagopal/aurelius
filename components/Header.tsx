@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import NextImage from 'next/image';
 import Script from 'next/script';
 import {
 	Avatar,
@@ -60,6 +61,7 @@ export default function Header(props) {
 		wordCount,
 		onAuthModalOpen,
 		onSettingsModalOpen,
+		onAboutModalOpen,
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
@@ -419,7 +421,17 @@ export default function Header(props) {
 												textAlign='center'
 												spacing={4}
 											>
-												<Text fontSize='7xl'>🎉</Text>
+												<Flex
+													w='full'
+													alignItems='center'
+													justifyContent='center'
+												>
+													<NextImage
+														src='/images/star.png'
+														width={128}
+														height={128}
+													/>
+												</Flex>
 
 												<Text
 													fontSize='lg'
@@ -502,7 +514,11 @@ export default function Header(props) {
 								/>
 							</MenuButton>
 							<MenuList p={0}>
-								<MenuItem w='full' h={10}>
+								<MenuItem
+									w='full'
+									h={10}
+									onClick={onAboutModalOpen}
+								>
 									<Text fontSize='sm'>About</Text>
 								</MenuItem>
 								<MenuItem d='none'>What&apos;s New</MenuItem>

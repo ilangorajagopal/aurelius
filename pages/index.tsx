@@ -1,12 +1,19 @@
+import NextImage from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import {
 	chakra,
+	Flex,
+	Link as ChakraLink,
 	Modal,
 	ModalOverlay,
+	ModalCloseButton,
 	ModalContent,
 	ModalBody,
+	Text,
+	VStack,
 	useBoolean,
 	useDisclosure,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
@@ -37,6 +44,11 @@ export default function Index() {
 		isOpen: isSettingsModalOpen,
 		onOpen: onSettingsModalOpen,
 		onClose: onSettingsModalClose,
+	} = useDisclosure();
+	const {
+		isOpen: isAboutModalOpen,
+		onOpen: onAboutModalOpen,
+		onClose: onAboutModalClose,
 	} = useDisclosure();
 	const [authSession, setAuthSession] = useState(null);
 	const [content, setContent] = useState('');
@@ -147,6 +159,7 @@ export default function Index() {
 				wordCount={wordCount}
 				onAuthModalOpen={onAuthModalOpen}
 				onSettingsModalOpen={onSettingsModalOpen}
+				onAboutModalOpen={onAboutModalOpen}
 			/>
 			<chakra.main
 				w='full'
@@ -181,6 +194,18 @@ export default function Index() {
 				<ModalOverlay />
 				<ModalContent>
 					<ModalBody py={6}>
+						<Flex
+							w='full'
+							alignItems='center'
+							justifyContent='center'
+							mb={8}
+						>
+							<NextImage
+								src='/images/shield.png'
+								width={96}
+								height={96}
+							/>
+						</Flex>
 						<AuthBasic />
 					</ModalBody>
 				</ModalContent>
@@ -194,6 +219,100 @@ export default function Index() {
 				<ModalContent>
 					<ModalBody py={6}>
 						<Settings />
+					</ModalBody>
+				</ModalContent>
+			</Modal>
+			<Modal
+				isCentered={true}
+				isOpen={isAboutModalOpen}
+				onClose={onAboutModalClose}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalCloseButton />
+					<ModalBody py={6}>
+						<VStack
+							align='center'
+							justify='center'
+							color={useColorModeValue('gray.900', 'white')}
+							textAlign='center'
+							spacing={4}
+						>
+							<Flex
+								w='full'
+								alignItems='center'
+								justifyContent='center'
+							>
+								<NextImage
+									src='/images/pencil.png'
+									width={128}
+									height={128}
+								/>
+							</Flex>
+
+							<Text fontSize='lg' fontWeight='semibold'>
+								About The Writing App
+							</Text>
+
+							<Text textAlign='left'>
+								TWA was born out of a requirement for a writing
+								app that suited my needs. After trying many
+								writing apps — code editors to note taking app —
+								none of them help with maintaining a writing
+								habit. Some of them have a poor writing
+								experience by doing too much stuff.
+							</Text>
+
+							<Text textAlign='left'>
+								I wanted a simple writing app that has the
+								features for building a writing habit while
+								having an enjoyable writing experience. While
+								the current state only supports single posts
+								suited for articles, I want to support more
+								use-cases like book writing, daily journals, and
+								more.
+							</Text>
+
+							<Text textAlign='left'>
+								TWA is heavily inspired by{' '}
+								<ChakraLink
+									color='brand.200'
+									href='https://blurt.app'
+									isExternal={true}
+								>
+									Blurt
+								</ChakraLink>
+								. It had everything I needed but unfortunately
+								it got acquired and is no longer accessible to
+								the public. I want to avoid that for TWA. TWA
+								will never be acquired. To make that possible,
+								I&apos;ll eventually start charging a
+								subscription fee for usage.
+							</Text>
+
+							<Text textAlign='left'>
+								But there are a lot of things that are out of my
+								control that might affect my running of TWA. So,
+								to prevent any disruption to users, I&apos;m
+								making the entire source-code available to the
+								public on Github. With a little technical
+								know-how, you can host TWA anywhere you like.
+							</Text>
+
+							<Text textAlign='left'>
+								If you think this is something you&apos;d be
+								interested in, follow me on{' '}
+								<ChakraLink
+									color='brand.200'
+									href='https://twitter.com/_ilango'
+									isExternal={true}
+								>
+									Twitter
+								</ChakraLink>
+								. Feel free to drop a DM and ask me anything
+								about TWA.
+							</Text>
+						</VStack>
 					</ModalBody>
 				</ModalContent>
 			</Modal>
