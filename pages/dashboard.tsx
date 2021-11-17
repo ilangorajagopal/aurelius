@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { chakra, Flex, Grid, Heading } from '@chakra-ui/react';
+import { chakra, Flex, Heading } from '@chakra-ui/react';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -10,23 +10,49 @@ import Stats from '../components/dashboard/Stats';
 export default function Dashboard(props) {
 	const { posts } = props;
 	const [authSession, setAuthSession] = useState(null);
+	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
+		async function fetchProfile() {
+			const user = supabase.auth.user();
+			const { data: profile, error } = await supabase
+				.from('profiles')
+				.select()
+				.match({ user_id: user?.id })
+				.single();
+
+			if (profile) {
+				setProfile(profile);
+			} else {
+				console.error(error);
+			}
+		}
+
 		setAuthSession(supabase.auth.session());
+		fetchProfile().then(() => console.log('Profile fetched'));
 
 		supabase.auth.onAuthStateChange((event, session) => {
 			setAuthSession(session);
 		});
-	}, [authSession]);
+	}, []);
 
 	function getGreeting() {
 		const now = new Date();
 		const hrs = now.getHours();
 
 		if (hrs > 0 && hrs < 6) return "Mornin' Sunshine!"; // REALLY early
-		if (hrs > 6 && hrs < 12) return 'Good morning!'; // After 6am
-		if (hrs > 12 && hrs < 17) return 'Good afternoon!'; // After 12pm
-		if (hrs > 17 && hrs < 22) return 'Good evening!'; // After 5pm
+		if (hrs > 6 && hrs < 12)
+			return profile?.name
+				? `Good morning, ${profile?.name}!`
+				: 'Good morning!'; // After 6am
+		if (hrs > 12 && hrs < 17)
+			return profile?.name
+				? `Good afternoon, ${profile?.name}!`
+				: 'Good afternoon!'; // After 12pm
+		if (hrs > 17 && hrs < 22)
+			return profile?.name
+				? `Good evening, ${profile?.name}!`
+				: 'Good evening!'; // After 5pm
 		if (hrs > 22) return 'Go to bed!'; // After 10pm
 	}
 
@@ -43,19 +69,18 @@ export default function Dashboard(props) {
 				flex='1 0 auto'
 				py={16}
 			>
-				<Grid
+				<Flex
 					w='full'
 					maxW='container.lg'
-					templateColumns='repeat(2, 1fr)'
+					alignItems='center'
+					justifyContent='start'
 					mb={16}
 				>
-					<Flex alignItems='center' justifyContent='start'>
-						<Heading
-							as='h1'
-							fontSize='5xl'
-						>{`${getGreeting()}`}</Heading>
-					</Flex>
-				</Grid>
+					<Heading
+						as='h1'
+						fontSize='5xl'
+					>{`${getGreeting()}`}</Heading>
+				</Flex>
 				<Flex
 					d='none'
 					w='full'
