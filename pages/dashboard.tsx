@@ -41,19 +41,19 @@ export default function Dashboard(props) {
 		const hrs = now.getHours();
 
 		if (hrs > 0 && hrs < 6) return "Mornin' Sunshine!"; // REALLY early
-		if (hrs > 6 && hrs < 12)
+		if (hrs >= 6 && hrs < 12)
 			return profile?.name
 				? `Good morning, ${profile?.name}!`
 				: 'Good morning!'; // After 6am
-		if (hrs > 12 && hrs < 17)
+		if (hrs >= 12 && hrs < 17)
 			return profile?.name
 				? `Good afternoon, ${profile?.name}!`
 				: 'Good afternoon!'; // After 12pm
-		if (hrs > 17 && hrs < 22)
+		if (hrs >= 17 && hrs < 22)
 			return profile?.name
 				? `Good evening, ${profile?.name}!`
 				: 'Good evening!'; // After 5pm
-		if (hrs > 22) return 'Go to bed!'; // After 10pm
+		if (hrs >= 22) return 'Go to bed!'; // After 10pm
 	}
 
 	return (
