@@ -13,7 +13,7 @@ import Header from '../components/Header';
 import Main from '../components/content/Main';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
-import { savePostToDB } from '../lib/utils';
+import { savePostToDB, saveSessionToDB } from '../lib/utils';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
@@ -112,6 +112,26 @@ export default function Index() {
 
 	const autoSaveData = { post, title, content, word_count: wordCount };
 
+	async function saveSession(totalTime) {
+		let update: unknown = {};
+		if (session.goal === 'duration') {
+			update = {
+				...session,
+				target: session.target * 60,
+				result: totalTime,
+				post_id: post?.id,
+			};
+		} else {
+			update = {
+				...session,
+				result: wordCount,
+				post_id: post?.id,
+			};
+		}
+
+		await saveSessionToDB(update);
+	}
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
@@ -120,6 +140,7 @@ export default function Index() {
 				downloadAsMarkdown={downloadAsMarkdown}
 				isEditorEmpty={editor?.isEmpty}
 				isSaving={isSaving}
+				saveSession={saveSession}
 				setMusicPlaying={setMusicPlaying}
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
@@ -139,7 +160,7 @@ export default function Index() {
 				{authSession ? (
 					<Autosave
 						data={autoSaveData}
-						interval={30000}
+						interval={5000}
 						onSave={savePost}
 					/>
 				) : null}

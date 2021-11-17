@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import NextImage from 'next/image';
 import Script from 'next/script';
@@ -30,7 +30,6 @@ import {
 	PopoverTrigger,
 	PopoverContent,
 	PopoverBody,
-	PopoverFooter,
 	PopoverArrow,
 	Radio,
 	RadioGroup,
@@ -59,6 +58,7 @@ export default function Header(props) {
 		isEditorEmpty,
 		isSaving,
 		distractionFreeMode,
+		saveSession,
 		setDistractionFreeMode,
 		setMusicPlaying,
 		session,
@@ -81,18 +81,29 @@ export default function Header(props) {
 		onOpen: onAboutModalOpen,
 		onClose: onAboutModalClose,
 	} = useDisclosure();
+	const {
+		isOpen: isEndSessionModalOpen,
+		onOpen: onEndSessionModalOpen,
+		onClose: onEndSessionModalClose,
+	} = useDisclosure();
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
 	const SwitchIcon = useColorModeValue(Moon, Sun);
 	const router = useRouter();
 	// TODO: Save session duration to state and show a modal with total time spent writing in current session
-	// const [sessionDuration, setSessionDuration] = useState(0);
+	const [sessionDuration, setSessionDuration] = useState(0);
 	const [sessionGoal, setSessionGoal] = useState('duration');
 	const [sessionTarget, setSessionTarget] = useState(0);
 	const [sessionMusic, setSessionMusic] = useState(false);
 	const [showEndOfSessionNotification, setShowEndOfSessionNotification] =
 		useState(false);
 	const toast = useToast();
+
+	useEffect(() => {
+		if (sessionDuration > 0) {
+			onEndSessionModalOpen();
+		}
+	}, [sessionDuration]);
 
 	function startSession() {
 		setSession({ goal: sessionGoal, target: sessionTarget });
@@ -104,19 +115,27 @@ export default function Header(props) {
 
 	function endTimedSession(totalTime) {
 		// Set total session duration in seconds
-		// setSessionDuration(totalTime);
-		console.log(totalTime);
+		setSessionDuration(() => totalTime);
 		setSession(null);
 		setDistractionFreeMode.toggle();
 		if (sessionMusic) {
 			setMusicPlaying.off();
 		}
+		if (authSession) {
+			saveSession(totalTime);
+		}
 	}
 
 	function endWordCountSession() {
-		console.log(wordCount);
 		setSession(null);
 		setDistractionFreeMode.toggle();
+		if (sessionMusic) {
+			setMusicPlaying.off();
+		}
+		onEndSessionModalOpen();
+		if (authSession) {
+			saveSession();
+		}
 	}
 
 	async function signOut() {
@@ -267,6 +286,36 @@ export default function Header(props) {
 									</GridItem>
 								</FormControl>
 							)}
+							{sessionGoal === 'duration' ? (
+								<FormControl
+									d='grid'
+									gridTemplateColumns='repeat(5, 1fr)'
+								>
+									<GridItem colSpan={3}>
+										<FormLabel
+											m={0}
+											fontSize='md'
+											htmlFor='end-of-session-notification'
+										>
+											Notify when session ends
+										</FormLabel>
+									</GridItem>
+									<GridItem colSpan={2}>
+										<Switch
+											defaultChecked={false}
+											id='end-of-session-notification'
+											onChange={(e) =>
+												setShowEndOfSessionNotification(
+													e.target.checked
+												)
+											}
+											checked={
+												showEndOfSessionNotification
+											}
+										/>
+									</GridItem>
+								</FormControl>
+							) : null}
 							<FormControl
 								d='grid'
 								gridTemplateColumns='repeat(5, 1fr)'
@@ -288,32 +337,6 @@ export default function Header(props) {
 											setSessionMusic(e.target.checked)
 										}
 										checked={sessionMusic}
-									/>
-								</GridItem>
-							</FormControl>
-							<FormControl
-								d='grid'
-								gridTemplateColumns='repeat(5, 1fr)'
-							>
-								<GridItem colSpan={3}>
-									<FormLabel
-										m={0}
-										fontSize='md'
-										htmlFor='end-of-session-notification'
-									>
-										Notify when session ends
-									</FormLabel>
-								</GridItem>
-								<GridItem colSpan={2}>
-									<Switch
-										defaultChecked={false}
-										id='end-of-session-notification'
-										onChange={(e) =>
-											setShowEndOfSessionNotification(
-												e.target.checked
-											)
-										}
-										checked={showEndOfSessionNotification}
 									/>
 								</GridItem>
 							</FormControl>
@@ -771,6 +794,66 @@ export default function Header(props) {
 								. Feel free to drop a DM and ask me anything
 								about TWA.
 							</Text>
+						</VStack>
+					</ModalBody>
+				</ModalContent>
+			</Modal>
+			<Modal
+				isCentered={true}
+				isOpen={isEndSessionModalOpen}
+				onClose={onEndSessionModalClose}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalCloseButton />
+					<ModalBody py={6}>
+						<VStack
+							align='center'
+							justify='center'
+							color={useColorModeValue('gray.900', 'white')}
+							textAlign='center'
+							spacing={4}
+						>
+							<Flex
+								w='full'
+								alignItems='center'
+								justifyContent='center'
+							>
+								<NextImage
+									src='/images/medal.png'
+									width={128}
+									height={128}
+								/>
+							</Flex>
+
+							<Text fontSize='lg' fontWeight='semibold'>
+								Great Session!
+							</Text>
+
+							<Text textAlign='center'>
+								{sessionGoal === 'duration'
+									? `You wrote for ${(
+											sessionDuration / 60
+									  ).toFixed(
+											0
+									  )} minutes out of your target ${sessionTarget} minutes! Keep it up!`
+									: `You wrote ${wordCount} out of your target ${sessionTarget} words. Keep it up!`}
+							</Text>
+
+							<a
+								href='https://twitter.com/share?ref_src=twsrc%5Etfw'
+								className='twitter-share-button'
+								data-size='large'
+								data-text="I just finished a great writing session on The Writing App! It's a great app to do focused writing. Try it here: 👇️"
+								data-url='https://thewritingapp.opencatalysts.tech/'
+								data-related='_ilango,opencatalysts'
+								data-lang='en'
+								data-dnt='true'
+								data-show-count='false'
+							>
+								Share on Twitter
+							</a>
+							<Script src='https://platform.twitter.com/widgets.js' />
 						</VStack>
 					</ModalBody>
 				</ModalContent>
