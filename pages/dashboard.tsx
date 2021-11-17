@@ -5,13 +5,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import Posts from '../components/dashboard/Posts';
+import Stats from '../components/dashboard/Stats';
 
 export default function Dashboard(props) {
 	const { posts } = props;
 	const [authSession, setAuthSession] = useState(null);
 
 	useEffect(() => {
-		setAuthSession(supabase.auth.user());
+		setAuthSession(supabase.auth.session());
 
 		supabase.auth.onAuthStateChange((event, session) => {
 			setAuthSession(session);
@@ -54,8 +55,18 @@ export default function Dashboard(props) {
 							fontSize='5xl'
 						>{`${getGreeting()}`}</Heading>
 					</Flex>
-					<Flex alignItems='center' justifyContent='center'></Flex>
 				</Grid>
+				<Flex
+					d='none'
+					w='full'
+					maxW='container.lg'
+					h='auto'
+					alignItems='center'
+					justifyContent='start'
+					mb={16}
+				>
+					<Stats />
+				</Flex>
 				<Posts posts={posts} />
 			</chakra.main>
 			<Footer />
