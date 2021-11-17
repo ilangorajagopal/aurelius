@@ -22,10 +22,10 @@ export default function Dashboard(props) {
 		const now = new Date();
 		const hrs = now.getHours();
 
-		if (hrs > 0) return "Mornin' Sunshine!"; // REALLY early
-		if (hrs > 6) return 'Good morning'; // After 6am
-		if (hrs > 12) return 'Good afternoon'; // After 12pm
-		if (hrs > 17) return 'Good evening'; // After 5pm
+		if (hrs > 0 && hrs < 6) return "Mornin' Sunshine!"; // REALLY early
+		if (hrs > 6 && hrs < 12) return 'Good morning!'; // After 6am
+		if (hrs > 12 && hrs < 17) return 'Good afternoon!'; // After 12pm
+		if (hrs > 17 && hrs < 22) return 'Good evening!'; // After 5pm
 		if (hrs > 22) return 'Go to bed!'; // After 10pm
 	}
 
