@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import NextLink from 'next/link';
 import NextImage from 'next/image';
 import Script from 'next/script';
+import { useRouter } from 'next/router';
 import {
 	Avatar,
 	Button,
@@ -44,9 +46,8 @@ import {
 } from '@chakra-ui/react';
 import { Download, Edit3, Moon, Square, Sun, User } from 'react-feather';
 import { MdCenterFocusStrong, MdOutlineSpaceDashboard } from 'react-icons/md';
-import { useState } from 'react';
+import { supabase } from '../lib/supabase';
 import Timer from './Timer';
-import { useRouter } from 'next/router';
 import AuthBasic from './Auth';
 import Settings from './Settings';
 
@@ -82,7 +83,7 @@ export default function Header(props) {
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
 	const SwitchIcon = useColorModeValue(Moon, Sun);
-	const { pathname } = useRouter();
+	const router = useRouter();
 	// TODO: Save session duration to state and show a modal with total time spent writing in current session
 	// const [sessionDuration, setSessionDuration] = useState(0);
 	const [sessionGoal, setSessionGoal] = useState('duration');
@@ -113,6 +114,11 @@ export default function Header(props) {
 		console.log(wordCount);
 		setSession(null);
 		setDistractionFreeMode.toggle();
+	}
+
+	async function signOut() {
+		await supabase.auth.signOut();
+		await router.push('/');
 	}
 
 	let sessionComponent = null;
@@ -310,12 +316,14 @@ export default function Header(props) {
 							<NextLink href='/'>
 								<Button
 									colorScheme={
-										pathname === '/' ? 'brand' : ''
+										router?.pathname === '/' ? 'brand' : ''
 									}
 									size='sm'
 									px={4}
 									variant={
-										pathname !== '/' ? 'ghost' : 'solid'
+										router?.pathname !== '/'
+											? 'ghost'
+											: 'solid'
 									}
 								>
 									<Edit3 width={14} height={14} />
@@ -328,12 +336,14 @@ export default function Header(props) {
 							<NextLink href='/dashboard'>
 								<Button
 									colorScheme={
-										pathname === '/dashboard' ? 'brand' : ''
+										router?.pathname === '/dashboard'
+											? 'brand'
+											: ''
 									}
 									size='sm'
 									px={4}
 									variant={
-										pathname !== '/dashboard'
+										router?.pathname !== '/dashboard'
 											? 'ghost'
 											: 'solid'
 									}
@@ -375,7 +385,7 @@ export default function Header(props) {
 
 					{sessionComponent}
 
-					{pathname === '/' && !authSession ? (
+					{router?.pathname === '/' && !authSession ? (
 						<>
 							<Button
 								w={10}
@@ -560,7 +570,7 @@ export default function Header(props) {
 									/>
 								</MenuItem>
 								<MenuDivider m={0} />
-								<MenuItem w='full' h={10}>
+								<MenuItem w='full' h={10} onClick={signOut}>
 									<Text fontSize='sm'>Sign Out</Text>
 								</MenuItem>
 							</MenuList>
