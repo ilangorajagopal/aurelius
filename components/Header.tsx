@@ -8,6 +8,7 @@ import {
 	Button,
 	Flex,
 	Grid,
+	GridItem,
 	HStack,
 	FormControl,
 	FormLabel,
@@ -89,6 +90,8 @@ export default function Header(props) {
 	const [sessionGoal, setSessionGoal] = useState('duration');
 	const [sessionTarget, setSessionTarget] = useState(0);
 	const [sessionMusic, setSessionMusic] = useState(false);
+	const [showEndOfSessionNotification, setShowEndOfSessionNotification] =
+		useState(false);
 	const toast = useToast();
 
 	function startSession() {
@@ -131,6 +134,7 @@ export default function Header(props) {
 				expiry={time}
 				music={sessionMusic}
 				setMusicPlaying={setMusicPlaying}
+				showEndOfSessionNotification={showEndOfSessionNotification}
 				target={session?.target}
 			/>
 		);
@@ -155,120 +159,175 @@ export default function Header(props) {
 		);
 	} else {
 		sessionComponent = (
-			<Popover>
+			<Popover placement='bottom-end'>
 				<PopoverTrigger>
 					<Button size='sm'>New Session</Button>
 				</PopoverTrigger>
-				<PopoverContent>
+				<PopoverContent w='sm'>
 					<PopoverArrow />
 					<PopoverBody p={4}>
 						<VStack w='full' spacing={4}>
 							<FormControl
 								d='grid'
-								gridTemplateColumns='repeat(2, 1fr)'
+								gridTemplateColumns='repeat(5, 1fr)'
 							>
-								<FormLabel fontSize='md' htmlFor='session-goal'>
-									Session Goal
-								</FormLabel>
-								<RadioGroup
-									defaultValue={sessionGoal}
-									fontSize='sm'
-									name='session-goal'
-									onChange={(e) => setSessionGoal(e)}
-								>
-									<Stack spacing={2} direction='column'>
-										<Radio value='duration'>
-											<Text fontSize='sm'>Duration</Text>
-										</Radio>
-										<Radio value='word-count'>
-											<Text fontSize='sm'>
-												Word Count
-											</Text>
-										</Radio>
-									</Stack>
-								</RadioGroup>
+								<GridItem colSpan={3}>
+									<FormLabel
+										m={0}
+										fontSize='md'
+										htmlFor='session-goal'
+									>
+										Session Goal
+									</FormLabel>
+								</GridItem>
+								<GridItem colSpan={2}>
+									<RadioGroup
+										defaultValue={sessionGoal}
+										fontSize='sm'
+										name='session-goal'
+										onChange={(e) => setSessionGoal(e)}
+									>
+										<Stack spacing={2} direction='column'>
+											<Radio value='duration'>
+												<Text fontSize='sm'>
+													Duration
+												</Text>
+											</Radio>
+											<Radio value='word-count'>
+												<Text fontSize='sm'>
+													Word Count
+												</Text>
+											</Radio>
+										</Stack>
+									</RadioGroup>
+								</GridItem>
 							</FormControl>
 							{sessionGoal === 'duration' ? (
 								<FormControl
 									d='grid'
-									gridTemplateColumns='repeat(2, 1fr)'
+									gridTemplateColumns='repeat(5, 1fr)'
 								>
-									<FormLabel
-										fontSize='md'
-										htmlFor='session-duration'
-									>
-										Target
-									</FormLabel>
-									<HStack spacing={2}>
-										<Input
-											name='session-duration'
-											defaultValue={sessionTarget}
-											onChange={(e) =>
-												setSessionTarget(
-													parseInt(e.target.value, 10)
-												)
-											}
-										/>
-										<Text fontSize='sm'>minutes</Text>
-									</HStack>
+									<GridItem colSpan={3}>
+										<FormLabel
+											m={0}
+											fontSize='md'
+											htmlFor='session-duration'
+										>
+											Target
+										</FormLabel>
+									</GridItem>
+									<GridItem colSpan={2}>
+										<HStack spacing={2}>
+											<Input
+												name='session-duration'
+												defaultValue={sessionTarget}
+												onChange={(e) =>
+													setSessionTarget(
+														parseInt(
+															e.target.value,
+															10
+														)
+													)
+												}
+											/>
+											<Text fontSize='sm'>minutes</Text>
+										</HStack>
+									</GridItem>
 								</FormControl>
 							) : (
 								<FormControl
 									d='grid'
-									gridTemplateColumns='repeat(2, 1fr)'
+									gridTemplateColumns='repeat(5, 1fr)'
 								>
-									<FormLabel
-										fontSize='md'
-										htmlFor='session-word-count'
-									>
-										Target
-									</FormLabel>
-									<HStack spacing={2}>
-										<Input
-											name='session-word-count'
-											defaultValue={sessionTarget}
-											onChange={(e) =>
-												setSessionTarget(
-													parseInt(e.target.value, 10)
-												)
-											}
-										/>
-										<Text fontSize='sm'>words</Text>
-									</HStack>
+									<GridItem colSpan={3}>
+										<FormLabel
+											m={0}
+											fontSize='md'
+											htmlFor='session-duration'
+										>
+											Target
+										</FormLabel>
+									</GridItem>
+									<GridItem colSpan={2}>
+										<HStack spacing={2}>
+											<Input
+												name='session-word-count'
+												defaultValue={sessionTarget}
+												onChange={(e) =>
+													setSessionTarget(
+														parseInt(
+															e.target.value,
+															10
+														)
+													)
+												}
+											/>
+											<Text fontSize='sm'>words</Text>
+										</HStack>
+									</GridItem>
 								</FormControl>
 							)}
 							<FormControl
 								d='grid'
-								gridTemplateColumns='repeat(2, 1fr)'
+								gridTemplateColumns='repeat(5, 1fr)'
 							>
-								<FormLabel
-									fontSize='md'
-									htmlFor='session-music'
-								>
-									Music
-								</FormLabel>
-								<Switch
-									defaultChecked={false}
-									id='session-music'
-									onChange={(e) =>
-										setSessionMusic(e.target.checked)
-									}
-									checked={sessionMusic}
-								/>
+								<GridItem colSpan={3}>
+									<FormLabel
+										m={0}
+										fontSize='md'
+										htmlFor='session-music'
+									>
+										Music
+									</FormLabel>
+								</GridItem>
+								<GridItem colSpan={2}>
+									<Switch
+										defaultChecked={false}
+										id='session-music'
+										onChange={(e) =>
+											setSessionMusic(e.target.checked)
+										}
+										checked={sessionMusic}
+									/>
+								</GridItem>
 							</FormControl>
+							<FormControl
+								d='grid'
+								gridTemplateColumns='repeat(5, 1fr)'
+							>
+								<GridItem colSpan={3}>
+									<FormLabel
+										m={0}
+										fontSize='md'
+										htmlFor='end-of-session-notification'
+									>
+										Notify when session ends
+									</FormLabel>
+								</GridItem>
+								<GridItem colSpan={2}>
+									<Switch
+										defaultChecked={false}
+										id='end-of-session-notification'
+										onChange={(e) =>
+											setShowEndOfSessionNotification(
+												e.target.checked
+											)
+										}
+										checked={showEndOfSessionNotification}
+									/>
+								</GridItem>
+							</FormControl>
+							<HStack w='full' justifyContent='end' spacing={4}>
+								<Button
+									colorScheme='brand'
+									onClick={startSession}
+									size='sm'
+								>
+									Start
+								</Button>
+							</HStack>
 						</VStack>
 					</PopoverBody>
-					<PopoverFooter>
-						<HStack w='full' justifyContent='end' spacing={4}>
-							<Button
-								colorScheme='brand'
-								onClick={startSession}
-								size='sm'
-							>
-								Start
-							</Button>
-						</HStack>
-					</PopoverFooter>
 				</PopoverContent>
 			</Popover>
 		);
@@ -383,7 +442,7 @@ export default function Header(props) {
 				>
 					{isSaving ? <Text fontSize='sm'>Saving...</Text> : null}
 
-					{sessionComponent}
+					{router?.pathname === '/' ? sessionComponent : null}
 
 					{router?.pathname === '/' && !authSession ? (
 						<>

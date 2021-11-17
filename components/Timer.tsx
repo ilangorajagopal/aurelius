@@ -1,9 +1,17 @@
-import { Flex, HStack, IconButton, Text, Tooltip } from '@chakra-ui/react';
+import { useState } from 'react';
+import {
+	Flex,
+	HStack,
+	IconButton,
+	Text,
+	Tooltip,
+	useToast,
+} from '@chakra-ui/react';
 import { useTimer, useStopwatch } from 'react-timer-hook';
 import { Pause, Play, Square } from 'react-feather';
-import { useState } from 'react';
 
 export default function Timer(props) {
+	const toast = useToast();
 	const [countdownExpired, setCountdownExpired] = useState(false);
 	const {
 		seconds: stSeconds,
@@ -19,6 +27,16 @@ export default function Timer(props) {
 		onExpire: () => {
 			setCountdownExpired(true);
 			stStart();
+			if (props.showEndOfSessionNotification) {
+				toast({
+					duration: 3000,
+					position: 'top',
+					status: 'info',
+					title: 'Writing session has ended',
+					description:
+						"Great work! If you're in flow, feel free to keep writing.",
+				});
+			}
 		},
 	});
 
