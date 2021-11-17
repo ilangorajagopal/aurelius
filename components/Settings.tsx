@@ -133,7 +133,9 @@ export default function Settings() {
 						type='text'
 						w='full'
 						h={12}
-						onChange={(e) => setDailyGoal(e.target.value)}
+						onChange={(e) =>
+							setDailyGoal(parseInt(e.target.value, 10))
+						}
 						value={dailyGoal}
 					/>
 				</FormControl>
