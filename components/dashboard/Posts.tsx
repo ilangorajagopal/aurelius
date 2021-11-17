@@ -79,6 +79,7 @@ export default function Posts(props) {
 										spacing={4}
 									>
 										<IconButton
+											aria-label='edit post'
 											w={12}
 											h={12}
 											d='flex'
@@ -89,6 +90,7 @@ export default function Posts(props) {
 											}
 										/>
 										<IconButton
+											aria-label='delete post'
 											w={12}
 											h={12}
 											d='flex'
