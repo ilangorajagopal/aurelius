@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import Posts from '../components/dashboard/Posts';
-import Stats from '../components/dashboard/Stats';
 
 export default function Dashboard(props) {
 	const { posts } = props;
@@ -47,7 +46,7 @@ export default function Dashboard(props) {
 					w='full'
 					maxW='container.lg'
 					templateColumns='repeat(2, 1fr)'
-					mb={8}
+					mb={16}
 				>
 					<Flex alignItems='center' justifyContent='start'>
 						<Heading
@@ -55,9 +54,7 @@ export default function Dashboard(props) {
 							fontSize='5xl'
 						>{`${getGreeting()}`}</Heading>
 					</Flex>
-					<Flex alignItems='center' justifyContent='center'>
-						<Stats />
-					</Flex>
+					<Flex alignItems='center' justifyContent='center'></Flex>
 				</Grid>
 				<Posts posts={posts} />
 			</chakra.main>

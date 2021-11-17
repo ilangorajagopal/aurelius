@@ -1,19 +1,5 @@
-import NextImage from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-import {
-	chakra,
-	Flex,
-	Modal,
-	ModalOverlay,
-	ModalCloseButton,
-	ModalContent,
-	ModalBody,
-	Text,
-	VStack,
-	useBoolean,
-	useDisclosure,
-	useColorModeValue,
-} from '@chakra-ui/react';
+import { chakra, useBoolean } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Image from '@tiptap/extension-image';

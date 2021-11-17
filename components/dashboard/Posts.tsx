@@ -1,4 +1,7 @@
+import NextLink from 'next/link';
 import {
+	Button,
+	Flex,
 	Grid,
 	GridItem,
 	Heading,
@@ -8,14 +11,24 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { format, formatDistance } from 'date-fns';
-import { Edit2, Trash2 } from 'react-feather';
+import { Edit2, Edit3, Trash2 } from 'react-feather';
 
 export default function Posts(props) {
 	const { posts } = props;
 
 	return (
 		<VStack w='full' maxW='container.lg' align='start' spacing={8}>
-			<Heading as='h2'>Posts</Heading>
+			<Flex w='full' alignItems='center' justifyContent='space-between'>
+				<Heading as='h2'>Posts</Heading>
+				<NextLink href='/'>
+					<Button colorScheme='brand' size='lg' px={4}>
+						<Edit3 width={16} height={16} />
+						<Text fontSize='lg' ml={2}>
+							Write
+						</Text>
+					</Button>
+				</NextLink>
+			</Flex>
 			<VStack w='full' spacing={4}>
 				{posts && posts.length > 0 ? (
 					posts.map((post) => {
