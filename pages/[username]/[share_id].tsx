@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
 		.match({ username })
 		.single();
 
-	const { data: post, postError } = await supabase
+	const { data: post, error: postError } = await supabase
 		.from('posts')
 		.select('title,content')
 		.match({ share_id })
