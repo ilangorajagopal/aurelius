@@ -1,4 +1,4 @@
-import { chakra, Flex, Heading, VStack } from '@chakra-ui/react';
+import { chakra, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { supabase } from '../../lib/supabase';
 import Container from '../../components/Container';
 import Header from '../../components/shared-post/Header';
@@ -24,9 +24,12 @@ export default function SharedPost(props) {
 					alignItems='start'
 					spacing={8}
 				>
-					<Heading as='h1' fontSize='5xl'>
-						{props?.post?.title}
-					</Heading>
+					<VStack alignItems='start' spacing={1}>
+						<Heading as='h1' fontSize='5xl'>
+							{props?.post?.title}
+						</Heading>
+						<Text fontSize='lg'>{`by ${props?.user?.name}`}</Text>
+					</VStack>
 					<Flex
 						className='aurelius-shared-post'
 						flexDirection='column'
