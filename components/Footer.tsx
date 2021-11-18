@@ -19,10 +19,16 @@ import {
 import ReactPlayer from 'react-player/youtube';
 import { Info, Music, Pause } from 'react-feather';
 import { useRouter } from 'next/router';
+import About from './About';
 
 export default function Footer(props) {
-	const { distractionFreeMode, musicPlaying, setMusicPlaying, wordCount } =
-		props;
+	const {
+		authSession,
+		distractionFreeMode,
+		musicPlaying,
+		setMusicPlaying,
+		wordCount,
+	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { pathname } = useRouter();
 
@@ -109,7 +115,7 @@ export default function Footer(props) {
 								h='auto'
 								p={0}
 								rounded='md'
-								d='none'
+								d='flex'
 								align='center'
 								justify='center'
 								onClick={onOpen}
@@ -125,22 +131,10 @@ export default function Footer(props) {
 							>
 								<ModalOverlay />
 								<ModalContent>
-									<ModalHeader>Modal Title</ModalHeader>
 									<ModalCloseButton />
-									<ModalBody>Modal Content</ModalBody>
-
-									<ModalFooter>
-										<Button
-											variant='ghost'
-											mr={3}
-											onClick={onClose}
-										>
-											Close
-										</Button>
-										<Button colorScheme='brand'>
-											Save
-										</Button>
-									</ModalFooter>
+									<ModalBody py={6}>
+										<About />
+									</ModalBody>
 								</ModalContent>
 							</Modal>
 						</>

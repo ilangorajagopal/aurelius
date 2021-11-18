@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				}}
 			>
 				<Head>
-					<title>The Writing App</title>
+					<title>Aurelius</title>
 				</Head>
 				<Component {...pageProps} />
 			</ColorModeProvider>

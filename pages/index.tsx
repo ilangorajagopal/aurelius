@@ -167,6 +167,7 @@ export default function Index() {
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
 			<Footer
+				authSession={authSession}
 				distractionFreeMode={distractionFreeMode}
 				musicPlaying={musicPlaying}
 				setMusicPlaying={setMusicPlaying}

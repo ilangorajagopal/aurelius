@@ -4,6 +4,7 @@ import NextImage from 'next/image';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
 import {
+	chakra,
 	Avatar,
 	Button,
 	Flex,
@@ -58,6 +59,7 @@ import { supabase } from '../lib/supabase';
 import Timer from './Timer';
 import AuthBasic from './Auth';
 import Settings from './Settings';
+import About from './About';
 
 export default function Header(props) {
 	const {
@@ -385,7 +387,30 @@ export default function Header(props) {
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
-					<NextLink href='/'>The Writing App</NextLink>
+					<NextLink href='/'>
+						<chakra.a
+							d='flex'
+							alignItems='center'
+							justifyContent='center'
+							cursor='pointer'
+						>
+							{colorMode === 'dark' ? (
+								<NextImage
+									src='/images/logo_dark.png'
+									width={108}
+									height={60}
+									alt='Aurelius Logo'
+								/>
+							) : (
+								<NextImage
+									src='/images/logo.png'
+									width={108}
+									height={60}
+									alt='Aurelius Logo'
+								/>
+							)}
+						</chakra.a>
+					</NextLink>
 					<Tag ml={4}>Beta</Tag>
 				</Flex>
 
@@ -580,7 +605,7 @@ export default function Header(props) {
 													href='https://twitter.com/share?ref_src=twsrc%5Etfw'
 													className='twitter-share-button'
 													data-size='large'
-													data-text='Writing in The Writing App is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
+													data-text='Writing in Aurelius is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
 													data-url='https://thewritingapp.opencatalysts.tech/'
 													data-related='_ilango,opencatalysts'
 													data-lang='en'
@@ -817,88 +842,7 @@ export default function Header(props) {
 				<ModalContent>
 					<ModalCloseButton />
 					<ModalBody py={6}>
-						<VStack
-							align='center'
-							justify='center'
-							color={useColorModeValue('gray.900', 'white')}
-							textAlign='center'
-							spacing={4}
-						>
-							<Flex
-								w='full'
-								alignItems='center'
-								justifyContent='center'
-							>
-								<NextImage
-									src='/images/about.png'
-									width={128}
-									height={128}
-								/>
-							</Flex>
-
-							<Text fontSize='lg' fontWeight='semibold'>
-								About The Writing App
-							</Text>
-
-							<Text textAlign='left'>
-								TWA was born out of a requirement for a writing
-								app that suited my needs. After trying many
-								writing apps — code editors to note taking app —
-								none of them help with maintaining a writing
-								habit. Some of them have a poor writing
-								experience by doing too much stuff.
-							</Text>
-
-							<Text textAlign='left'>
-								I wanted a simple writing app that has the
-								features for building a writing habit while
-								having an enjoyable writing experience. While
-								the current state only supports single posts
-								suited for articles, I want to support more
-								use-cases like book writing, daily journals, and
-								more.
-							</Text>
-
-							<Text textAlign='left'>
-								TWA is heavily inspired by{' '}
-								<Link
-									color='brand.200'
-									href='https://blurt.app'
-									isExternal={true}
-								>
-									Blurt
-								</Link>
-								. It had everything I needed but unfortunately
-								it got acquired and is no longer accessible to
-								the public. I want to avoid that for TWA. TWA
-								will never be acquired. To make that possible,
-								I&apos;ll eventually start charging a
-								subscription fee for usage.
-							</Text>
-
-							<Text textAlign='left'>
-								But there are a lot of things that are out of my
-								control that might affect my running of TWA. So,
-								to prevent any disruption to users, I&apos;m
-								making the entire source-code available to the
-								public on Github. With a little technical
-								know-how, you can host TWA anywhere you like.
-							</Text>
-
-							<Text textAlign='left'>
-								If you think this is something you&apos;d be
-								interested in, follow me on{' '}
-								<Link
-									color='brand.200'
-									href='https://twitter.com/_ilango'
-									isExternal={true}
-								>
-									Twitter
-								</Link>
-								. Feel free to drop a DM and ask me anything
-								about TWA.
-							</Text>
-						</VStack>
+						<About />
 					</ModalBody>
 				</ModalContent>
 			</Modal>
@@ -948,7 +892,7 @@ export default function Header(props) {
 								href='https://twitter.com/share?ref_src=twsrc%5Etfw'
 								className='twitter-share-button'
 								data-size='large'
-								data-text="I just finished a great writing session on The Writing App! It's a great app to do focused writing. Try it here: 👇️"
+								data-text="I just finished a great writing session on Aurelius! It's a great app to do focused writing. Try it here: 👇️"
 								data-url='https://thewritingapp.opencatalysts.tech/'
 								data-related='_ilango,opencatalysts'
 								data-lang='en'
