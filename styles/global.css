@@ -348,3 +348,69 @@
 	background-color: var(--custom-color-brand);
 	border: 1px solid var(--custom-color-brand);
 }
+
+/* Shared Post Styles */
+.aurelius-shared-post {
+	font-family: 'Merriweather', serif;
+	font-size: 1.3rem;
+}
+
+.aurelius-shared-post > * + * {
+	margin-top: 0.75em;
+}
+
+.aurelius-shared-post ul,
+.aurelius-shared-post ol {
+	padding: 0 1rem;
+}
+
+.aurelius-shared-post h1,
+.aurelius-shared-post h2,
+.aurelius-shared-post h3 {
+	font-weight: bold;
+	line-height: 1.1;
+}
+
+.aurelius-shared-post h1 {
+	font-size: 2rem;
+	margin: 0.67em 0;
+}
+
+.aurelius-shared-post h2 {
+	font-size: 1.5rem;
+	margin: 0.75em 0;
+}
+
+.aurelius-shared-post h3 {
+	font-size: 1.3rem;
+	margin: 0.83em 0;
+}
+
+.aurelius-shared-post pre {
+	background: #0d0d0d;
+	color: #fff;
+	font-family: 'JetBrainsMono', monospace;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.aurelius-shared-post pre code {
+	color: inherit;
+	padding: 0;
+	background: none;
+	font-size: 0.8rem;
+}
+
+.aurelius-shared-post blockquote {
+	padding-left: 1rem;
+	border-left: 2px solid;
+}
+
+.aurelius-shared-post a {
+	color: #68cef8;
+}
+
+.aurelius-shared-post img {
+	max-width: 100%;
+	height: auto;
+}

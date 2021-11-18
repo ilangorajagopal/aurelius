@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { nanoid } from 'nanoid';
 
 export async function savePostToDB(post, update) {
 	if (post) {
@@ -10,7 +11,9 @@ export async function savePostToDB(post, update) {
 		return { data: data[0], error };
 	} else {
 		const user = supabase.auth.user();
-		const record = { ...update, user_id: user.id };
+		const id = nanoid(32);
+		const share_id = `${update.title.split(' ').join('-')}-${id}`;
+		const record = { ...update, share_id, user_id: user.id };
 		const { data, error } = await supabase.from('posts').insert([record]);
 
 		return { data: data[0], error };
