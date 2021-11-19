@@ -7,17 +7,39 @@ import {
 	Heading,
 	HStack,
 	IconButton,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
 	Text,
 	VStack,
 } from '@chakra-ui/react';
 import { format, formatDistance } from 'date-fns';
-import { Edit2, Edit3, Trash2 } from 'react-feather';
+import { Edit2, Edit3, MoreVertical, Share2, Trash2 } from 'react-feather';
+// import {supabase} from "../../lib/supabase";
 
 export default function Posts(props) {
 	const { posts } = props;
 
+	// function editPost(id) {
+	//
+	// }
+	//
+	// async function deletePost(id) {
+	// 	const { data, error } = await supabase
+	// 		.from('posts')
+	// 		.delete()
+	// 		.match({ id });
+	// }
+
 	return (
-		<VStack w='full' maxW='container.lg' align='start' spacing={8}>
+		<VStack
+			w='full'
+			maxW='container.lg'
+			align='start'
+			overflowX='hidden'
+			spacing={8}
+		>
 			<Flex w='full' alignItems='center' justifyContent='space-between'>
 				<Heading as='h2'>Posts</Heading>
 				<NextLink href='/'>
@@ -29,7 +51,7 @@ export default function Posts(props) {
 					</Button>
 				</NextLink>
 			</Flex>
-			<VStack w='full' spacing={4}>
+			<VStack w='full' overflowX='hidden' spacing={4}>
 				{posts && posts.length > 0 ? (
 					posts.map((post) => {
 						return (
@@ -79,30 +101,57 @@ export default function Posts(props) {
 										spacing={4}
 									>
 										<IconButton
-											aria-label='edit post'
-											w={12}
-											h={12}
-											d='flex'
-											alignItems='center'
-											justifyContent='center'
+											aria-label='share post'
 											icon={
-												<Edit2 width={16} height={16} />
-											}
-										/>
-										<IconButton
-											aria-label='delete post'
-											w={12}
-											h={12}
-											d='flex'
-											alignItems='center'
-											justifyContent='center'
-											icon={
-												<Trash2
+												<Share2
 													width={16}
 													height={16}
 												/>
 											}
+											w={10}
+											h={10}
+											d='flex'
+											alignItems='center'
+											justifyContent='center'
+											variant='ghost'
 										/>
+										<Menu>
+											<MenuButton
+												as={IconButton}
+												aria-label='options'
+												icon={<MoreVertical />}
+												w={10}
+												h={10}
+												d='flex'
+												alignItems='center'
+												justifyContent='center'
+												variant='ghost'
+											/>
+											<MenuList p={0}>
+												<MenuItem
+													h={12}
+													icon={
+														<Edit2
+															width={16}
+															height={16}
+														/>
+													}
+												>
+													Edit Post
+												</MenuItem>
+												<MenuItem
+													h={12}
+													icon={
+														<Trash2
+															width={16}
+															height={16}
+														/>
+													}
+												>
+													Delete Post
+												</MenuItem>
+											</MenuList>
+										</Menu>
 									</HStack>
 								</GridItem>
 							</Grid>
