@@ -725,19 +725,10 @@ export default function Header(props) {
 					</ModalBody>
 				</ModalContent>
 			</Modal>
-			<Modal
-				isCentered={true}
-				isOpen={isAboutModalOpen}
-				onClose={onAboutModalClose}
-			>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalCloseButton />
-					<ModalBody py={6}>
-						<About />
-					</ModalBody>
-				</ModalContent>
-			</Modal>
+			<About
+				isAboutModalOpen={isAboutModalOpen}
+				onAboutModalClose={onAboutModalClose}
+			/>
 			<Modal
 				isCentered={true}
 				isOpen={isEndSessionModalOpen}

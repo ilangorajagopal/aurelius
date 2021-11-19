@@ -124,19 +124,10 @@ export default function Footer(props) {
 								<Icon as={Info} />
 							</Button>
 
-							<Modal
-								isCentered={true}
-								isOpen={isOpen}
-								onClose={onClose}
-							>
-								<ModalOverlay />
-								<ModalContent>
-									<ModalCloseButton />
-									<ModalBody py={6}>
-										<About />
-									</ModalBody>
-								</ModalContent>
-							</Modal>
+							<About
+								isAboutModalOpen={isOpen}
+								onAboutModalClose={onClose}
+							/>
 						</>
 					</Flex>
 				</HStack>
