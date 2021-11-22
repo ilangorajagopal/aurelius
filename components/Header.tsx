@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import NextImage from 'next/image';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import {
 	chakra,
 	Avatar,
