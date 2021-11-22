@@ -1010,7 +1010,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
   integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
 
-"@prisma/client@^3.6.0-dev.18":
+"@prisma/client@^3.6.0-integration-fix-9184.1":
   version "3.6.0-integration-undici-4.1"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-3.6.0-integration-undici-4.1.tgz#6b5ba63d7d53481b09bd90102cd66ea01b84f36f"
   integrity sha512-oYStmxyEkuheu90Afu10tDLHXsZbpP3VGmw440vTciho9RjbmW1FEXXgM6O4MkuO0wbYR1WixKG10KT/Ysg9zQ==
