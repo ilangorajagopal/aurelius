@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { chakra, useBoolean } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
@@ -12,13 +13,12 @@ import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
 import Footer from '../components/Footer';
-import { supabase } from '../lib/supabase';
 import { savePostToDB, saveSessionToDB } from '../lib/utils';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
-	const [authSession, setAuthSession] = useState(null);
+	const { data: authSession } = useSession();
 	const [content, setContent] = useState('');
 	const [post, setPost] = useState(null);
 	const [isSaving, setIsSaving] = useState(false);
@@ -54,28 +54,6 @@ export default function Index() {
 			setWordCount(wordCount);
 		},
 	});
-
-	useEffect(() => {
-		setAuthSession(supabase.auth.session());
-
-		const { data: authListener } = supabase.auth.onAuthStateChange(
-			(event, session) => {
-				setSession(session);
-				fetch('/api/auth', {
-					method: 'POST',
-					headers: new Headers({
-						'Content-Type': 'application/json',
-					}),
-					credentials: 'same-origin',
-					body: JSON.stringify({ event, session }),
-				}).then((res) => res.json());
-			}
-		);
-
-		return () => {
-			authListener.unsubscribe();
-		};
-	}, []);
 
 	function downloadAsMarkdown() {
 		const htmlContent = `<h1>${title}</h1>${content}`;

@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import Script from 'next/script';
 import { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import theme from '../theme';
 import '../styles/global.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<>
 			<Script
@@ -27,18 +28,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 					`,
 				}}
 			/>
-			<ChakraProvider resetCSS theme={theme}>
-				<ColorModeProvider
-					options={{
-						useSystemColorMode: true,
-					}}
-				>
-					<Head>
-						<title>Aurelius</title>
-					</Head>
-					<Component {...pageProps} />
-				</ColorModeProvider>
-			</ChakraProvider>
+			<SessionProvider session={session}>
+				<ChakraProvider resetCSS theme={theme}>
+					<ColorModeProvider
+						options={{
+							useSystemColorMode: true,
+						}}
+					>
+						<Head>
+							<title>Aurelius</title>
+						</Head>
+						<Component {...pageProps} />
+					</ColorModeProvider>
+				</ChakraProvider>
+			</SessionProvider>
 		</>
 	);
 }

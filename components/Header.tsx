@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import NextImage from 'next/image';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
+import { signIn, signOut } from 'next-auth/react';
 import {
 	chakra,
 	Avatar,
@@ -50,14 +51,9 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { Download, Edit3, LogIn, Moon, Square, Sun, User } from 'react-feather';
-import {
-	MdCenterFocusStrong,
-	MdCheckCircle,
-	MdOutlineSpaceDashboard,
-} from 'react-icons/md';
+import { MdCenterFocusStrong, MdOutlineSpaceDashboard } from 'react-icons/md';
 import { supabase } from '../lib/supabase';
 import Timer from './Timer';
-import AuthBasic from './Auth';
 import Settings from './Settings';
 import About from './About';
 import AuthModal from './AuthModal';
@@ -702,7 +698,15 @@ export default function Header(props) {
 							align='center'
 							justify='center'
 							variant='ghost'
-							onClick={onAuthModalOpen}
+							onClick={() =>
+								signIn(null, {
+									callbackUrl: `${
+										process.env.NODE_ENV === 'production'
+											? 'https://aurelius.ink/dashboard'
+											: 'http://localhost:3000/dashboard'
+									}`,
+								})
+							}
 						>
 							<Icon as={LogIn} />
 						</Button>
