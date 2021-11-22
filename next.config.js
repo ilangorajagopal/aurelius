@@ -1,5 +1,8 @@
 module.exports = {
-	externals: {
-		_http_common: 'commonjs2 _http_common',
+	webpack: (config, { isServer }) => {
+		if (isServer) {
+			config.externals.push('_http_common');
+		}
+		return config;
 	},
 };
