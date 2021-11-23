@@ -6,6 +6,12 @@ import prisma from '../../../lib/prisma';
 
 export default NextAuth({
 	adapter: PrismaAdapter(prisma),
+	callbacks: {
+		async session({ session, token, user }) {
+			session.user.id = user.id;
+			return session;
+		},
+	},
 	pages: {
 		signIn: '/signin',
 	},
