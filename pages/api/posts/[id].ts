@@ -13,21 +13,22 @@ async function getOne(req, res) {
 }
 
 async function update(req, res) {
-	const { postId } = req.params;
+	const { id } = req.query;
+	const data = req.body.data;
 	const updatedPost = await prisma.post.update({
 		data,
 		where: {
-			id: postId,
+			id,
 		},
 	});
 	res.status(200).json({ message: 'post_updated', post: updatedPost });
 }
 
 async function deleteOne(req, res) {
-	const { postId } = req.params;
+	const { id } = req.query;
 	const deletedPost = await prisma.post.delete({
 		where: {
-			id: postId,
+			id,
 		},
 		select: {
 			title: true,

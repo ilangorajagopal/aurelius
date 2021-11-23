@@ -9,7 +9,7 @@ async function getAllFromAuthor(req, res) {
 			author_id: userId,
 		},
 	});
-	res.status(200).json(posts);
+	res.status(200).json({ posts });
 }
 
 async function create(req, res) {
