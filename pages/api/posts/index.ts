@@ -1,15 +1,23 @@
 import nc from 'next-connect';
 import prisma from '../../../lib/prisma';
 
-async function getAll(req, res) {
-	const posts = await prisma.post.findMany();
+async function getAllFromAuthor(req, res) {
+	const { userId } = req.params;
+
+	const posts = await prisma.post.findMany({
+		where: {
+			author_id: userId,
+		},
+	});
 	res.status(200).json(posts);
 }
 
 async function create(req, res) {
-	console.log(req);
-	console.log(res);
-	res.status(200).json({ message: 'not ready yet' });
+	const data = req.body.data;
+	const newPost = await prisma.post.create({
+		data,
+	});
+	res.status(200).json({ message: 'post_created', post: newPost });
 }
 
-export default nc({ attachParams: true }).get(getAll).post(create);
+export default nc({ attachParams: true }).get(getAllFromAuthor).post(create);
