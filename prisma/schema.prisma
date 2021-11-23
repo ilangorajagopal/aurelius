@@ -39,8 +39,9 @@ model Post {
   author         User             @relation(fields: [author_id], references: [id])
   author_id      String
   created_at     DateTime         @default(now())
-  updated_at     DateTime?        @updatedAt
+  updated_at     DateTime?        @updatedAt @default(now())
   word_count     Int
+  share_id       String
   WritingSession WritingSession[]
 }
 
