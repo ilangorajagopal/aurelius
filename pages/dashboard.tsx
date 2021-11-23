@@ -6,35 +6,13 @@ import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase';
 import Posts from '../components/dashboard/Posts';
 import Stats from '../components/dashboard/Stats';
+import { getSession, useSession } from 'next-auth/react';
+import prisma from '../lib/prisma';
 
 export default function Dashboard(props) {
 	const { posts } = props;
-	const [authSession, setAuthSession] = useState(null);
+	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
-
-	useEffect(() => {
-		async function fetchProfile() {
-			const user = supabase.auth.user();
-			const { data: profile, error } = await supabase
-				.from('profiles')
-				.select()
-				.match({ user_id: user?.id })
-				.single();
-
-			if (profile) {
-				setProfile(profile);
-			} else {
-				console.error(error);
-			}
-		}
-
-		setAuthSession(supabase.auth.session());
-		fetchProfile().then(() => console.log('Profile fetched'));
-
-		supabase.auth.onAuthStateChange((event, session) => {
-			setAuthSession(session);
-		});
-	}, []);
 
 	function getGreeting() {
 		const now = new Date();
@@ -100,33 +78,28 @@ export default function Dashboard(props) {
 }
 
 export async function getServerSideProps({ req }) {
-	const { user } = await supabase.auth.api.getUserByCookie(req);
+	const session = await getSession({ req });
 
-	if (!user) {
+	if (!session) {
 		return { props: {}, redirect: { destination: '/', permanent: false } };
 	}
 
-	// @ts-ignore
-	supabase.auth.session = () => ({
-		access_token: req.cookies['sb:token'],
+	const posts = await prisma.post.findMany({
+		where: {
+			author_id: session?.user?.id,
+		},
 	});
-
-	const { data: posts, error } = await supabase
-		.from('posts')
-		.select()
-		.match({ user_id: user?.id })
-		.order('created_at', { ascending: false });
 
 	if (posts && posts.length > 0) {
 		return {
 			props: {
-				posts,
+				posts: JSON.parse(JSON.stringify(posts)),
 			},
 		};
 	} else {
 		return {
 			props: {
-				error,
+				posts: [],
 			},
 		};
 	}
