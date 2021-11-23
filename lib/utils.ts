@@ -1,27 +1,47 @@
-import { supabase } from './supabase';
+import { getSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
 
 export async function savePostToDB(post, update) {
 	if (post) {
-		const { data, error } = await supabase
-			.from('posts')
-			.update(update)
-			.match({ id: post.id });
+		const response = await fetch(`/api/posts/${post.id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ data: update }),
+		});
+		const data = await response.json();
 
-		return { data: data[0], error };
+		return { data: data.post };
 	} else {
-		const user = supabase.auth.user();
+		const session = await getSession();
 		const id = nanoid(32);
 		const share_id = `${update.title.split(' ').join('-')}-${id}`;
-		const record = { ...update, share_id, user_id: user.id };
-		const { data, error } = await supabase.from('posts').insert([record]);
+		const record = { ...update, share_id, author_id: session.user.id };
+		const response = await fetch('/api/posts', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ data: record }),
+		});
+		const data = await response.json();
 
-		return { data: data[0], error };
+		return { data: data.post };
 	}
 }
 
 export async function saveSessionToDB(update) {
-	const user = supabase.auth.user();
-	const record = { ...update, user_id: user.id };
-	await supabase.from('sessions').insert([record]);
+	const session = await getSession();
+	const record = { ...update, user_id: session.user.id };
+	const response = await fetch('/api/sessions', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ data: record }),
+	});
+	const data = await response.json();
+
+	return { data: data.session };
 }
