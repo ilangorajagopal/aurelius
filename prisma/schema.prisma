@@ -34,12 +34,12 @@ model Account {
 model Post {
   id             String           @id @default(cuid())
   title          String
-  content        String
+  content        String           @db.MediumText
   published      Boolean?         @default(false)
   author         User             @relation(fields: [author_id], references: [id])
   author_id      String
   created_at     DateTime         @default(now())
-  updated_at     DateTime?        @updatedAt @default(now())
+  updated_at     DateTime?        @default(now()) @updatedAt
   word_count     Int
   share_id       String
   WritingSession WritingSession[]
