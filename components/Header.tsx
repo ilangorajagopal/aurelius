@@ -66,6 +66,7 @@ export default function Header(props) {
 		setMusicPlaying,
 		session,
 		setSession,
+		user,
 		wordCount,
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -721,7 +722,7 @@ export default function Header(props) {
 				<ModalOverlay />
 				<ModalContent>
 					<ModalBody py={6}>
-						<Settings />
+						<Settings user={user} />
 					</ModalBody>
 				</ModalContent>
 			</Modal>

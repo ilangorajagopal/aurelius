@@ -5,18 +5,19 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Posts from '../components/dashboard/Posts';
 import Stats from '../components/dashboard/Stats';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { fetchUserProfile } from '../lib/utils';
 import { usePosts } from '../lib/hooks';
 
-export default function Dashboard() {
+export default function Dashboard(props) {
+	const { user: authenticatedUser } = props;
 	const { data: authSession } = useSession();
 	const { posts, isLoading, isError } = usePosts(authSession?.user?.id);
 	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const { user } = await fetchUserProfile(authSession?.user?.id);
+			const { user } = await fetchUserProfile(authenticatedUser?.id);
 			setProfile(user);
 		}
 
@@ -45,7 +46,7 @@ export default function Dashboard() {
 
 	return (
 		<Container height='auto' minH='100vh'>
-			<Header authSession={authSession} />
+			<Header authSession={authSession} user={authenticatedUser} />
 			<chakra.main
 				w='full'
 				h='auto'
@@ -84,4 +85,20 @@ export default function Dashboard() {
 			<Footer />
 		</Container>
 	);
+}
+
+export async function getServerSideProps(context) {
+	const session = await getSession(context);
+
+	if (!session) {
+		return {
+			props: {},
+		};
+	}
+
+	return {
+		props: {
+			user: session.user,
+		},
+	};
 }

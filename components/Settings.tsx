@@ -13,7 +13,8 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile, saveUserProfile } from '../lib/utils';
 import { useSession } from 'next-auth/react';
 
-export default function Settings() {
+export default function Settings(props) {
+	const { user: authenticatedUser } = props;
 	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
 	const [name, setName] = useState('');
@@ -25,7 +26,7 @@ export default function Settings() {
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const { user } = await fetchUserProfile(authSession?.user?.id);
+			const { user } = await fetchUserProfile(authenticatedUser?.id);
 			setProfile(user);
 			setName(user?.name);
 			setEmail(user?.email);

@@ -15,7 +15,8 @@ import Main from '../components/content/Main';
 import Footer from '../components/Footer';
 import { fetchUserProfile, savePostToDB, saveSessionToDB } from '../lib/utils';
 
-export default function Index() {
+export default function Index(props) {
+	const { user: authenticatedUser } = props;
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const { data: authSession } = useSession();
@@ -58,7 +59,7 @@ export default function Index() {
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const { user } = await fetchUserProfile(authSession?.user?.id);
+			const { user } = await fetchUserProfile(authenticatedUser?.id);
 			setProfile(user);
 		}
 
@@ -134,6 +135,7 @@ export default function Index() {
 				setDistractionFreeMode={setDistractionFreeMode}
 				session={session}
 				setSession={setSession}
+				user={authenticatedUser}
 				wordCount={wordCount}
 			/>
 			<chakra.main
@@ -164,4 +166,20 @@ export default function Index() {
 			/>
 		</Container>
 	);
+}
+
+export async function getServerSideProps(context) {
+	const session = await getSession(context);
+
+	if (!session) {
+		return {
+			props: {},
+		};
+	}
+
+	return {
+		props: {
+			user: session.user,
+		},
+	};
 }
