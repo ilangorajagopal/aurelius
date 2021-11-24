@@ -56,6 +56,15 @@ export default function Index() {
 		},
 	});
 
+	useEffect(() => {
+		async function fetchProfile() {
+			const { user } = await fetchUserProfile();
+			setProfile(user);
+		}
+
+		fetchProfile().then(() => console.log('Profile fetched...'));
+	}, []);
+
 	function downloadAsMarkdown() {
 		const htmlContent = `<h1>${title}</h1>${content}`;
 		const turndownService = new TurndownService({ headingStyle: 'atx' });
@@ -78,7 +87,8 @@ export default function Index() {
 			};
 			const { data: postData, error } = await savePostToDB(
 				data.post,
-				update
+				update,
+				profile
 			);
 			if (postData) {
 				setPost(postData);
@@ -108,7 +118,7 @@ export default function Index() {
 			};
 		}
 
-		await saveSessionToDB(update);
+		await saveSessionToDB(update, profile);
 	}
 
 	return (
