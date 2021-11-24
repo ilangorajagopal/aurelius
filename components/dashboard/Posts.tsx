@@ -10,12 +10,17 @@ import {
 	Heading,
 	HStack,
 	IconButton,
+	Input,
+	InputGroup,
+	InputRightElement,
 	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	PopoverBody,
-	PopoverFooter,
 	PopoverArrow,
+	PopoverBody,
+	PopoverCloseButton,
+	PopoverContent,
+	PopoverFooter,
+	PopoverHeader,
+	PopoverTrigger,
 	Portal,
 	Text,
 	VStack,
@@ -23,17 +28,15 @@ import {
 	useColorModeValue,
 } from '@chakra-ui/react';
 import { format, formatDistance } from 'date-fns';
-import { Edit2, Edit3, Share2, Trash2 } from 'react-feather';
+import { Check, Clipboard, Edit2, Edit3, Share2, Trash2 } from 'react-feather';
 import { mutate } from 'swr';
+import copy from 'copy-to-clipboard';
 
 export default function Posts(props) {
-	const { posts, session } = props;
+	const { posts, profile, session } = props;
+	const [isLinkCopied, setIsLinkCopied] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const toast = useToast();
-
-	// function editPost(id) {
-	//
-	// }
 
 	async function deletePost(id) {
 		setIsDeleting(true);
@@ -122,21 +125,115 @@ export default function Posts(props) {
 											justifyContent='end'
 											spacing={4}
 										>
-											<IconButton
-												aria-label='share post'
-												icon={
-													<Share2
-														width={16}
-														height={16}
-													/>
+											<Popover
+												onClose={() =>
+													setIsLinkCopied(false)
 												}
-												w={10}
-												h={10}
-												d='flex'
-												alignItems='center'
-												justifyContent='center'
-												variant='ghost'
-											/>
+											>
+												<PopoverTrigger>
+													<IconButton
+														aria-label='share post'
+														icon={
+															<Share2
+																width={16}
+																height={16}
+															/>
+														}
+														w={10}
+														h={10}
+														d='flex'
+														alignItems='center'
+														justifyContent='center'
+														variant='ghost'
+													/>
+												</PopoverTrigger>
+												<Portal>
+													<PopoverContent w='sm'>
+														<PopoverArrow />
+														<PopoverCloseButton />
+														<PopoverHeader>
+															<Text
+																fontSize='lg'
+																color={useColorModeValue(
+																	'black',
+																	'white'
+																)}
+															>
+																Share this post:
+															</Text>
+														</PopoverHeader>
+														<PopoverBody p={4}>
+															<InputGroup>
+																<Input
+																	color={useColorModeValue(
+																		'black',
+																		'white'
+																	)}
+																	defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.share_id}`}
+																	pr={14}
+																/>
+																<InputRightElement
+																	w={10}
+																>
+																	<IconButton
+																		aria-label='share post'
+																		borderTopLeftRadius={
+																			0
+																		}
+																		borderBottomLeftRadius={
+																			0
+																		}
+																		color={useColorModeValue(
+																			'black',
+																			'white'
+																		)}
+																		icon={
+																			isLinkCopied ? (
+																				<Check
+																					width={
+																						16
+																					}
+																					height={
+																						16
+																					}
+																				/>
+																			) : (
+																				<Clipboard
+																					width={
+																						16
+																					}
+																					height={
+																						16
+																					}
+																				/>
+																			)
+																		}
+																		w={10}
+																		h={10}
+																		d='flex'
+																		alignItems='center'
+																		justifyContent='center'
+																		onClick={() => {
+																			copy(
+																				`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.share_id}`,
+																				{
+																					debug: true,
+																					format: 'text/plain',
+																					onCopy: () => {
+																						setIsLinkCopied(
+																							true
+																						);
+																					},
+																				}
+																			);
+																		}}
+																	/>
+																</InputRightElement>
+															</InputGroup>
+														</PopoverBody>
+													</PopoverContent>
+												</Portal>
+											</Popover>
 											<NextLink href={`/edit/${post.id}`}>
 												<IconButton
 													aria-label='edit post'

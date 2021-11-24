@@ -80,7 +80,7 @@ export default function Dashboard(props) {
 				>
 					<Stats />
 				</Flex>
-				<Posts posts={posts} session={authSession} />
+				<Posts posts={posts} profile={profile} session={authSession} />
 			</chakra.main>
 			<Footer />
 		</Container>
