@@ -53,9 +53,8 @@ export async function saveSessionToDB(update, user) {
 	return { data: data.session };
 }
 
-export async function fetchUserProfile() {
-	const session = await getSession();
-	const response = await fetch(`/api/profiles/${session.user.id}`, {
+export async function fetchUserProfile(userId) {
+	const response = await fetch(`/api/profiles/${userId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',

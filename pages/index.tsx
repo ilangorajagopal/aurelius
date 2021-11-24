@@ -57,12 +57,17 @@ export default function Index() {
 	});
 
 	useEffect(() => {
-		async function fetchProfile() {
-			const { user } = await fetchUserProfile();
+		async function fetchProfile(id) {
+			const { user } = await fetchUserProfile(id);
 			setProfile(user);
 		}
 
-		fetchProfile().then(() => console.log('Profile fetched...'));
+		const session = await getSession();
+		if (session?.user?.id) {
+			fetchProfile(session.user.id).then(() =>
+				console.log('Profile fetched...')
+			);
+		}
 	}, []);
 
 	function downloadAsMarkdown() {
@@ -102,7 +107,7 @@ export default function Index() {
 	const autoSaveData = { post, title, content, word_count: wordCount };
 
 	async function saveSession(totalTime) {
-		let update: unknown = {};
+		let update: unknown;
 		if (session.goal === 'duration') {
 			update = {
 				...session,
