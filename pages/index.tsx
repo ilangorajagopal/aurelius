@@ -86,15 +86,13 @@ export default function Index(props) {
 				content: data.content,
 				word_count: data.word_count,
 			};
-			const { data: postData, error } = await savePostToDB(
+			const { data: postData } = await savePostToDB(
 				data.post,
 				update,
 				profile
 			);
 			if (postData) {
 				setPost(postData);
-			} else {
-				console.log(error);
 			}
 			setIsSaving(false);
 		}
