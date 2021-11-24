@@ -10,8 +10,8 @@ import { fetchUserProfile } from '../lib/utils';
 import { usePosts } from '../lib/hooks';
 
 export default function Dashboard() {
-	const { posts, isLoading, isError } = usePosts(session?.user?.id);
 	const { data: authSession } = useSession();
+	const { posts, isLoading, isError } = usePosts(authSession?.user?.id);
 	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
