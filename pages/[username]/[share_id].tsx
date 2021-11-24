@@ -1,8 +1,8 @@
 import { chakra, Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import { supabase } from '../../lib/supabase';
 import Container from '../../components/Container';
 import Header from '../../components/shared-post/Header';
 import Footer from '../../components/shared-post/Footer';
+import prisma from '../../lib/prisma';
 
 export default function SharedPost(props) {
 	return (
@@ -49,19 +49,27 @@ export async function getServerSideProps(context) {
 		params: { username, share_id },
 	} = context;
 
-	const { data: user, error } = await supabase
-		.from('profiles')
-		.select('name,user_id')
-		.match({ username })
-		.single();
+	const user = await prisma.user.findUnique({
+		where: {
+			username: username.replace('@', ''),
+		},
+		select: {
+			id: true,
+			name: true,
+		},
+	});
 
-	const { data: post, error: postError } = await supabase
-		.from('posts')
-		.select('title,content')
-		.match({ share_id })
-		.single();
+	const post = await prisma.post.findFirst({
+		where: {
+			author_id: user.id,
+			share_id,
+		},
+	});
 
 	return {
-		props: { user, post },
+		props: {
+			post: JSON.parse(JSON.stringify(post)),
+			user,
+		},
 	};
 }
