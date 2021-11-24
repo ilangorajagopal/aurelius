@@ -137,21 +137,23 @@ export default function Posts(props) {
 												justifyContent='center'
 												variant='ghost'
 											/>
-											<IconButton
-												aria-label='share post'
-												icon={
-													<Edit2
-														width={16}
-														height={16}
-													/>
-												}
-												w={10}
-												h={10}
-												d='flex'
-												alignItems='center'
-												justifyContent='center'
-												variant='ghost'
-											/>
+											<NextLink href={`/edit/${post.id}`}>
+												<IconButton
+													aria-label='edit post'
+													icon={
+														<Edit2
+															width={16}
+															height={16}
+														/>
+													}
+													w={10}
+													h={10}
+													d='flex'
+													alignItems='center'
+													justifyContent='center'
+													variant='ghost'
+												/>
+											</NextLink>
 											<Popover>
 												{({ isOpen, onClose }) => (
 													<>

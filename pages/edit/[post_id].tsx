@@ -8,19 +8,20 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { Autosave } from 'react-autosave';
-import Container from '../components/Container';
-import Header from '../components/Header';
-import Main from '../components/content/Main';
-import Footer from '../components/Footer';
+import Container from '../../components/Container';
+import Header from '../../components/Header';
+import Main from '../../components/content/Main';
+import Footer from '../../components/Footer';
 import {
 	downloadAsMarkdown,
 	fetchUserProfile,
 	savePostToDB,
 	saveSessionToDB,
-} from '../lib/utils';
+} from '../../lib/utils';
+import prisma from '../../lib/prisma';
 
-export default function Index(props) {
-	const { user: authenticatedUser } = props;
+export default function EditPost(props) {
+	const { post: postData, user: authenticatedUser } = props;
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const { data: authSession } = useSession();
@@ -69,6 +70,16 @@ export default function Index(props) {
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
 	}, [authSession]);
+
+	useEffect(() => {
+		if (editor && postData) {
+			setTitle(postData.title);
+			setContent(postData.content);
+			if (editor.isEmpty) {
+				editor.commands.setContent(postData.content);
+			}
+		}
+	}, [editor]);
 
 	function downloadFile() {
 		downloadAsMarkdown(title, content);
@@ -164,6 +175,11 @@ export default function Index(props) {
 
 export async function getServerSideProps(context) {
 	const session = await getSession(context);
+	const post = await prisma.post.findUnique({
+		where: {
+			id: context.params.post_id,
+		},
+	});
 
 	if (!session) {
 		return {
@@ -173,6 +189,7 @@ export async function getServerSideProps(context) {
 
 	return {
 		props: {
+			post: JSON.parse(JSON.stringify(post)),
 			user: { ...session.user, id: session.userId },
 		},
 	};

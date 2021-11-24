@@ -1,5 +1,17 @@
-import { getSession } from 'next-auth/react';
+import TurndownService from 'turndown';
 import { nanoid } from 'nanoid';
+
+export function downloadAsMarkdown(title, content) {
+	const htmlContent = `<h1>${title}</h1>${content}`;
+	const turndownService = new TurndownService({ headingStyle: 'atx' });
+	const markdown = turndownService.turndown(htmlContent);
+	const filename = title || `twa_untitled_post_${Date.now()}`;
+	const a = document.createElement('a');
+	const blob = new Blob([markdown]);
+	a.href = URL.createObjectURL(blob);
+	a.download = `${filename}.md`;
+	a.click();
+}
 
 export async function fetcher(url, opts) {
 	const res = await fetch(url, opts);

@@ -57,7 +57,7 @@ import AuthModal from './AuthModal';
 export default function Header(props) {
 	const {
 		authSession,
-		downloadAsMarkdown,
+		downloadFile,
 		isEditorEmpty,
 		isSaving,
 		distractionFreeMode,
@@ -425,14 +425,18 @@ export default function Header(props) {
 							<NextLink href='/'>
 								<Button
 									colorScheme={
-										router?.pathname === '/' ? 'brand' : ''
+										router?.pathname === '/' ||
+										router?.pathname.startsWith('/edit')
+											? 'brand'
+											: ''
 									}
 									size='sm'
 									px={4}
 									variant={
-										router?.pathname !== '/'
-											? 'ghost'
-											: 'solid'
+										router?.pathname === '/' ||
+										router?.pathname.startsWith('/edit')
+											? 'solid'
+											: 'ghost'
 									}
 								>
 									<Edit3 width={14} height={14} />
@@ -452,9 +456,9 @@ export default function Header(props) {
 									size='sm'
 									px={4}
 									variant={
-										router?.pathname !== '/dashboard'
-											? 'ghost'
-											: 'solid'
+										router?.pathname === '/dashboard'
+											? 'solid'
+											: 'ghost'
 									}
 								>
 									<MdOutlineSpaceDashboard
@@ -492,9 +496,117 @@ export default function Header(props) {
 				>
 					{isSaving ? <Text fontSize='sm'>Saving...</Text> : null}
 
-					{router?.pathname === '/' ? sessionComponent : null}
+					{router?.pathname === '/' ||
+					router?.pathname.startsWith('/edit')
+						? sessionComponent
+						: null}
 
-					{router?.pathname === '/' && !authSession ? (
+					<>
+						<Button
+							w={10}
+							h={10}
+							p={0}
+							rounded='md'
+							d='flex'
+							align='center'
+							justify='center'
+							onClick={() => {
+								if (!isEditorEmpty) {
+									onOpen();
+									downloadFile();
+								} else {
+									toast({
+										duration: 2000,
+										position: 'top',
+										status: 'info',
+										title: 'No content to export',
+									});
+								}
+							}}
+							variant='ghost'
+						>
+							<Icon as={Download} />
+						</Button>
+
+						<Modal
+							isCentered={true}
+							isOpen={isOpen}
+							onClose={onClose}
+						>
+							<ModalOverlay />
+							<ModalContent px={6} py={8}>
+								<ModalBody>
+									<VStack
+										align='center'
+										justify='center'
+										color={useColorModeValue(
+											'gray.900',
+											'white'
+										)}
+										textAlign='center'
+										spacing={4}
+									>
+										<Flex
+											w='full'
+											alignItems='center'
+											justifyContent='center'
+										>
+											<NextImage
+												src='/images/star.png'
+												width={128}
+												height={128}
+											/>
+										</Flex>
+
+										<Text
+											fontSize='lg'
+											fontWeight='semibold'
+										>
+											Markdown Generated!
+										</Text>
+
+										<Text>
+											Thanks for using The Writing App!
+											Feel free to reach out to me on{' '}
+											<Link
+												color='brand.200'
+												href='https://twitter.com/_ilango'
+												isExternal={true}
+											>
+												Twitter
+											</Link>{' '}
+											with any feedback.
+										</Text>
+
+										<Text>
+											If you found this product helpful,
+											consider writing a few words about
+											us on Twitter!
+										</Text>
+
+										<a
+											href='https://twitter.com/share?ref_src=twsrc%5Etfw'
+											className='twitter-share-button'
+											data-size='large'
+											data-text='Writing in Aurelius is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
+											data-url='https://thewritingapp.opencatalysts.tech/'
+											data-related='_ilango,opencatalysts'
+											data-lang='en'
+											data-dnt='true'
+											data-show-count='false'
+										>
+											Share on Twitter
+										</a>
+										<Script src='https://platform.twitter.com/widgets.js' />
+									</VStack>
+								</ModalBody>
+							</ModalContent>
+						</Modal>
+					</>
+
+					{(router?.pathname === '/' ||
+						router?.pathname.startsWith('/edit')) &&
+					!authSession ? (
 						<>
 							<Button
 								w={10}
@@ -509,111 +621,6 @@ export default function Header(props) {
 							>
 								<Icon as={MdCenterFocusStrong} />
 							</Button>
-
-							<>
-								<Button
-									w={10}
-									h={10}
-									p={0}
-									rounded='md'
-									d='flex'
-									align='center'
-									justify='center'
-									onClick={() => {
-										if (!isEditorEmpty) {
-											onOpen();
-											downloadAsMarkdown();
-										} else {
-											toast({
-												duration: 2000,
-												position: 'top',
-												status: 'info',
-												title: 'No content to export',
-											});
-										}
-									}}
-									variant='ghost'
-								>
-									<Icon as={Download} />
-								</Button>
-
-								<Modal
-									isCentered={true}
-									isOpen={isOpen}
-									onClose={onClose}
-								>
-									<ModalOverlay />
-									<ModalContent px={6} py={8}>
-										<ModalBody>
-											<VStack
-												align='center'
-												justify='center'
-												color={useColorModeValue(
-													'gray.900',
-													'white'
-												)}
-												textAlign='center'
-												spacing={4}
-											>
-												<Flex
-													w='full'
-													alignItems='center'
-													justifyContent='center'
-												>
-													<NextImage
-														src='/images/star.png'
-														width={128}
-														height={128}
-													/>
-												</Flex>
-
-												<Text
-													fontSize='lg'
-													fontWeight='semibold'
-												>
-													Markdown Generated!
-												</Text>
-
-												<Text>
-													Thanks for using The Writing
-													App! Feel free to reach out
-													to me on{' '}
-													<Link
-														color='brand.200'
-														href='https://twitter.com/_ilango'
-														isExternal={true}
-													>
-														Twitter
-													</Link>{' '}
-													with any feedback.
-												</Text>
-
-												<Text>
-													If you found this product
-													helpful, consider writing a
-													few words about us on
-													Twitter!
-												</Text>
-
-												<a
-													href='https://twitter.com/share?ref_src=twsrc%5Etfw'
-													className='twitter-share-button'
-													data-size='large'
-													data-text='Writing in Aurelius is such a joy! 🤩 It helps me focus and be consistent with my writing habit. Try it for yourself 👇️'
-													data-url='https://thewritingapp.opencatalysts.tech/'
-													data-related='_ilango,opencatalysts'
-													data-lang='en'
-													data-dnt='true'
-													data-show-count='false'
-												>
-													Share on Twitter
-												</a>
-												<Script src='https://platform.twitter.com/widgets.js' />
-											</VStack>
-										</ModalBody>
-									</ModalContent>
-								</Modal>
-							</>
 
 							<Button
 								aria-label={`Switch to ${text} mode`}
