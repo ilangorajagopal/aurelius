@@ -11,8 +11,10 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { fetchUserProfile, saveUserProfile } from '../lib/utils';
+import { useSession } from 'next-auth/react';
 
 export default function Settings() {
+	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
 	const [name, setName] = useState('');
 	const [username, setUsername] = useState('');
@@ -23,7 +25,7 @@ export default function Settings() {
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const { user } = await fetchUserProfile();
+			const { user } = await fetchUserProfile(authSession?.user?.id);
 			setProfile(user);
 			setName(user?.name);
 			setEmail(user?.email);
@@ -32,7 +34,7 @@ export default function Settings() {
 		}
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
-	}, []);
+	}, [authSession]);
 
 	async function saveProfile() {
 		setIsSaving(true);

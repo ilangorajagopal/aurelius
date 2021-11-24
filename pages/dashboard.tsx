@@ -5,24 +5,23 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Posts from '../components/dashboard/Posts';
 import Stats from '../components/dashboard/Stats';
-import { getSession, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { fetchUserProfile } from '../lib/utils';
 import { usePosts } from '../lib/hooks';
 
 export default function Dashboard() {
-	const { data: session } = useSession();
 	const { posts, isLoading, isError } = usePosts(session?.user?.id);
 	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const { user } = await fetchUserProfile();
+			const { user } = await fetchUserProfile(authSession?.user?.id);
 			setProfile(user);
 		}
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
-	}, []);
+	}, [authSession]);
 
 	function getGreeting() {
 		const now = new Date();
@@ -80,7 +79,7 @@ export default function Dashboard() {
 				>
 					<Stats />
 				</Flex>
-				<Posts posts={posts} session={session} />
+				<Posts posts={posts} session={authSession} />
 			</chakra.main>
 			<Footer />
 		</Container>

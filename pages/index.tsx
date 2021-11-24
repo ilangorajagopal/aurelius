@@ -57,18 +57,13 @@ export default function Index() {
 	});
 
 	useEffect(() => {
-		async function fetchProfile(id) {
-			const { user } = await fetchUserProfile(id);
+		async function fetchProfile() {
+			const { user } = await fetchUserProfile(authSession?.user?.id);
 			setProfile(user);
 		}
 
-		const session = await getSession();
-		if (session?.user?.id) {
-			fetchProfile(session.user.id).then(() =>
-				console.log('Profile fetched...')
-			);
-		}
-	}, []);
+		fetchProfile().then(() => console.log('Profile fetched...'));
+	}, [authSession]);
 
 	function downloadAsMarkdown() {
 		const htmlContent = `<h1>${title}</h1>${content}`;
