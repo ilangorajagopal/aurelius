@@ -12,7 +12,7 @@ import { usePosts } from '../lib/hooks';
 export default function Dashboard(props) {
 	const { user: authenticatedUser } = props;
 	const { data: authSession } = useSession();
-	const { posts, isLoading, isError } = usePosts(authSession?.user?.id);
+	const { posts, isLoading, isError } = usePosts(authSession?.userId);
 	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
