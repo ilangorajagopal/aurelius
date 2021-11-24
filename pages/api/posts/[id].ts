@@ -2,11 +2,11 @@ import nc from 'next-connect';
 import prisma from '../../../lib/prisma';
 
 async function getOne(req, res) {
-	const { postId } = req.params;
+	const { id } = req.query;
 
 	const post = await prisma.post.findUnique({
 		where: {
-			id: postId,
+			id: id,
 		},
 	});
 	res.status(200).json(post);
@@ -39,5 +39,5 @@ async function deleteOne(req, res) {
 
 export default nc({ attachParams: true })
 	.get(getOne)
-	.post(update)
+	.put(update)
 	.delete(deleteOne);
