@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 export async function savePostToDB(post, update) {
 	if (post) {
 		const response = await fetch(`/api/posts/${post.id}`, {
-			method: 'POST',
+			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -44,4 +44,30 @@ export async function saveSessionToDB(update) {
 	const data = await response.json();
 
 	return { data: data.session };
+}
+
+export async function fetchUserProfile() {
+	const session = await getSession();
+	const response = await fetch(`/api/profiles/${session.user.id}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+
+	return { user: data.user };
+}
+
+export async function saveUserProfile(user, update) {
+	const response = await fetch(`/api/profiles/${user.id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ data: update }),
+	});
+	const data = await response.json();
+
+	return { data: data.user };
 }
