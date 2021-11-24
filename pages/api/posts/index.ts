@@ -2,8 +2,11 @@ import nc from 'next-connect';
 import prisma from '../../../lib/prisma';
 
 async function getAllFromAuthor(req, res) {
-	const { userId } = req.params;
+	const { userId } = req.query;
 
+	if (!userId) {
+		res.status(400).json({ message: 'invalid_user_id' });
+	}
 	const posts = await prisma.post.findMany({
 		where: {
 			author_id: userId,

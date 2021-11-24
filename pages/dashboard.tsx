@@ -3,15 +3,15 @@ import { chakra, Flex, Heading } from '@chakra-ui/react';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { supabase } from '../lib/supabase';
 import Posts from '../components/dashboard/Posts';
 import Stats from '../components/dashboard/Stats';
 import { getSession, useSession } from 'next-auth/react';
-import prisma from '../lib/prisma';
 import { fetchUserProfile } from '../lib/utils';
+import { usePosts } from '../lib/hooks';
 
-export default function Dashboard(props) {
-	const { posts } = props;
+export default function Dashboard() {
+	const { data: session } = useSession();
+	const { posts, isLoading, isError } = usePosts(session?.user?.id);
 	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
 
@@ -80,37 +80,9 @@ export default function Dashboard(props) {
 				>
 					<Stats />
 				</Flex>
-				<Posts posts={posts} />
+				<Posts posts={posts} session={session} />
 			</chakra.main>
 			<Footer />
 		</Container>
 	);
-}
-
-export async function getServerSideProps({ req }) {
-	const session = await getSession({ req });
-
-	if (!session) {
-		return { props: {}, redirect: { destination: '/', permanent: false } };
-	}
-
-	const posts = await prisma.post.findMany({
-		where: {
-			author_id: session?.user?.id,
-		},
-	});
-
-	if (posts && posts.length > 0) {
-		return {
-			props: {
-				posts: JSON.parse(JSON.stringify(posts)),
-			},
-		};
-	} else {
-		return {
-			props: {
-				posts: [],
-			},
-		};
-	}
 }

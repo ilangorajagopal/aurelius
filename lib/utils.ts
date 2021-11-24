@@ -1,6 +1,15 @@
 import { getSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
 
+export async function fetcher(url, opts) {
+	const res = await fetch(url, opts);
+	if (!res.ok) {
+		throw new Error('Error completing request');
+	}
+
+	return await res.json();
+}
+
 export async function savePostToDB(post, update) {
 	if (post) {
 		const response = await fetch(`/api/posts/${post.id}`, {
