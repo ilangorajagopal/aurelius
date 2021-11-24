@@ -8,11 +8,21 @@ import Posts from '../components/dashboard/Posts';
 import Stats from '../components/dashboard/Stats';
 import { getSession, useSession } from 'next-auth/react';
 import prisma from '../lib/prisma';
+import { fetchUserProfile } from '../lib/utils';
 
 export default function Dashboard(props) {
 	const { posts } = props;
 	const { data: authSession } = useSession();
 	const [profile, setProfile] = useState(null);
+
+	useEffect(() => {
+		async function fetchProfile() {
+			const { user } = await fetchUserProfile();
+			setProfile(user);
+		}
+
+		fetchProfile().then(() => console.log('Profile fetched...'));
+	}, []);
 
 	function getGreeting() {
 		const now = new Date();

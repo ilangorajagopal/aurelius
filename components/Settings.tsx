@@ -10,76 +10,45 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { fetchUserProfile, saveUserProfile } from '../lib/utils';
 
 export default function Settings() {
-	const user = supabase.auth.user();
 	const [profile, setProfile] = useState(null);
 	const [name, setName] = useState('');
 	const [username, setUsername] = useState('');
-	const [email, setEmail] = useState(user?.email ?? '');
+	const [email, setEmail] = useState('');
 	const [dailyGoal, setDailyGoal] = useState(300);
 	const [isSaving, setIsSaving] = useState(false);
 	const toast = useToast();
 
 	useEffect(() => {
 		async function fetchProfile() {
-			const user = supabase.auth.user();
-			const { data, error } = await supabase
-				.from('profiles')
-				.select()
-				.match({ user_id: user?.id })
-				.single();
-
-			if (data) {
-				setProfile(data);
-				setName(data?.name);
-				setUsername(data?.username);
-				setDailyGoal(data?.daily_word_count_goal);
-			}
+			const { user } = await fetchUserProfile();
+			setProfile(user);
+			setName(user?.name);
+			setEmail(user?.email);
+			setUsername(user?.username);
+			setDailyGoal(user?.daily_goal);
 		}
 
-		fetchProfile().then(() => {
-			console.log('Profile fetched');
-		});
+		fetchProfile().then(() => console.log('Profile fetched...'));
 	}, []);
 
 	async function saveProfile() {
 		setIsSaving(true);
 		const update = {
 			name,
+			email,
 			username,
-			daily_word_count_goal: dailyGoal,
+			daily_goal: dailyGoal,
 		};
-		if (profile) {
-			const { data } = await supabase
-				.from('profiles')
-				.update(update)
-				.match({ user_id: user?.id });
-
-			if (data && data.length > 0) {
-				setProfile(data[0]);
-				toast({
-					duration: 2000,
-					position: 'top',
-					status: 'success',
-					title: 'Profile saved',
-				});
-			}
-		} else {
-			const { data } = await supabase
-				.from('profiles')
-				.insert([{ ...update, user_id: user?.id }]);
-
-			if (data && data.length > 0) {
-				setProfile(data[0]);
-				toast({
-					duration: 2000,
-					position: 'top',
-					status: 'success',
-					title: 'Profile saved',
-				});
-			}
-		}
+		await saveUserProfile(profile, update);
+		toast({
+			duration: 2000,
+			position: 'top',
+			status: 'success',
+			title: 'Profile saved',
+		});
 		setIsSaving(false);
 	}
 
@@ -104,7 +73,7 @@ export default function Settings() {
 						value={name}
 					/>
 				</FormControl>
-				<FormControl d='none'>
+				<FormControl>
 					<FormLabel>Username</FormLabel>
 					<Input
 						name='username'

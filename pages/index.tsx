@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { getSession, useSession } from 'next-auth/react';
 import { chakra, useBoolean } from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
@@ -13,7 +13,7 @@ import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
 import Footer from '../components/Footer';
-import { savePostToDB, saveSessionToDB } from '../lib/utils';
+import { fetchUserProfile, savePostToDB, saveSessionToDB } from '../lib/utils';
 
 export default function Index() {
 	const [distractionFreeMode, setDistractionFreeMode] = useBoolean(false);
@@ -24,6 +24,7 @@ export default function Index() {
 	const [isSaving, setIsSaving] = useState(false);
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
+	const [profile, setProfile] = useState(null);
 	const [wordCount, setWordCount] = useState(0);
 	const editor = useEditor({
 		content,
