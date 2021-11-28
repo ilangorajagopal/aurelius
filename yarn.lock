@@ -4540,6 +4540,14 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-activity-calendar@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-activity-calendar/-/react-activity-calendar-1.4.1.tgz#b8fd42e1ec85bb6bdccb32ff47496e573b69441e"
+  integrity sha512-jNsK7ajSU0OJx09Ns3ClpWxbZy2OCB6fwOsbb4Jfn6tY+MAGdbz+Ac3yC/swm3eIVbx6AsEdMJ+DPZlqF4fY1w==
+  dependencies:
+    date-fns "^2.25.0"
+    tinycolor2 "^1.4.0"
+
 react-autosave@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-autosave/-/react-autosave-0.3.0.tgz#09019b22b1278a54140146973f9a2a09aab8c611"
@@ -5220,7 +5228,7 @@ tiny-invariant@^1.0.6:
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.2.0.tgz#a1141f86b672a9148c72e978a19a73b9b94a15a9"
   integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
 
-tinycolor2@1.4.2:
+tinycolor2@1.4.2, tinycolor2@^1.4.0:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==

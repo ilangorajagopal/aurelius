@@ -1,5 +1,21 @@
 import TurndownService from 'turndown';
 import { nanoid } from 'nanoid';
+import { addDays, addYears, differenceInCalendarDays, format } from 'date-fns';
+
+export function getGreeting(name) {
+	const now = new Date();
+	const hrs = now.getHours();
+
+	if (hrs >= 3 && hrs < 6) return "Mornin' Sunshine!"; // REALLY early
+	if (hrs >= 6 && hrs < 12)
+		return name ? `Good morning, ${name}!` : 'Good morning!'; // After 6am
+	if (hrs >= 12 && hrs < 17)
+		return name ? `Good afternoon, ${name}!` : 'Good afternoon!'; // After 12pm
+	if (hrs >= 17 && hrs < 22)
+		return name ? `Good evening, ${name}!` : 'Good evening!'; // After 5pm
+	if (hrs >= 22 || hrs < 3)
+		return name ? `Go to bed, ${name}!` : 'Go to bed!'; // After 10pm
+}
 
 export function downloadAsMarkdown(title, content) {
 	const htmlContent = `<h1>${title}</h1>${content}`;
@@ -13,6 +29,57 @@ export function downloadAsMarkdown(title, content) {
 	a.click();
 }
 
+export function calculateActivityData(createdAt, data) {
+	if (createdAt) {
+		const lastPostDate = data[data.length - 1].date;
+		console.log(lastPostDate);
+		const timestamp = new Date(createdAt);
+		const fillerStartDate = addDays(new Date(lastPostDate), 1);
+		const end = addYears(timestamp, 1);
+		const from = `${format(fillerStartDate, 'yyyy')}-${format(
+			fillerStartDate,
+			'MM'
+		)}-${format(fillerStartDate, 'dd')}`;
+		const to = `${format(end, 'yyyy')}-${format(end, 'MM')}-${format(
+			end,
+			'dd'
+		)}`;
+		const noOfDays = differenceInCalendarDays(new Date(to), new Date(from));
+		const filler = [];
+		for (let index = 0; index < noOfDays; index++) {
+			const newDate = addDays(new Date(from), index);
+			const date = `${format(newDate, 'yyyy')}-${format(
+				newDate,
+				'MM'
+			)}-${format(newDate, 'dd')}`;
+			filler.push({
+				date,
+				count: 0,
+				level: 0,
+			});
+		}
+
+		return [...data, ...filler];
+	} else {
+		return [];
+	}
+}
+
+export function calculateData(goal, posts) {
+	const data = posts?.map((post) => {
+		const date = `${format(new Date(post?.created_at), 'yyyy')}-${format(
+			new Date(post?.created_at),
+			'MM'
+		)}-${format(new Date(post?.created_at), 'dd')}`;
+		const count = post?.word_count;
+		const level = Math.round((count / goal) * 4);
+
+		return { date, count, level: level > 4 ? 4 : level };
+	});
+
+	return data?.reverse() || [];
+}
+
 export async function fetcher(url, opts) {
 	const res = await fetch(url, opts);
 	if (!res.ok) {
@@ -22,7 +89,7 @@ export async function fetcher(url, opts) {
 	return await res.json();
 }
 
-export async function savePostToDB(post, update, user) {
+export async function savePostToDB(post, update, userId) {
 	if (post) {
 		const response = await fetch(`/api/posts/${post.id}`, {
 			method: 'PUT',
@@ -37,7 +104,7 @@ export async function savePostToDB(post, update, user) {
 	} else {
 		const id = nanoid(32);
 		const share_id = `${update.title.split(' ').join('-')}-${id}`;
-		const record = { ...update, share_id, author_id: user.id };
+		const record = { ...update, share_id, author_id: userId };
 		const response = await fetch('/api/posts', {
 			method: 'POST',
 			headers: {

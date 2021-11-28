@@ -85,7 +85,7 @@ export default function Index(props) {
 			const { data: postData } = await savePostToDB(
 				data.post,
 				update,
-				profile
+				authenticatedUser.id
 			);
 			if (postData) {
 				setPost(postData);

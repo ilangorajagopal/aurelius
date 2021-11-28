@@ -414,3 +414,10 @@
 	max-width: 100%;
 	height: auto;
 }
+
+
+/* Activity Calendar */
+
+.react-activity-calendar__footer {
+	margin-top: 1rem !important;
+}

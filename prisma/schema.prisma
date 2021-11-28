@@ -72,6 +72,8 @@ model User {
   image           String?
   username        String?          @unique
   daily_goal      Int?
+  created_at      DateTime         @default(now())
+  updated_at      DateTime?        @default(now()) @updatedAt
   accounts        Account[]
   sessions        Session[]
   posts           Post[]
