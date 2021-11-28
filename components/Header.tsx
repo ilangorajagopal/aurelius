@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import NextImage from 'next/image';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import {
 	chakra,
 	Avatar,
@@ -48,11 +48,9 @@ import {
 } from '@chakra-ui/react';
 import { Download, Edit3, LogIn, Moon, Square, Sun, User } from 'react-feather';
 import { MdCenterFocusStrong, MdOutlineSpaceDashboard } from 'react-icons/md';
-import { supabase } from '../lib/supabase';
 import Timer from './Timer';
 import Settings from './Settings';
 import About from './About';
-import AuthModal from './AuthModal';
 
 export default function Header(props) {
 	const {
@@ -70,11 +68,6 @@ export default function Header(props) {
 		wordCount,
 	} = props;
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const {
-		isOpen: isAuthModalOpen,
-		onOpen: onAuthModalOpen,
-		onClose: onAuthModalClose,
-	} = useDisclosure();
 	const {
 		isOpen: isSettingsModalOpen,
 		onOpen: onSettingsModalOpen,
@@ -142,9 +135,8 @@ export default function Header(props) {
 		}
 	}
 
-	async function signOut() {
-		await supabase.auth.signOut();
-		await router.push('/');
+	async function logout() {
+		await signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL });
 	}
 
 	let sessionComponent = null;
@@ -690,7 +682,7 @@ export default function Header(props) {
 									/>
 								</MenuItem>
 								<MenuDivider m={0} />
-								<MenuItem w='full' h={10} onClick={signOut}>
+								<MenuItem w='full' h={10} onClick={logout}>
 									<Text fontSize='sm'>Sign Out</Text>
 								</MenuItem>
 							</MenuList>
@@ -721,10 +713,6 @@ export default function Header(props) {
 					)}
 				</HStack>
 			</Grid>
-			<AuthModal
-				isAuthModalOpen={isAuthModalOpen}
-				onAuthModalClose={onAuthModalClose}
-			/>
 			<Modal
 				isCentered={true}
 				isOpen={isSettingsModalOpen}

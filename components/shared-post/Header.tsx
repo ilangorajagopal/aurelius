@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import NextImage from 'next/image';
 import {
@@ -6,34 +5,16 @@ import {
 	Button,
 	Flex,
 	Grid,
-	Heading,
 	HStack,
 	Icon,
-	List,
-	ListIcon,
-	ListItem,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalBody,
 	Tag,
-	Text,
-	VStack,
 	useColorMode,
 	useColorModeValue,
-	useDisclosure,
 } from '@chakra-ui/react';
+import { signIn } from 'next-auth/react';
 import { LogIn, Moon, Sun } from 'react-feather';
-import { MdCheckCircle } from 'react-icons/md';
-import AuthBasic from '../Auth';
-import AuthModal from '../AuthModal';
 
 export default function Header() {
-	const {
-		isOpen: isAuthModalOpen,
-		onOpen: onAuthModalOpen,
-		onClose: onAuthModalClose,
-	} = useDisclosure();
 	const { colorMode, toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
 	const SwitchIcon = useColorModeValue(Moon, Sun);
@@ -119,16 +100,20 @@ export default function Header() {
 						align='center'
 						justify='center'
 						variant='ghost'
-						onClick={onAuthModalOpen}
+						onClick={() =>
+							signIn(null, {
+								callbackUrl: `${
+									process.env.NODE_ENV === 'production'
+										? 'https://aurelius.ink/dashboard'
+										: 'http://localhost:3000/dashboard'
+								}`,
+							})
+						}
 					>
 						<Icon as={LogIn} />
 					</Button>
 				</HStack>
 			</Grid>
-			<AuthModal
-				isAuthModalOpen={isAuthModalOpen}
-				onAuthModalClose={onAuthModalClose}
-			/>
 		</Flex>
 	);
 }

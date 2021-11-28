@@ -31,10 +31,12 @@ export function downloadAsMarkdown(title, content) {
 
 export function calculateActivityData(createdAt, data) {
 	if (createdAt) {
-		const lastPostDate = data[data.length - 1].date;
-		console.log(lastPostDate);
+		const lastPostDate =
+			data.length > 0 ? data[data.length - 1].date : null;
 		const timestamp = new Date(createdAt);
-		const fillerStartDate = addDays(new Date(lastPostDate), 1);
+		const fillerStartDate = lastPostDate
+			? addDays(new Date(lastPostDate), 1)
+			: new Date(createdAt);
 		const end = addYears(timestamp, 1);
 		const from = `${format(fillerStartDate, 'yyyy')}-${format(
 			fillerStartDate,
