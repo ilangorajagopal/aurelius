@@ -69,10 +69,10 @@ export function calculateActivityData(createdAt, data) {
 
 export function calculateData(goal, posts) {
 	const data = posts?.map((post) => {
-		const date = `${format(new Date(post?.created_at), 'yyyy')}-${format(
-			new Date(post?.created_at),
+		const date = `${format(new Date(post?.createdAt), 'yyyy')}-${format(
+			new Date(post?.createdAt),
 			'MM'
-		)}-${format(new Date(post?.created_at), 'dd')}`;
+		)}-${format(new Date(post?.createdAt), 'dd')}`;
 		const count = post?.word_count;
 		const level = Math.round((count / goal) * 4);
 

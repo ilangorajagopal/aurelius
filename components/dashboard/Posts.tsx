@@ -105,12 +105,12 @@ export default function Posts(props) {
 											<Text
 												fontSize='xs'
 												title={format(
-													new Date(post.created_at),
+													new Date(post.createdAt),
 													'PPPpp'
 												)}
 											>
 												{formatDistance(
-													new Date(post.created_at),
+													new Date(post.createdAt),
 													new Date(),
 													{ addSuffix: true }
 												)}

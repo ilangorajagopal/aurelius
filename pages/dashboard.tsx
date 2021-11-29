@@ -57,7 +57,7 @@ export default function Dashboard(props) {
 					mb={16}
 				>
 					<Stats
-						createdAt={profile?.created_at}
+						createdAt={profile?.createdAt}
 						posts={posts}
 						goal={profile?.dailyGoal}
 					/>
