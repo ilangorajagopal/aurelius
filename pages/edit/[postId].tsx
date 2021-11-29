@@ -26,7 +26,7 @@ export default function EditPost(props) {
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const { data: authSession } = useSession();
 	const [content, setContent] = useState('');
-	const [post, setPost] = useState(null);
+	const [post, setPost] = useState(postData);
 	const [isSaving, setIsSaving] = useState(false);
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
