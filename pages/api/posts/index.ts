@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import prisma from '../../../lib/prisma';
+import prisma from '../../../prisma';
 
 async function getAllFromAuthor(req, res) {
 	const { userId } = req.query;

@@ -33,31 +33,6 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Post {
-  id             String           @id @default(cuid())
-  title          String
-  content        String           @db.MediumText
-  published      Boolean?         @default(false)
-  author         User             @relation(fields: [author_id], references: [id])
-  author_id      String
-  created_at     DateTime         @default(now())
-  updated_at     DateTime?        @default(now()) @updatedAt
-  word_count     Int
-  share_id       String
-  WritingSession WritingSession[]
-}
-
-model WritingSession {
-  id      String  @id @default(cuid())
-  post    Post    @relation(fields: [post_id], references: [id])
-  post_id String
-  goal    String
-  target  Int
-  result  Int
-  User    User?   @relation(fields: [user_id], references: [id])
-  user_id String?
-}
-
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -68,15 +43,15 @@ model Session {
 
 model User {
   id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   name            String?
   email           String?          @unique
+  username        String?          @unique
   emailVerified   DateTime?
   image           String?
   role            String?          @default("user")
-  username        String?          @unique
-  daily_goal      Int?
-  created_at      DateTime         @default(now())
-  updated_at      DateTime?        @updatedAt
+  dailyGoal       Int?
   accounts        Account[]
   sessions        Session[]
   posts           Post[]
@@ -89,4 +64,29 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Post {
+  id             String           @id @default(cuid())
+  title          String
+  content        String           @db.MediumText
+  published      Boolean?         @default(false)
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?        @default(now()) @updatedAt
+  word_count     Int
+  shareId        String
+  WritingSession WritingSession[]
+}
+
+model WritingSession {
+  id     String  @id @default(cuid())
+  post   Post    @relation(fields: [postId], references: [id])
+  postId String
+  goal   String
+  target Int
+  result Int
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }

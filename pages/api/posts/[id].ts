@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import prisma from '../../../lib/prisma';
+import prisma from '../../../prisma';
 
 async function getOne(req, res) {
 	const { id } = req.query;

@@ -2,7 +2,7 @@ import { chakra, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Container from '../../components/Container';
 import Header from '../../components/shared-post/Header';
 import Footer from '../../components/shared-post/Footer';
-import prisma from '../../lib/prisma';
+import prisma from '../../prisma';
 
 export default function SharedPost(props) {
 	return (

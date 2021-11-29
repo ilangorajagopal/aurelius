@@ -18,7 +18,7 @@ import {
 	savePostToDB,
 	saveSessionToDB,
 } from '../../lib/utils';
-import prisma from '../../lib/prisma';
+import prisma from '../../prisma';
 
 export default function EditPost(props) {
 	const { post: postData, user: authenticatedUser } = props;
