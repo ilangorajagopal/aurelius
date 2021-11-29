@@ -5,7 +5,13 @@
 		"build": "next build",
 		"start": "next start",
 		"prepare": "husky install",
-		"lint": "eslint ./ --ext js,jsx,ts,tsx"
+		"lint": "eslint ./ --ext js,jsx,ts,tsx",
+		"db:generate": "prisma generate --schema=./prisma/schema.prisma",
+		"db:migrate": "prisma migrate dev --schema=./prisma/schema.prisma --skip-seed",
+		"db:reset": "prisma migrate reset --schema=./prisma/schema.prisma --skip-seed",
+		"db:push": "prisma db push --schema=./prisma/schema.prisma --skip-seed",
+		"db:seed": "npx prisma db seed",
+		"db:studio": "prisma studio --schema=./prisma/schema.prisma"
 	},
 	"dependencies": {
 		"@chakra-ui/icons": "^1.0.5",
