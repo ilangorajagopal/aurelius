@@ -6,7 +6,7 @@ async function getAllFromUser(req, res) {
 
 	const writingSessions = await prisma.writingSession.findMany({
 		where: {
-			user_id: userId,
+			userId,
 		},
 	});
 	res.status(200).json({ sessions: writingSessions });

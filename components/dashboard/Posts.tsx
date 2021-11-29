@@ -169,7 +169,7 @@ export default function Posts(props) {
 																		'black',
 																		'white'
 																	)}
-																	defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.share_id}`}
+																	defaultValue={`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.shareId}`}
 																	pr={14}
 																/>
 																<InputRightElement
@@ -215,7 +215,7 @@ export default function Posts(props) {
 																		justifyContent='center'
 																		onClick={() => {
 																			copy(
-																				`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.share_id}`,
+																				`${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.shareId}`,
 																				{
 																					debug: true,
 																					format: 'text/plain',

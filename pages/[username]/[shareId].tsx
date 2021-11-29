@@ -46,7 +46,7 @@ export default function SharedPost(props) {
 
 export async function getServerSideProps(context) {
 	const {
-		params: { username, share_id },
+		params: { username, shareId },
 	} = context;
 
 	const user = await prisma.user.findUnique({
@@ -61,8 +61,8 @@ export async function getServerSideProps(context) {
 
 	const post = await prisma.post.findFirst({
 		where: {
-			author_id: user.id,
-			share_id,
+			userId: user.id,
+			shareId,
 		},
 	});
 

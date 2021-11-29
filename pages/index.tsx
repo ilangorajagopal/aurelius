@@ -103,13 +103,13 @@ export default function Index(props) {
 				...session,
 				target: session.target * 60,
 				result: totalTime,
-				post_id: post?.id,
+				postId: post?.id,
 			};
 		} else {
 			update = {
 				...session,
 				result: wordCount,
-				post_id: post?.id,
+				postId: post?.id,
 			};
 		}
 

@@ -114,13 +114,13 @@ export default function EditPost(props) {
 				...session,
 				target: session.target * 60,
 				result: totalTime,
-				post_id: post?.id,
+				postId: post?.id,
 			};
 		} else {
 			update = {
 				...session,
 				result: wordCount,
-				post_id: post?.id,
+				postId: post?.id,
 			};
 		}
 
@@ -177,7 +177,7 @@ export async function getServerSideProps(context) {
 	const session = await getSession(context);
 	const post = await prisma.post.findUnique({
 		where: {
-			id: context.params.post_id,
+			id: context.params.postId,
 		},
 	});
 

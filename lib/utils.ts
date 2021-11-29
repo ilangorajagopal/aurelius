@@ -105,8 +105,8 @@ export async function savePostToDB(post, update, userId) {
 		return { data: data.post };
 	} else {
 		const id = nanoid(32);
-		const share_id = `${update.title.split(' ').join('-')}-${id}`;
-		const record = { ...update, share_id, author_id: userId };
+		const shareId = `${update.title.split(' ').join('-')}-${id}`;
+		const record = { ...update, shareId, userId };
 		const response = await fetch('/api/posts', {
 			method: 'POST',
 			headers: {
@@ -121,7 +121,7 @@ export async function savePostToDB(post, update, userId) {
 }
 
 export async function saveSessionToDB(update, user) {
-	const record = { ...update, user_id: user.id };
+	const record = { ...update, userId: user.id };
 	const response = await fetch('/api/sessions', {
 		method: 'POST',
 		headers: {

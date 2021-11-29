@@ -8,12 +8,8 @@ async function getAllFromAuthor(req, res) {
 		res.status(400).json({ message: 'invalid_user_id' });
 	}
 	const posts = await prisma.post.findMany({
-		orderBy: {
-			created_at: 'desc',
-		},
-		where: {
-			author_id: userId,
-		},
+		where: { userId },
+		orderBy: { createdAt: 'desc' },
 	});
 	res.status(200).json({ posts });
 }
