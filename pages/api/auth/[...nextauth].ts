@@ -18,7 +18,7 @@ export default NextAuth({
 	providers: [
 		EmailProvider({
 			server: process.env.EMAIL_SERVER,
-			from: process.env.EMAIL_FROM,
+			from: process.env.EMAIL_FROM_ADDRESS,
 		}),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID,
