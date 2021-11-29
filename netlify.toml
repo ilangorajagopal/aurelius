@@ -1,6 +1,8 @@
 [build]
 command = "yarn db:generate && yarn build"
-publish = ".next"
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
+
+[template.environment]
+NEXTAUTH_URL = "https://aureliusdotink.netlify.app/"
