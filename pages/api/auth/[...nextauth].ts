@@ -12,6 +12,9 @@ export default NextAuth({
 			return session;
 		},
 	},
+	pages: {
+		signIn: '/sign-in',
+	},
 	providers: [
 		EmailProvider({
 			server: process.env.EMAIL_SERVER,

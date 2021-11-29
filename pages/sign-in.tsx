@@ -20,7 +20,6 @@ import {
 	signIn,
 } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
-import filter from 'lodash.filter';
 import { FcGoogle } from 'react-icons/fc';
 import Container from '../components/Container';
 
@@ -174,9 +173,7 @@ export async function getServerSideProps(context) {
 	}
 
 	const csrfToken = await getCsrfToken({ req: context.req });
-	const providers = filter(await getProviders(), (provider) => {
-		return provider.type !== 'credentials';
-	});
+	const providers = await getProviders();
 
 	return {
 		props: { csrfToken, providers },
