@@ -20,6 +20,7 @@ import {
 	signIn,
 } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
+import filter from 'lodash.filter';
 import { FcGoogle } from 'react-icons/fc';
 import Container from '../components/Container';
 
@@ -111,54 +112,50 @@ export default function SignIn({ csrfToken, providers }) {
 							Sign In
 						</Button>
 					</chakra.form>
-					{providers.length > 1 ? (
-						<>
-							<Flex
-								w='sm'
-								alignItems='center'
-								_before={{
-									position: 'relative',
-									width: '50%',
-									borderTop: '1px solid',
-									borderTopColor: 'inherit',
-									content: '""',
-								}}
-								_after={{
-									position: 'relative',
-									width: '50%',
-									borderTop: '1px solid',
-									borderTopColor: 'inherit',
-									content: '""',
-								}}
-							>
-								<Text fontSize='lg' mx={4}>
-									or
-								</Text>
-							</Flex>
-							{providers.map((provider, index) => {
-								let icon = null;
-								if (provider.id === 'google') {
-									icon = FcGoogle;
-								}
+					<>
+						<Flex
+							w='sm'
+							alignItems='center'
+							_before={{
+								position: 'relative',
+								width: '50%',
+								borderTop: '1px solid',
+								borderTopColor: 'inherit',
+								content: '""',
+							}}
+							_after={{
+								position: 'relative',
+								width: '50%',
+								borderTop: '1px solid',
+								borderTopColor: 'inherit',
+								content: '""',
+							}}
+						>
+							<Text fontSize='lg' mx={4}>
+								or
+							</Text>
+						</Flex>
+						{providers.map((provider, index) => {
+							let icon = null;
+							if (provider.id === 'google') {
+								icon = FcGoogle;
+							}
 
-								if (provider.id !== 'email') {
-									return (
-										<Button
-											key={index}
-											w='full'
-											h={12}
-											onClick={() =>
-												handleProviderSignIn(provider)
-											}
-										>
-											<Icon as={icon} mr={2} />
-											{provider.name}
-										</Button>
-									);
-								}
-							})}
-						</>
-					) : null}
+							return (
+								<Button
+									key={index}
+									w='full'
+									h={12}
+									onClick={() =>
+										handleProviderSignIn(provider)
+									}
+								>
+									<Icon as={icon} mr={2} />
+									{provider.name}
+								</Button>
+							);
+						})}
+					</>
 				</VStack>
 			</VStack>
 		</Container>
@@ -173,7 +170,10 @@ export async function getServerSideProps(context) {
 	}
 
 	const csrfToken = await getCsrfToken({ req: context.req });
-	const providers = await getProviders();
+	const providers = filter(
+		await getProviders(),
+		(provider) => provider.type !== 'email'
+	);
 
 	return {
 		props: { csrfToken, providers },
