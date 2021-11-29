@@ -30,7 +30,7 @@ export default function Settings(props) {
 			setName(user?.name);
 			setEmail(user?.email);
 			setUsername(user?.username);
-			setDailyGoal(user?.daily_goal);
+			setDailyGoal(user?.dailyGoal);
 		}
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
@@ -42,7 +42,7 @@ export default function Settings(props) {
 			name,
 			email,
 			username,
-			daily_goal: dailyGoal,
+			dailyGoal,
 		};
 		await saveUserProfile(profile, update);
 		toast({

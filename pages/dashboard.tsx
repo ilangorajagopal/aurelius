@@ -59,7 +59,7 @@ export default function Dashboard(props) {
 					<Stats
 						createdAt={profile?.created_at}
 						posts={posts}
-						goal={profile?.daily_goal}
+						goal={profile?.dailyGoal}
 					/>
 				</Flex>
 				<Posts posts={posts} profile={profile} session={authSession} />
