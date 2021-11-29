@@ -34,7 +34,16 @@ async function deleteOne(req, res) {
 			title: true,
 		},
 	});
-	res.status(200).json({ message: 'post_deleted', post: deletedPost });
+	const deletedWritingSessions = await prisma.writingSession.deleteMany({
+		where: {
+			postId: id,
+		},
+	});
+	res.status(200).json({
+		message: 'post_deleted',
+		post: deletedPost,
+		writingSessions: deletedWritingSessions,
+	});
 }
 
 export default nc({ attachParams: true })
