@@ -33,7 +33,7 @@ export default function SignIn({ csrfToken, providers }) {
 	} = useForm();
 
 	async function handleProviderSignIn(provider) {
-		await signIn(provider);
+		await signIn(provider.id);
 	}
 
 	async function onSubmit(values) {
