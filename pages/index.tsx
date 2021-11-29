@@ -132,6 +132,7 @@ export default function Index(props) {
 				user={authenticatedUser}
 				wordCount={wordCount}
 			/>
+			<span>{process.env.NEXTAUTH_URL}</span>
 			<chakra.main
 				w='full'
 				h='auto'
