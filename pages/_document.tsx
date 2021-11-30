@@ -44,6 +44,49 @@ export default class Document extends NextDocument {
 					/>
 					<meta name='msapplication-TileColor' content='#2b5797' />
 					<meta name='theme-color' content='#ffffff' />
+
+					{/* Primary Meta Tags */}
+					<title>Aurelius</title>
+					<meta name='title' content='Aurelius' />
+					<meta
+						name='description'
+						content='Beautiful, minimal writing app. Eliminate distractions when writing, build a writing habit, track your daily writing goal, and more.'
+					/>
+
+					{/* Open Graph / Facebook */}
+					<meta property='og:type' content='website' />
+					<meta
+						property='og:url'
+						content='https://www.aurelius.ink/'
+					/>
+					<meta property='og:title' content='Aurelius' />
+					<meta
+						property='og:description'
+						content='Beautiful, minimal writing app. Eliminate distractions when writing, build a writing habit, track your daily writing goal, and more.'
+					/>
+					<meta
+						property='og:image'
+						content='/images/aurelius_open_graph.png'
+					/>
+
+					{/* Twitter */}
+					<meta
+						property='twitter:card'
+						content='summary_large_image'
+					/>
+					<meta
+						property='twitter:url'
+						content='https://www.aurelius.ink/'
+					/>
+					<meta property='twitter:title' content='Aurelius' />
+					<meta
+						property='twitter:description'
+						content='Beautiful, minimal writing app. Eliminate distractions when writing, build a writing habit, track your daily writing goal, and more.'
+					/>
+					<meta
+						property='twitter:image'
+						content='/images/aurelius_open_graph.png'
+					/>
 				</Head>
 				<body>
 					{/* Make Color mode to persists when you refresh the page. */}
