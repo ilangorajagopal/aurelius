@@ -5,13 +5,6 @@ import {
 	HStack,
 	Icon,
 	IconButton,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	Text,
 	useColorModeValue,
 	useDisclosure,
@@ -101,36 +94,38 @@ export default function Footer(props) {
 					) : null}
 
 					{/* About */}
-					<Flex
-						align='center'
-						justifyContent='end'
-						fontSize='xl'
-						fontWeight='bold'
-						color={useColorModeValue('gray.900', 'white')}
-					>
-						<>
-							<Button
-								aria-label='About Aurelius'
-								w='auto'
-								minW={0}
-								h='auto'
-								p={0}
-								rounded='md'
-								d='flex'
-								align='center'
-								justify='center'
-								onClick={onOpen}
-								variant='ghost'
-							>
-								<Icon as={Info} />
-							</Button>
+					{!authSession ? (
+						<Flex
+							align='center'
+							justifyContent='end'
+							fontSize='xl'
+							fontWeight='bold'
+							color={useColorModeValue('gray.900', 'white')}
+						>
+							<>
+								<Button
+									aria-label='About Aurelius'
+									w='auto'
+									minW={0}
+									h='auto'
+									p={0}
+									rounded='md'
+									d='flex'
+									align='center'
+									justify='center'
+									onClick={onOpen}
+									variant='ghost'
+								>
+									<Icon as={Info} />
+								</Button>
 
-							<About
-								isAboutModalOpen={isOpen}
-								onAboutModalClose={onClose}
-							/>
-						</>
-					</Flex>
+								<About
+									isAboutModalOpen={isOpen}
+									onAboutModalClose={onClose}
+								/>
+							</>
+						</Flex>
+					) : null}
 				</HStack>
 			</Grid>
 		</Flex>
