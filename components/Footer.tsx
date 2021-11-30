@@ -110,6 +110,7 @@ export default function Footer(props) {
 					>
 						<>
 							<Button
+								aria-label='About Aurelius'
 								w='auto'
 								minW={0}
 								h='auto'

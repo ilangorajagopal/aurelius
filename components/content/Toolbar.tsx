@@ -103,6 +103,7 @@ export default function Toolbar({ editor }) {
 				</MenuList>
 			</Menu>
 			<Button
+				aria-label='Toggle Bold'
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleBold().run()}
@@ -114,6 +115,7 @@ export default function Toolbar({ editor }) {
 				<Icon as={FaBold} />
 			</Button>
 			<Button
+				aria-label='Toggle Italic'
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -125,6 +127,7 @@ export default function Toolbar({ editor }) {
 				<Icon as={FaItalic} />
 			</Button>
 			<Button
+				aria-label='Toggle Blockquote'
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -138,6 +141,7 @@ export default function Toolbar({ editor }) {
 			<Popover initialFocusRef={linkInputRef}>
 				<PopoverTrigger>
 					<Button
+						aria-label='Create Link'
 						bg='transparent'
 						color={useColorModeValue('gray.900', 'gray.100')}
 					>
@@ -154,6 +158,7 @@ export default function Toolbar({ editor }) {
 				</PopoverContent>
 			</Popover>
 			<Button
+				aria-label='Toggle Code block'
 				bg='transparent'
 				color={useColorModeValue('gray.900', 'gray.100')}
 				onClick={() => editor.chain().focus().toggleCode().run()}

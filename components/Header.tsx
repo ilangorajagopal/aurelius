@@ -176,7 +176,9 @@ export default function Header(props) {
 		sessionComponent = (
 			<Popover placement='bottom-end'>
 				<PopoverTrigger>
-					<Button size='sm'>New Session</Button>
+					<Button aria-label='New Writing Session' size='sm'>
+						New Session
+					</Button>
 				</PopoverTrigger>
 				<PopoverContent w='sm'>
 					<PopoverArrow />
@@ -338,6 +340,7 @@ export default function Header(props) {
 							</FormControl>
 							<HStack w='full' justifyContent='end' spacing={4}>
 								<Button
+									aria-label='Start Writing Session'
 									colorScheme='brand'
 									onClick={startSession}
 									size='sm'
@@ -416,6 +419,7 @@ export default function Header(props) {
 						<HStack spacing={4}>
 							<NextLink href='/'>
 								<Button
+									aria-label='Write Tab'
 									colorScheme={
 										router?.pathname === '/' ||
 										router?.pathname.startsWith('/edit')
@@ -440,6 +444,7 @@ export default function Header(props) {
 
 							<NextLink href='/dashboard'>
 								<Button
+									aria-label='Dashboard Tab'
 									colorScheme={
 										router?.pathname === '/dashboard'
 											? 'brand'
@@ -497,6 +502,7 @@ export default function Header(props) {
 					router?.pathname.startsWith('/edit') ? (
 						<>
 							<Button
+								aria-label='Download post as markdown'
 								w={10}
 								h={10}
 								p={0}
@@ -605,6 +611,7 @@ export default function Header(props) {
 					!authSession ? (
 						<>
 							<Button
+								aria-label='Toggle focus mode'
 								w={10}
 								h={10}
 								p={0}

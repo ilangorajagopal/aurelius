@@ -67,7 +67,12 @@ export default function Posts(props) {
 			<Flex w='full' alignItems='center' justifyContent='space-between'>
 				<Heading as='h2'>Posts</Heading>
 				<NextLink href='/'>
-					<Button colorScheme='brand' size='lg' px={4}>
+					<Button
+						aria-label='Start Writing'
+						colorScheme='brand'
+						size='lg'
+						px={4}
+					>
 						<Edit3 width={16} height={16} />
 						<Text fontSize='lg' ml={2}>
 							Write
@@ -302,6 +307,7 @@ export default function Posts(props) {
 																		justifyContent='flex-end'
 																	>
 																		<Button
+																			aria-label='Cancel delete post'
 																			onClick={
 																				onClose
 																			}
@@ -311,6 +317,7 @@ export default function Posts(props) {
 																			Cancel
 																		</Button>
 																		<Button
+																			aria-label='Confirm delete post'
 																			colorScheme='red'
 																			isLoading={
 																				isDeleting

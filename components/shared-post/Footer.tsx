@@ -51,6 +51,7 @@ export default function Footer() {
 					>
 						<>
 							<Button
+								aria-label='About Aurelius'
 								w='auto'
 								minW={0}
 								h='auto'

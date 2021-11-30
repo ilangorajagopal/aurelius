@@ -103,6 +103,7 @@ export default function SignIn({ csrfToken, providers }) {
 							</FormErrorMessage>
 						</FormControl>
 						<Button
+							aria-label='sign in with email'
 							colorScheme='brand'
 							w='full'
 							h={12}
@@ -143,6 +144,7 @@ export default function SignIn({ csrfToken, providers }) {
 
 							return (
 								<Button
+									aria-label={`sign in with ${provider.name}`}
 									key={index}
 									w='full'
 									h={12}

@@ -113,6 +113,7 @@ export default function Settings(props) {
 			</VStack>
 			<FormControl>
 				<Button
+					aria-label='Save profile'
 					w='full'
 					colorScheme='brand'
 					size='lg'
