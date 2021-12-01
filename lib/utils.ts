@@ -105,8 +105,12 @@ export async function savePostToDB(post, update, userId) {
 		return { data: data.post };
 	} else {
 		const id = nanoid(32);
-		const shareId = `${update.title.split(' ').join('-')}-${id}`;
-		const record = { ...update, shareId, userId };
+		const slug = update.title.toLowerCase().split(' ').join('-');
+		const shareId = `${update.title
+			.toLowerCase()
+			.split(' ')
+			.join('-')}-${id}`;
+		const record = { ...update, slug, shareId, userId };
 		const response = await fetch('/api/posts', {
 			method: 'POST',
 			headers: {

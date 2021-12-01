@@ -76,6 +76,7 @@ model Post {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime?        @default(now()) @updatedAt
   word_count     Int
+  slug           String
   shareId        String
   WritingSession WritingSession[]
 }
