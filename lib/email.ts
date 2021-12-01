@@ -1,6 +1,6 @@
 import { sendgrid } from './sendgrid';
 
-export function addNewUserToContacts(user) {
+export async function addNewUserToContacts(user) {
 	const { email, name } = user;
 	const [first_name, last_name] =
 		name.split(' ').length > 1 ? name.split(' ') : [name, ''];
@@ -15,19 +15,9 @@ export function addNewUserToContacts(user) {
 		],
 	};
 
-	const request = {
+	await sendgrid.request({
 		url: `/v3/marketing/contacts`,
 		method: 'PUT',
 		body: data,
-	};
-
-	// @ts-ignore
-	sendgrid
-		.request(request)
-		.then(() => {
-			console.log('Added new user to list...');
-		})
-		.catch((error) => {
-			console.error(error);
-		});
+	});
 }

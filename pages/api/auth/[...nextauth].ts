@@ -14,9 +14,9 @@ export default NextAuth({
 		},
 	},
 	events: {
-		createUser: (message) => {
+		createUser: async (message) => {
 			const { user } = message;
-			addNewUserToContacts(user);
+			await addNewUserToContacts(user);
 		},
 	},
 	pages: {
