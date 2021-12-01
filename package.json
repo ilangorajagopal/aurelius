@@ -23,6 +23,7 @@
 		"@nivo/calendar": "^0.74.0",
 		"@nivo/core": "^0.74.0",
 		"@prisma/client": "^3.5.0",
+		"@sendgrid/client": "^7.6.0",
 		"@supabase/supabase-js": "^1.27.0",
 		"@supabase/ui": "^0.35.0",
 		"@tiptap/extension-bubble-menu": "^2.0.0-beta.49",
