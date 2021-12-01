@@ -23,11 +23,7 @@ export default function Dashboard(props) {
 			setProfile(user);
 		}
 
-		if (authSession) {
-			fetchProfile().then(() => console.log('Profile fetched...'));
-		} else {
-			router.push('/').then(() => console.log('Redirecting...'));
-		}
+		fetchProfile().then(() => console.log('Profile fetched...'));
 	}, [authSession]);
 
 	return (
