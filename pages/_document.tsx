@@ -46,7 +46,6 @@ export default class Document extends NextDocument {
 					<meta name='theme-color' content='#ffffff' />
 
 					{/* Primary Meta Tags */}
-					<title>Aurelius</title>
 					<meta name='title' content='Aurelius' />
 					<meta
 						name='description'

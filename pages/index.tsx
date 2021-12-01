@@ -67,7 +67,9 @@ export default function Index(props) {
 			setProfile(user);
 		}
 
-		fetchProfile().then(() => console.log('Profile fetched...'));
+		if (authSession) {
+			fetchProfile().then(() => console.log('Profile fetched...'));
+		}
 	}, [authSession]);
 
 	function downloadFile() {
