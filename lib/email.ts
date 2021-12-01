@@ -21,6 +21,7 @@ export function addNewUserToContacts(user) {
 		body: data,
 	};
 
+	// @ts-ignore
 	sendgrid
 		.request(request)
 		.then(() => {
