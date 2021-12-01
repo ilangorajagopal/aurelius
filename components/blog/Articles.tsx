@@ -1,8 +1,9 @@
+import NextLink from 'next/link';
 import {
+	chakra,
 	Flex,
 	Grid,
 	Heading,
-	Link,
 	Text,
 	useColorModeValue,
 	VStack,
@@ -55,32 +56,37 @@ const Articles = (props) => {
 								textDecoration: 'none',
 							}}
 						>
-							<Link
-								w='full'
-								h='full'
-								href={`/blog/${article.slug}`}
-								color={useColorModeValue(
-									'gray.900',
-									'gray.100'
-								)}
-								_hover={{ textDecoration: 'none' }}
-								p={6}
-							>
-								<Text color='gray.400' fontSize='md' mb={2}>
-									{format(new Date(article.createdAt), 'PP')}
-								</Text>
-								<Heading
-									as='h3'
-									fontSize='2xl'
-									fontWeight='semibold'
-									mb={4}
+							<NextLink href={`/blog/${article.slug}`}>
+								<chakra.a
+									w='full'
+									h='full'
+									color={useColorModeValue(
+										'gray.900',
+										'gray.100'
+									)}
+									_hover={{ textDecoration: 'none' }}
+									p={6}
+									cursor='pointer'
 								>
-									{article.title}
-								</Heading>
-								<Text color='gray.400' fontSize='lg' mb={2}>
-									{truncate(content, { length: 140 })}
-								</Text>
-							</Link>
+									<Text color='gray.400' fontSize='md' mb={2}>
+										{format(
+											new Date(article.createdAt),
+											'PP'
+										)}
+									</Text>
+									<Heading
+										as='h3'
+										fontSize='2xl'
+										fontWeight='semibold'
+										mb={4}
+									>
+										{article.title}
+									</Heading>
+									<Text color='gray.400' fontSize='lg' mb={2}>
+										{truncate(content, { length: 140 })}
+									</Text>
+								</chakra.a>
+							</NextLink>
 						</Flex>
 					);
 				})}
