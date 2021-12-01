@@ -28,7 +28,7 @@ export default function Blog(props) {
 	);
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 	const user = await prisma.user.findUnique({
 		where: {
 			username: 'aurelius',
