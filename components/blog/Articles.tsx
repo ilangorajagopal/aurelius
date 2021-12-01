@@ -47,10 +47,13 @@ const Articles = (props) => {
 							p={0}
 							border={1}
 							borderStyle='solid'
-							borderColor='rgba(223,233,243,.59)'
+							borderColor='gray.100'
 							rounded='lg'
 							key={article.id}
-							_hover={{ textDecoration: 'none', shadow: 'md' }}
+							_hover={{
+								borderColor: 'gray.200',
+								textDecoration: 'none',
+							}}
 						>
 							<Link
 								w='full'
