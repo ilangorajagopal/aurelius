@@ -3,6 +3,7 @@ import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../prisma';
+import { addNewUserToContacts } from '../../../lib/email';
 
 export default NextAuth({
 	adapter: PrismaAdapter(prisma),
@@ -10,6 +11,12 @@ export default NextAuth({
 		async session({ session, token, user }) {
 			session.userId = user.id;
 			return session;
+		},
+	},
+	events: {
+		createUser: async (message) => {
+			const { user } = message;
+			await addNewUserToContacts(user);
 		},
 	},
 	pages: {

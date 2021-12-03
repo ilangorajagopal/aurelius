@@ -46,7 +46,6 @@ export default class Document extends NextDocument {
 					<meta name='theme-color' content='#ffffff' />
 
 					{/* Primary Meta Tags */}
-					<title>Aurelius</title>
 					<meta name='title' content='Aurelius' />
 					<meta
 						name='description'
@@ -55,6 +54,10 @@ export default class Document extends NextDocument {
 
 					{/* Open Graph / Facebook */}
 					<meta property='og:type' content='website' />
+					<meta
+						property='og:site'
+						content='https://www.aurelius.ink'
+					/>
 					<meta
 						property='og:url'
 						content='https://www.aurelius.ink/'
@@ -80,6 +83,7 @@ export default class Document extends NextDocument {
 						property='twitter:url'
 						content='https://www.aurelius.ink/'
 					/>
+					<meta property='twitter:creator' content='@_ilango' />
 					<meta property='twitter:title' content='Aurelius' />
 					<meta
 						property='twitter:description'

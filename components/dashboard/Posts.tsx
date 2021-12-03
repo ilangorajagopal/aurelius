@@ -83,7 +83,7 @@ export default function Posts(props) {
 			<VStack w='full' h='auto' overflowX='hidden' spacing={4}>
 				{posts && posts.length > 0 ? (
 					posts.map((post, index) => {
-						const shareLink = `${process.env.NEXT_PUBLIC_BASE_URL}/@${profile.username}/${post.shareId}`;
+						const shareLink = `${process.env.NEXT_PUBLIC_BASE_URL}/@${profile?.username}/${post.shareId}`;
 
 						return (
 							<Fragment key={post.id}>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { chakra, Flex, Heading } from '@chakra-ui/react';
 import Container from '../components/Container';
 import Header from '../components/Header';
@@ -11,6 +12,7 @@ import { usePosts } from '../lib/hooks';
 
 export default function Dashboard(props) {
 	const { user: authenticatedUser } = props;
+	const router = useRouter();
 	const { data: authSession } = useSession();
 	const { posts, isLoading, isError } = usePosts(authSession?.userId);
 	const [profile, setProfile] = useState(null);
