@@ -74,6 +74,8 @@ export default class Document extends NextDocument {
 						property='twitter:card'
 						content='summary_large_image'
 					/>
+					{/*  to have large image post format in Twitter */}
+					<meta property='twitter:site' content='@_ilango' />
 					<meta
 						property='twitter:url'
 						content='https://www.aurelius.ink/'
@@ -85,7 +87,7 @@ export default class Document extends NextDocument {
 					/>
 					<meta
 						property='twitter:image'
-						content='/images/aurelius_open_graph.png'
+						content='https://www.aurelius.ink/images/aurelius_open_graph.png'
 					/>
 				</Head>
 				<body>
