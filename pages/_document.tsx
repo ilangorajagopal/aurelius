@@ -55,6 +55,10 @@ export default class Document extends NextDocument {
 					{/* Open Graph / Facebook */}
 					<meta property='og:type' content='website' />
 					<meta
+						property='og:site'
+						content='https://www.aurelius.ink'
+					/>
+					<meta
 						property='og:url'
 						content='https://www.aurelius.ink/'
 					/>
@@ -73,10 +77,13 @@ export default class Document extends NextDocument {
 						property='twitter:card'
 						content='summary_large_image'
 					/>
+					{/*  to have large image post format in Twitter */}
+					<meta property='twitter:site' content='' />
 					<meta
 						property='twitter:url'
 						content='https://www.aurelius.ink/'
 					/>
+					<meta property='twitter:creator' content='@_ilango' />
 					<meta property='twitter:title' content='Aurelius' />
 					<meta
 						property='twitter:description'
