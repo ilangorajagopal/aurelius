@@ -33,12 +33,17 @@ export default function SignIn({ csrfToken, providers }) {
 	} = useForm();
 
 	async function handleProviderSignIn(provider) {
-		await signIn(provider.id);
+		await signIn(provider.id, {
+			callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/write`,
+		});
 	}
 
 	async function onSubmit(values) {
 		try {
-			await signIn('email', { email: values.email });
+			await signIn('email', {
+				callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/write`,
+				email: values.email,
+			});
 		} catch (error) {
 			console.error(error);
 		}
