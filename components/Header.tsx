@@ -359,7 +359,7 @@ export default function Header(props) {
 		<Flex
 			as='header'
 			w='full'
-			h={16}
+			h={24}
 			px={6}
 			alignItems='center'
 			justifyContent='space-between'
