@@ -27,6 +27,7 @@ export default function EditPost(props) {
 	const { data: authSession } = useSession();
 	const [content, setContent] = useState('');
 	const [post, setPost] = useState(postData);
+	const [isPublishing, setIsPublishing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
 	const [session, setSession] = useState(null);
 	const [title, setTitle] = useState('');
@@ -127,6 +128,20 @@ export default function EditPost(props) {
 		await saveSessionToDB(update, profile);
 	}
 
+	async function publishPost() {
+		setIsPublishing(true);
+		const update = { published: true };
+		const { data: postData } = await savePostToDB(
+			post,
+			update,
+			authenticatedUser.id
+		);
+		if (postData) {
+			setPost(postData);
+		}
+		setIsPublishing(false);
+	}
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
@@ -134,7 +149,9 @@ export default function EditPost(props) {
 				distractionFreeMode={distractionFreeMode}
 				downloadFile={downloadFile}
 				isEditorEmpty={editor?.isEmpty}
+				isPublishing={isPublishing}
 				isSaving={isSaving}
+				publishPost={publishPost}
 				saveSession={saveSession}
 				setMusicPlaying={setMusicPlaying}
 				setDistractionFreeMode={setDistractionFreeMode}
