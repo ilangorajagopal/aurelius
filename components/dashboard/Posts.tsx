@@ -22,6 +22,7 @@ import {
 	PopoverHeader,
 	PopoverTrigger,
 	Portal,
+	Tag,
 	Text,
 	VStack,
 	useToast,
@@ -31,6 +32,7 @@ import { format, formatDistance } from 'date-fns';
 import { Check, Clipboard, Edit2, Edit3, Share2, Trash2 } from 'react-feather';
 import { mutate } from 'swr';
 import copy from 'copy-to-clipboard';
+import truncate from 'lodash.truncate';
 
 export default function Posts(props) {
 	const { posts, profile, session } = props;
@@ -106,22 +108,37 @@ export default function Posts(props) {
 											<Text
 												fontSize='2xl'
 												fontWeight='bold'
+												mb={2}
+												title={post.title}
 											>
-												{post.title}
+												{truncate(post.title, {
+													length: 48,
+												})}
 											</Text>
-											<Text
-												fontSize='xs'
-												title={format(
-													new Date(post.createdAt),
-													'PPPpp'
-												)}
-											>
-												{formatDistance(
-													new Date(post.createdAt),
-													new Date(),
-													{ addSuffix: true }
-												)}
-											</Text>
+											<HStack spacing={2}>
+												<Tag>
+													{post.published
+														? 'Published'
+														: 'Draft'}
+												</Tag>
+												<Text
+													fontSize='xs'
+													title={format(
+														new Date(
+															post.createdAt
+														),
+														'PPPpp'
+													)}
+												>
+													{formatDistance(
+														new Date(
+															post.createdAt
+														),
+														new Date(),
+														{ addSuffix: true }
+													)}
+												</Text>
+											</HStack>
 										</VStack>
 									</GridItem>
 									<GridItem h='full' colSpan={1}>
