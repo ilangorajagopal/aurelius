@@ -8,6 +8,7 @@ import {
 	chakra,
 	Avatar,
 	Button,
+	ButtonGroup,
 	Flex,
 	Grid,
 	GridItem,
@@ -29,10 +30,11 @@ import {
 	ModalContent,
 	ModalBody,
 	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	PopoverBody,
 	PopoverArrow,
+	PopoverBody,
+	PopoverContent,
+	PopoverFooter,
+	PopoverTrigger,
 	Radio,
 	RadioGroup,
 	Stack,
@@ -57,8 +59,10 @@ export default function Header(props) {
 		authSession,
 		downloadFile,
 		isEditorEmpty,
+		isPublishing,
 		isSaving,
 		distractionFreeMode,
+		publishPost,
 		saveSession,
 		setDistractionFreeMode,
 		setMusicPlaying,
@@ -139,7 +143,7 @@ export default function Header(props) {
 		await signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL });
 	}
 
-	let sessionComponent = null;
+	let sessionComponent: JSX.Element;
 	if (session && session?.goal === 'duration') {
 		const time = new Date();
 		time.setSeconds(time.getSeconds() + 60 * session?.target);
@@ -484,14 +488,72 @@ export default function Header(props) {
 					h='full'
 					align='center'
 					justifyContent='end'
-					fontSize='xl'
-					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
 					spacing={4}
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
 					{isSaving ? <Text fontSize='sm'>Saving...</Text> : null}
+
+					{(router?.pathname === '/' ||
+						router?.pathname.startsWith('/edit')) &&
+					authSession ? (
+						<Popover>
+							{({ isOpen, onClose }) => (
+								<>
+									<PopoverTrigger>
+										<Button
+											aria-label='Publish Post'
+											colorScheme='brand'
+											size='sm'
+											variant='ghost'
+										>
+											Publish
+										</Button>
+									</PopoverTrigger>
+									<PopoverContent>
+										<PopoverArrow />
+										<PopoverBody p={4}>
+											<Text
+												color={useColorModeValue(
+													'black',
+													'white'
+												)}
+											>
+												Publishing this post will show
+												it on your profile. Confirm
+												publish?
+											</Text>
+										</PopoverBody>
+										<PopoverFooter>
+											<ButtonGroup
+												d='flex'
+												justifyContent='flex-end'
+											>
+												<Button
+													aria-label='Cancel delete post'
+													onClick={onClose}
+													size='sm'
+													variant='ghost'
+												>
+													Cancel
+												</Button>
+												<Button
+													aria-label='Confirm publish post'
+													colorScheme='brand'
+													isLoading={isPublishing}
+													onClick={publishPost}
+													size='sm'
+												>
+													Publish
+												</Button>
+											</ButtonGroup>
+										</PopoverFooter>
+									</PopoverContent>
+								</>
+							)}
+						</Popover>
+					) : null}
 
 					{router?.pathname === '/' ||
 					router?.pathname.startsWith('/edit')
