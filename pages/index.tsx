@@ -1,6 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getSession, useSession } from 'next-auth/react';
-import { chakra, useBoolean } from '@chakra-ui/react';
+import {
+	chakra,
+	Button,
+	Flex,
+	HStack,
+	Text,
+	useBoolean,
+	useToast,
+} from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Image from '@tiptap/extension-image';
@@ -8,6 +16,11 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { Autosave } from 'react-autosave';
+import {
+	deleteFromStorage,
+	useLocalStorage,
+	writeStorage,
+} from '@rehooks/local-storage';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
@@ -25,6 +38,8 @@ export default function Index(props) {
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const { data: authSession } = useSession();
 	const [content, setContent] = useState('');
+	const [localPost] = useLocalStorage('aurelius_guest_user_post');
+	let localSaveTimeout: any = null;
 	const [post, setPost] = useState(null);
 	const [isPublishing, setIsPublishing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
@@ -32,6 +47,17 @@ export default function Index(props) {
 	const [title, setTitle] = useState('');
 	const [profile, setProfile] = useState(null);
 	const [wordCount, setWordCount] = useState(0);
+	const toast = useToast({
+		containerStyle: {
+			width: '960px',
+			maxWidth: '100%',
+			height: '4rem',
+			marginTop: '3rem',
+		},
+		duration: null,
+		isClosable: false,
+		position: 'top',
+	});
 	const editor = useEditor({
 		content,
 		editorProps: {
@@ -63,6 +89,46 @@ export default function Index(props) {
 	});
 
 	useEffect(() => {
+		if (editor && localPost) {
+			toast({
+				render: () => (
+					<Flex
+						w='full'
+						h='full'
+						alignItems='center'
+						justifyContent='space-between'
+						color='white'
+						p={4}
+						bg='blue.800'
+						rounded='lg'
+					>
+						<Text>
+							We found your post from a previous session. Do you
+							want to load it?
+						</Text>
+						<HStack spacing={4}>
+							<Button
+								colorScheme='brand'
+								onClick={loadLocalPost}
+								size='sm'
+							>
+								Load Saved Post
+							</Button>
+							<Button
+								colorScheme='red'
+								onClick={deleteLocalPost}
+								size='sm'
+							>
+								Discard Post
+							</Button>
+						</HStack>
+					</Flex>
+				),
+			});
+		}
+	}, [editor]);
+
+	useEffect(() => {
 		async function fetchProfile() {
 			const { user } = await fetchUserProfile(authenticatedUser?.id);
 			setProfile(user);
@@ -72,6 +138,12 @@ export default function Index(props) {
 			fetchProfile().then(() => console.log('Profile fetched...'));
 		}
 	}, [authSession]);
+
+	useEffect(() => {
+		return function () {
+			clearTimeout(localSaveTimeout);
+		};
+	}, []);
 
 	function downloadFile() {
 		downloadAsMarkdown(title, content);
@@ -85,15 +157,22 @@ export default function Index(props) {
 				content: data.content,
 				word_count: data.word_count,
 			};
-			const { data: postData } = await savePostToDB(
-				data.post,
-				update,
-				authenticatedUser.id
-			);
-			if (postData) {
-				setPost(postData);
+			if (authSession) {
+				const { data: postData } = await savePostToDB(
+					data.post,
+					update,
+					authenticatedUser.id
+				);
+				if (postData) {
+					setPost(postData);
+				}
+				setIsSaving(false);
+			} else {
+				localSaveTimeout = setTimeout(() => {
+					writeStorage('aurelius_guest_user_post', update);
+					setIsSaving(false);
+				}, 2000);
 			}
-			setIsSaving(false);
 		}
 	}, []);
 
@@ -133,6 +212,22 @@ export default function Index(props) {
 		setIsPublishing(false);
 	}
 
+	function loadLocalPost() {
+		if (editor && localPost) {
+			setTitle(localPost?.title);
+			setContent(localPost?.content);
+			if (editor.isEmpty) {
+				editor.commands.setContent(localPost?.content);
+			}
+			toast.closeAll();
+		}
+	}
+
+	function deleteLocalPost() {
+		deleteFromStorage('aurelius_guest_user_post');
+		toast.closeAll();
+	}
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
@@ -161,13 +256,11 @@ export default function Index(props) {
 				flex='1 0 auto'
 				py={16}
 			>
-				{authSession ? (
-					<Autosave
-						data={autoSaveData}
-						interval={5000}
-						onSave={savePost}
-					/>
-				) : null}
+				<Autosave
+					data={autoSaveData}
+					interval={5000}
+					onSave={savePost}
+				/>
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
 			<Footer
