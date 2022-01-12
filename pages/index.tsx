@@ -1,6 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getSession, useSession } from 'next-auth/react';
-import { chakra, useBoolean } from '@chakra-ui/react';
+import {
+	chakra,
+	Button,
+	Flex,
+	HStack,
+	Text,
+	useBoolean,
+	useToast,
+} from '@chakra-ui/react';
 import { useEditor } from '@tiptap/react';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Image from '@tiptap/extension-image';
@@ -8,6 +16,11 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { Autosave } from 'react-autosave';
+import {
+	deleteFromStorage,
+	useLocalStorage,
+	writeStorage,
+} from '@rehooks/local-storage';
 import Container from '../components/Container';
 import Header from '../components/Header';
 import Main from '../components/content/Main';
@@ -25,6 +38,8 @@ export default function Index(props) {
 	const [musicPlaying, setMusicPlaying] = useBoolean(false);
 	const { data: authSession } = useSession();
 	const [content, setContent] = useState('');
+	const [localPost] = useLocalStorage('aurelius_guest_user_post');
+	let localSaveTimeout: any = null;
 	const [post, setPost] = useState(null);
 	const [isPublishing, setIsPublishing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
@@ -32,6 +47,17 @@ export default function Index(props) {
 	const [title, setTitle] = useState('');
 	const [profile, setProfile] = useState(null);
 	const [wordCount, setWordCount] = useState(0);
+	const toast = useToast({
+		containerStyle: {
+			width: '960px',
+			maxWidth: '100%',
+			height: '4rem',
+			marginTop: '3rem',
+		},
+		duration: null,
+		isClosable: false,
+		position: 'top',
+	});
 	const editor = useEditor({
 		content,
 		editorProps: {
@@ -55,10 +81,9 @@ export default function Index(props) {
 			}),
 		],
 		onUpdate({ editor }) {
-			const wordCount = editor.state.doc.textContent.split(' ').length;
-			const html = this.getHTML();
+			const html = editor.getHTML();
 			setContent(html);
-			setWordCount(wordCount);
+			updateEditorWordCount(editor.state.doc.textContent);
 		},
 	});
 
@@ -69,15 +94,69 @@ export default function Index(props) {
 		}
 
 		if (authSession) {
+			toast.closeAll();
 			fetchProfile().then(() => console.log('Profile fetched...'));
 		}
+
+		if (editor && localPost) {
+			toast({
+				render: () => (
+					<Flex
+						w='full'
+						h='full'
+						alignItems='center'
+						justifyContent='space-between'
+						color='white'
+						p={4}
+						bg='blue.800'
+						rounded='lg'
+					>
+						<Text>
+							We found your post from a previous session. Do you
+							want to load it?
+						</Text>
+						<HStack spacing={4}>
+							<Button
+								colorScheme='brand'
+								onClick={loadLocalPost}
+								size='sm'
+							>
+								Load Saved Post
+							</Button>
+							<Button
+								colorScheme='red'
+								onClick={deleteLocalPost}
+								size='sm'
+							>
+								Discard Post
+							</Button>
+						</HStack>
+					</Flex>
+				),
+			});
+		}
 	}, [authSession]);
+
+	useEffect(() => {
+		return function () {
+			clearTimeout(localSaveTimeout);
+		};
+	}, []);
+
+	function updateEditorWordCount(content) {
+		const wordCount = content.split(' ').length;
+		setWordCount(wordCount);
+	}
 
 	function downloadFile() {
 		downloadAsMarkdown(title, content);
 	}
 
-	const savePost = useCallback(async (data) => {
+	const autoSavePost = useCallback(savePost, []);
+
+	const autoSaveData = { post, title, content, word_count: wordCount };
+
+	async function savePost(data) {
 		if (data.title && data.content && data.word_count) {
 			setIsSaving(true);
 			const update = {
@@ -85,19 +164,24 @@ export default function Index(props) {
 				content: data.content,
 				word_count: data.word_count,
 			};
-			const { data: postData } = await savePostToDB(
-				data.post,
-				update,
-				authenticatedUser.id
-			);
-			if (postData) {
-				setPost(postData);
+			if (authenticatedUser) {
+				const { data: postData } = await savePostToDB(
+					data.post,
+					update,
+					authenticatedUser.id
+				);
+				if (postData) {
+					setPost(postData);
+				}
+				setIsSaving(false);
+			} else {
+				localSaveTimeout = setTimeout(() => {
+					writeStorage('aurelius_guest_user_post', update);
+					setIsSaving(false);
+				}, 2000);
 			}
-			setIsSaving(false);
 		}
-	}, []);
-
-	const autoSaveData = { post, title, content, word_count: wordCount };
+	}
 
 	async function saveSession(totalTime) {
 		let update: unknown;
@@ -133,6 +217,27 @@ export default function Index(props) {
 		setIsPublishing(false);
 	}
 
+	function loadLocalPost() {
+		if (editor && localPost) {
+			const data = JSON.parse(localPost);
+			setTitle(data?.title);
+			setContent(data?.content);
+			if (editor.isEmpty) {
+				editor.commands.setContent(data?.content);
+				updateEditorWordCount(editor.state.doc.textContent);
+			}
+			if (authenticatedUser) {
+				deleteLocalPost();
+			}
+			toast.closeAll();
+		}
+	}
+
+	function deleteLocalPost() {
+		deleteFromStorage('aurelius_guest_user_post');
+		toast.closeAll();
+	}
+
 	return (
 		<Container height='auto' minH='100vh'>
 			<Header
@@ -161,13 +266,11 @@ export default function Index(props) {
 				flex='1 0 auto'
 				py={16}
 			>
-				{authSession ? (
-					<Autosave
-						data={autoSaveData}
-						interval={5000}
-						onSave={savePost}
-					/>
-				) : null}
+				<Autosave
+					data={autoSaveData}
+					interval={5000}
+					onSave={autoSavePost}
+				/>
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
 			<Footer
