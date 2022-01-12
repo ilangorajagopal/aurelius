@@ -51,7 +51,7 @@ model User {
   emailVerified   DateTime?
   image           String?
   role            String?          @default("user")
-  dailyGoal       Int?
+  dailyGoal       Int?             @default(300)
   accounts        Account[]
   sessions        Session[]
   posts           Post[]

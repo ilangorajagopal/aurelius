@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` MODIFY `dailyGoal` INTEGER NULL DEFAULT 300;
