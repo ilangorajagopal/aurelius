@@ -81,14 +81,23 @@ export default function Index(props) {
 			}),
 		],
 		onUpdate({ editor }) {
-			const wordCount = editor.state.doc.textContent.split(' ').length;
-			const html = this.getHTML();
+			const html = editor.getHTML();
 			setContent(html);
-			setWordCount(wordCount);
+			updateEditorWordCount(editor.state.doc.textContent);
 		},
 	});
 
 	useEffect(() => {
+		async function fetchProfile() {
+			const { user } = await fetchUserProfile(authenticatedUser?.id);
+			setProfile(user);
+		}
+
+		if (authSession) {
+			toast.closeAll();
+			fetchProfile().then(() => console.log('Profile fetched...'));
+		}
+
 		if (editor && localPost) {
 			toast({
 				render: () => (
@@ -126,17 +135,6 @@ export default function Index(props) {
 				),
 			});
 		}
-	}, [editor]);
-
-	useEffect(() => {
-		async function fetchProfile() {
-			const { user } = await fetchUserProfile(authenticatedUser?.id);
-			setProfile(user);
-		}
-
-		if (authSession) {
-			fetchProfile().then(() => console.log('Profile fetched...'));
-		}
 	}, [authSession]);
 
 	useEffect(() => {
@@ -145,11 +143,20 @@ export default function Index(props) {
 		};
 	}, []);
 
+	function updateEditorWordCount(content) {
+		const wordCount = content.split(' ').length;
+		setWordCount(wordCount);
+	}
+
 	function downloadFile() {
 		downloadAsMarkdown(title, content);
 	}
 
-	const savePost = useCallback(async (data) => {
+	const autoSavePost = useCallback(savePost, []);
+
+	const autoSaveData = { post, title, content, word_count: wordCount };
+
+	async function savePost(data) {
 		if (data.title && data.content && data.word_count) {
 			setIsSaving(true);
 			const update = {
@@ -157,7 +164,7 @@ export default function Index(props) {
 				content: data.content,
 				word_count: data.word_count,
 			};
-			if (authSession) {
+			if (authenticatedUser) {
 				const { data: postData } = await savePostToDB(
 					data.post,
 					update,
@@ -174,9 +181,7 @@ export default function Index(props) {
 				}, 2000);
 			}
 		}
-	}, []);
-
-	const autoSaveData = { post, title, content, word_count: wordCount };
+	}
 
 	async function saveSession(totalTime) {
 		let update: unknown;
@@ -218,6 +223,10 @@ export default function Index(props) {
 			setContent(localPost?.content);
 			if (editor.isEmpty) {
 				editor.commands.setContent(localPost?.content);
+				updateEditorWordCount(editor.state.doc.textContent);
+			}
+			if (authenticatedUser) {
+				deleteLocalPost();
 			}
 			toast.closeAll();
 		}
@@ -259,7 +268,7 @@ export default function Index(props) {
 				<Autosave
 					data={autoSaveData}
 					interval={5000}
-					onSave={savePost}
+					onSave={autoSavePost}
 				/>
 				<Main editor={editor} setTitle={setTitle} title={title} />
 			</chakra.main>
