@@ -233,11 +233,11 @@ export default function Index(props) {
 
 	function loadLocalPost() {
 		if (editor && localPost) {
-			const data = JSON.parse(localPost);
-			setTitle(data?.title);
-			setContent(data?.content);
+			const { title, content } = JSON.parse(JSON.stringify(localPost));
+			setTitle(title);
+			setContent(content);
 			if (editor.isEmpty) {
-				editor.commands.setContent(data?.content);
+				editor.commands.setContent(content);
 				updateEditorWordCount(editor.state.doc.textContent);
 			}
 			if (authenticatedUser) {
