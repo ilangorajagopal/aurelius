@@ -115,6 +115,10 @@
 	height: auto;
 }
 
+.ProseMirror img.ProseMirror-selectednode {
+	outline: 3px solid #68CEF8;
+}
+
 /* Grid */
 
 .auth .container {
