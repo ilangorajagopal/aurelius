@@ -30,6 +30,7 @@ import {
 	fetchUserProfile,
 	savePostToDB,
 	saveSessionToDB,
+	uploadImageToS3,
 } from '../lib/utils';
 
 export default function Index(props) {
@@ -146,6 +147,19 @@ export default function Index(props) {
 	function updateEditorWordCount(content) {
 		const wordCount = content.split(' ').length;
 		setWordCount(wordCount);
+	}
+
+	async function uploadImage(event) {
+		const imageFile = event.target.files[0];
+		if (imageFile) {
+			const formData = new FormData();
+			formData.append(imageFile.name, imageFile);
+
+			const { url } = await uploadImageToS3(formData);
+			if (url) {
+				editor.chain().focus().setImage({ src: url }).run();
+			}
+		}
 	}
 
 	function downloadFile() {
@@ -271,7 +285,12 @@ export default function Index(props) {
 					interval={5000}
 					onSave={autoSavePost}
 				/>
-				<Main editor={editor} setTitle={setTitle} title={title} />
+				<Main
+					editor={editor}
+					setTitle={setTitle}
+					title={title}
+					uploadImage={uploadImage}
+				/>
 			</chakra.main>
 			<Footer
 				authSession={authSession}

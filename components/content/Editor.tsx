@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import {
 	Box,
 	IconButton,
+	Input,
 	Menu,
 	MenuButton,
 	MenuList,
@@ -8,11 +10,16 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { BubbleMenu, EditorContent, FloatingMenu } from '@tiptap/react';
-import { Image, Plus, Twitter, Youtube } from 'react-feather';
+import { Image, Plus } from 'react-feather';
 import Toolbar from './Toolbar';
 
 export default function Editor(props) {
-	const { editor } = props;
+	const { editor, uploadImage } = props;
+	const fileUploadInputRef = useRef(null);
+
+	function selectImageFile() {
+		fileUploadInputRef?.current?.click();
+	}
 
 	return (
 		<Box w='full' h='auto' minH='600px'>
@@ -39,9 +46,23 @@ export default function Editor(props) {
 								left='-4.2rem'
 							/>
 							<MenuList p={0}>
-								<MenuItem w='full' h={12}>
+								<MenuItem
+									w='full'
+									h={12}
+									onClick={selectImageFile}
+								>
 									<Image width={16} height={16} />
 									<Text ml={4}>Image</Text>
+									<Input
+										accept='image/*'
+										multiple={false}
+										opacity={0}
+										onChange={uploadImage}
+										ref={fileUploadInputRef}
+										type='file'
+										w={1}
+										h={1}
+									/>
 								</MenuItem>
 								{/*<MenuItem w='full' h={12}>*/}
 								{/*	<Youtube width={16} height={16} />*/}

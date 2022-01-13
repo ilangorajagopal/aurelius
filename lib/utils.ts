@@ -91,6 +91,16 @@ export async function fetcher(url, opts) {
 	return await res.json();
 }
 
+export async function uploadImageToS3(data) {
+	const response = await fetch('/api/upload', {
+		method: 'POST',
+		body: data,
+	});
+	const uploads = await response.json();
+
+	return uploads.data;
+}
+
 export async function savePostToDB(post, update, userId) {
 	if (post) {
 		const response = await fetch(`/api/posts/${post.id}`, {
