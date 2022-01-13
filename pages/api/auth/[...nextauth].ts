@@ -16,7 +16,17 @@ export default NextAuth({
 	events: {
 		createUser: async (message) => {
 			const { user } = message;
-			await addNewUserToContacts(user);
+			const { email } = user;
+			const username = email
+				.replace(/@.*$/, '')
+				.replace(/[^a-zA-Z0-9]/g, '_');
+			const userData = await prisma.user.update({
+				data: { username },
+				where: {
+					id: user.id,
+				},
+			});
+			await addNewUserToContacts(userData);
 		},
 	},
 	pages: {
