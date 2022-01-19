@@ -17,8 +17,6 @@ export default function SocialEmbedComponent(props) {
 		embedUrlFieldRef?.current?.focus?.();
 	}, [embedUrlFieldRef]);
 
-	console.log(props);
-
 	function onEmbedUrlSubmit(event) {
 		if (event.keyCode === 13 && embedUrl !== '') {
 			if (
