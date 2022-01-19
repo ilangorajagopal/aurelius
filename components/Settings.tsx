@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { checkUsername, fetchUserProfile, saveUserProfile } from '../lib/utils';
 import { useSession } from 'next-auth/react';
 import debounce from 'lodash.debounce';
-import { Check } from 'react-feather';
+import { Check, X } from 'react-feather';
 
 export default function Settings(props) {
 	const { user: authenticatedUser } = props;
@@ -27,7 +27,8 @@ export default function Settings(props) {
 	const [dailyGoal, setDailyGoal] = useState(300);
 	const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
-	const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
+	const [usernameAvailabilityStatus, setUsernameAvailabilityStatus] =
+		useState('');
 	const toast = useToast();
 
 	useEffect(() => {
@@ -42,6 +43,17 @@ export default function Settings(props) {
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
 	}, [authSession]);
+
+	useEffect(() => {
+		setIsCheckingAvailability(true);
+		const timer = setTimeout(() => {
+			checkUsernameAvailability().then(() =>
+				console.log('Check finished')
+			);
+		}, 1500);
+
+		return () => clearTimeout(timer);
+	}, [username]);
 
 	async function saveProfile() {
 		setIsSaving(true);
@@ -61,15 +73,48 @@ export default function Settings(props) {
 		setIsSaving(false);
 	}
 
-	const debounced = debounce(async function () {
-		setIsUsernameAvailable(false);
-		setIsCheckingAvailability(true);
+	async function checkUsernameAvailability() {
 		const { available } = await checkUsername(username);
 		if (available) {
-			setIsUsernameAvailable(true);
+			setUsernameAvailabilityStatus('available');
+		} else {
+			setUsernameAvailabilityStatus('not_available');
 		}
 		setIsCheckingAvailability(false);
-	}, 1500);
+	}
+
+	let usernameAvailableAlert: JSX.Element;
+	if (profile?.username !== username && isCheckingAvailability) {
+		usernameAvailableAlert = (
+			<Button
+				h='full'
+				isLoading={isCheckingAvailability}
+				variant='ghost'
+			/>
+		);
+	} else if (
+		usernameAvailabilityStatus === 'available' &&
+		profile?.username !== username &&
+		!isCheckingAvailability
+	) {
+		usernameAvailableAlert = (
+			<Button h='full' variant='ghost'>
+				<Icon as={Check} color='green.200' />
+			</Button>
+		);
+	} else if (
+		usernameAvailabilityStatus === 'not_available' &&
+		profile?.username !== username &&
+		!isCheckingAvailability
+	) {
+		usernameAvailableAlert = (
+			<Button h='full' variant='ghost'>
+				<Icon as={X} color='red.200' />
+			</Button>
+		);
+	} else {
+		usernameAvailableAlert = null;
+	}
 
 	return (
 		<VStack
@@ -101,21 +146,10 @@ export default function Settings(props) {
 							w='full'
 							h={12}
 							onChange={(e) => setUsername(e.target.value)}
-							onKeyUp={debounced}
 							value={username}
 						/>
 						<InputRightElement h='full'>
-							{isUsernameAvailable ? (
-								<Button h='full' variant='ghost'>
-									<Icon as={Check} color='green.200' />
-								</Button>
-							) : (
-								<Button
-									h='full'
-									isLoading={isCheckingAvailability}
-									variant='ghost'
-								/>
-							)}
+							{usernameAvailableAlert}
 						</InputRightElement>
 					</InputGroup>
 				</FormControl>
@@ -152,6 +186,7 @@ export default function Settings(props) {
 					size='lg'
 					onClick={saveProfile}
 					isLoading={isSaving}
+					disabled={usernameAvailabilityStatus === 'not_available'}
 				>
 					{isSaving ? 'Saving...' : 'Save'}
 				</Button>
