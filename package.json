@@ -40,6 +40,7 @@
 		"formidable": "github:node-formidable/formidable",
 		"framer-motion": "^4.0.3",
 		"html-to-text": "^8.1.0",
+		"lodash.debounce": "^4.0.8",
 		"lodash.filter": "^4.6.0",
 		"lodash.truncate": "^4.4.2",
 		"nanoid": "^3.1.30",

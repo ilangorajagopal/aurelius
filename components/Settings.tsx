@@ -3,14 +3,19 @@ import {
 	FormControl,
 	FormLabel,
 	Heading,
+	Icon,
 	Input,
+	InputGroup,
+	InputRightElement,
 	VStack,
 	useColorModeValue,
 	useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { fetchUserProfile, saveUserProfile } from '../lib/utils';
+import { checkUsername, fetchUserProfile, saveUserProfile } from '../lib/utils';
 import { useSession } from 'next-auth/react';
+import debounce from 'lodash.debounce';
+import { Check } from 'react-feather';
 
 export default function Settings(props) {
 	const { user: authenticatedUser } = props;
@@ -20,7 +25,9 @@ export default function Settings(props) {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [dailyGoal, setDailyGoal] = useState(300);
+	const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
+	const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
 	const toast = useToast();
 
 	useEffect(() => {
@@ -54,6 +61,16 @@ export default function Settings(props) {
 		setIsSaving(false);
 	}
 
+	const debounced = debounce(async function () {
+		setIsUsernameAvailable(false);
+		setIsCheckingAvailability(true);
+		const { available } = await checkUsername(username);
+		if (available) {
+			setIsUsernameAvailable(true);
+		}
+		setIsCheckingAvailability(false);
+	}, 1500);
+
 	return (
 		<VStack
 			color={useColorModeValue('black', 'white')}
@@ -77,14 +94,30 @@ export default function Settings(props) {
 				</FormControl>
 				<FormControl>
 					<FormLabel>Username</FormLabel>
-					<Input
-						name='username'
-						type='text'
-						w='full'
-						h={12}
-						onChange={(e) => setUsername(e.target.value)}
-						value={username}
-					/>
+					<InputGroup>
+						<Input
+							name='username'
+							type='text'
+							w='full'
+							h={12}
+							onChange={(e) => setUsername(e.target.value)}
+							onKeyUp={debounced}
+							value={username}
+						/>
+						<InputRightElement h='full'>
+							{isUsernameAvailable ? (
+								<Button h='full' variant='ghost'>
+									<Icon as={Check} color='green.200' />
+								</Button>
+							) : (
+								<Button
+									h='full'
+									isLoading={isCheckingAvailability}
+									variant='ghost'
+								/>
+							)}
+						</InputRightElement>
+					</InputGroup>
 				</FormControl>
 				<FormControl>
 					<FormLabel>Email Address</FormLabel>
