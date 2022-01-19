@@ -14,7 +14,6 @@ import {
 import { useEffect, useState } from 'react';
 import { checkUsername, fetchUserProfile, saveUserProfile } from '../lib/utils';
 import { useSession } from 'next-auth/react';
-import debounce from 'lodash.debounce';
 import { Check, X } from 'react-feather';
 
 export default function Settings(props) {
