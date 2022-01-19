@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/react';
 import { Input } from '@chakra-ui/react';
 import Embed from 'react-embed';
@@ -9,8 +9,15 @@ export default function SocialEmbedComponent(props) {
 			attrs: { source },
 		},
 	} = props;
+	const embedUrlFieldRef = useRef(null);
 	const [embedUrl, setEmbedUrl] = useState('');
 	const [isEmbedUrlValid, setIsEmbedUrlValid] = useState(false);
+
+	useEffect(() => {
+		embedUrlFieldRef?.current?.focus?.();
+	}, [embedUrlFieldRef]);
+
+	console.log(props);
 
 	function onEmbedUrlSubmit(event) {
 		if (event.keyCode === 13 && embedUrl !== '') {
@@ -39,9 +46,11 @@ export default function SocialEmbedComponent(props) {
 				<Input
 					w='full'
 					h={12}
+					autoFocus={true}
 					onChange={(event) => setEmbedUrl(event.target.value)}
 					onKeyDown={onEmbedUrlSubmit}
 					placeholder={placeholder}
+					ref={embedUrlFieldRef}
 				/>
 			)}
 
