@@ -9,7 +9,7 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
-// import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player/youtube';
 import { Info, Music, Pause } from 'react-feather';
 import { useRouter } from 'next/router';
 import About from './About';
@@ -62,36 +62,36 @@ export default function Footer(props) {
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
-					{/*{pathname === '/' ? (*/}
-					{/*	<>*/}
-					{/*		/!* Music Player *!/*/}
-					{/*		{musicPlaying ? (*/}
-					{/*			<IconButton*/}
-					{/*				aria-label='pause session timer'*/}
-					{/*				bg='transparent'*/}
-					{/*				p={0}*/}
-					{/*				size='xs'*/}
-					{/*				icon={<Pause width={14} height={14} />}*/}
-					{/*				onClick={setMusicPlaying?.off}*/}
-					{/*			/>*/}
-					{/*		) : (*/}
-					{/*			<IconButton*/}
-					{/*				aria-label='resume session timer'*/}
-					{/*				bg='transparent'*/}
-					{/*				p={0}*/}
-					{/*				size='xs'*/}
-					{/*				icon={<Music width={14} height={14} />}*/}
-					{/*				onClick={setMusicPlaying?.on}*/}
-					{/*			/>*/}
-					{/*		)}*/}
-					{/*		<ReactPlayer*/}
-					{/*			playing={musicPlaying}*/}
-					{/*			url='https://www.youtube.com/watch?v=fR9BUCk79-Y'*/}
-					{/*			width='0px'*/}
-					{/*			height='0px'*/}
-					{/*		/>*/}
-					{/*	</>*/}
-					{/*) : null}*/}
+					{pathname === '/' || pathname.startsWith('/edit') ? (
+						<>
+							{/* Music Player */}
+							{musicPlaying ? (
+								<IconButton
+									aria-label='pause session timer'
+									bg='transparent'
+									p={0}
+									size='xs'
+									icon={<Pause width={14} height={14} />}
+									onClick={setMusicPlaying?.off}
+								/>
+							) : (
+								<IconButton
+									aria-label='resume session timer'
+									bg='transparent'
+									p={0}
+									size='xs'
+									icon={<Music width={14} height={14} />}
+									onClick={setMusicPlaying?.on}
+								/>
+							)}
+							<ReactPlayer
+								playing={musicPlaying}
+								url='https://www.youtube.com/watch?v=fR9BUCk79-Y'
+								width='0px'
+								height='0px'
+							/>
+						</>
+					) : null}
 
 					{/* About */}
 					{!authSession ? (
