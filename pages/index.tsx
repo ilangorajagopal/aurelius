@@ -15,6 +15,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
+import SocialEmbed from '../components/content/SocialEmbedExtension';
 import { Autosave } from 'react-autosave';
 import {
 	deleteFromStorage,
@@ -80,6 +81,7 @@ export default function Index(props) {
 			StarterKit.configure({
 				heading: { levels: [1, 2, 3] },
 			}),
+			SocialEmbed,
 		],
 		onUpdate({ editor }) {
 			const html = editor.getHTML();

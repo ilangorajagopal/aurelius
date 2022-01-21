@@ -51,6 +51,7 @@
 		"react-autosave": "^0.3.0",
 		"react-copy-to-clipboard": "^5.0.4",
 		"react-dom": "^17.0.2",
+		"react-embed": "^3.3.3",
 		"react-feather": "^2.0.9",
 		"react-hook-form": "^7.20.2",
 		"react-icons": "^4.3.1",
