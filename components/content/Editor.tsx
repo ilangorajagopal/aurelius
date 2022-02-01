@@ -10,7 +10,7 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { BubbleMenu, EditorContent, FloatingMenu } from '@tiptap/react';
-import { Image, Plus } from 'react-feather';
+import { Image, Plus, Twitter, Youtube } from 'react-feather';
 import Toolbar from './Toolbar';
 
 export default function Editor(props) {
@@ -19,6 +19,10 @@ export default function Editor(props) {
 
 	function selectImageFile() {
 		fileUploadInputRef?.current?.click();
+	}
+
+	function showEmbedComponent(source) {
+		editor.chain().focus().setEmbedUrl({ source }).run();
 	}
 
 	return (
@@ -64,11 +68,23 @@ export default function Editor(props) {
 										h={1}
 									/>
 								</MenuItem>
-								{/*<MenuItem w='full' h={12}>*/}
+								{/*<MenuItem*/}
+								{/*	w='full'*/}
+								{/*	h={12}*/}
+								{/*	onClick={() =>*/}
+								{/*		showEmbedComponent('youtube')*/}
+								{/*	}*/}
+								{/*>*/}
 								{/*	<Youtube width={16} height={16} />*/}
 								{/*	<Text ml={4}>Youtube</Text>*/}
 								{/*</MenuItem>*/}
-								{/*<MenuItem w='full' h={12}>*/}
+								{/*<MenuItem*/}
+								{/*	w='full'*/}
+								{/*	h={12}*/}
+								{/*	onClick={() =>*/}
+								{/*		showEmbedComponent('twitter')*/}
+								{/*	}*/}
+								{/*>*/}
 								{/*	<Twitter width={16} height={16} />*/}
 								{/*	<Text ml={4}>Tweet</Text>*/}
 								{/*</MenuItem>*/}
