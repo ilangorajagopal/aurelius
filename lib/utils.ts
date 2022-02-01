@@ -172,3 +172,15 @@ export async function saveUserProfile(user, update) {
 
 	return { data: data.user };
 }
+
+export async function checkUsername(username) {
+	const response = await fetch(`/api/profiles?username=${username}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await response.json();
+
+	return { available: data.available };
+}
