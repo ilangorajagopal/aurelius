@@ -3,14 +3,18 @@ import {
 	FormControl,
 	FormLabel,
 	Heading,
+	Icon,
 	Input,
+	InputGroup,
+	InputRightElement,
 	VStack,
 	useColorModeValue,
 	useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { fetchUserProfile, saveUserProfile } from '../lib/utils';
+import { checkUsername, fetchUserProfile, saveUserProfile } from '../lib/utils';
 import { useSession } from 'next-auth/react';
+import { Check, X } from 'react-feather';
 
 export default function Settings(props) {
 	const { user: authenticatedUser } = props;
@@ -20,7 +24,10 @@ export default function Settings(props) {
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [dailyGoal, setDailyGoal] = useState(300);
+	const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
+	const [usernameAvailabilityStatus, setUsernameAvailabilityStatus] =
+		useState('');
 	const toast = useToast();
 
 	useEffect(() => {
@@ -35,6 +42,17 @@ export default function Settings(props) {
 
 		fetchProfile().then(() => console.log('Profile fetched...'));
 	}, [authSession]);
+
+	useEffect(() => {
+		setIsCheckingAvailability(true);
+		const timer = setTimeout(() => {
+			checkUsernameAvailability().then(() =>
+				console.log('Check finished')
+			);
+		}, 1500);
+
+		return () => clearTimeout(timer);
+	}, [username]);
 
 	async function saveProfile() {
 		setIsSaving(true);
@@ -52,6 +70,49 @@ export default function Settings(props) {
 			title: 'Profile saved',
 		});
 		setIsSaving(false);
+	}
+
+	async function checkUsernameAvailability() {
+		const { available } = await checkUsername(username);
+		if (available) {
+			setUsernameAvailabilityStatus('available');
+		} else {
+			setUsernameAvailabilityStatus('not_available');
+		}
+		setIsCheckingAvailability(false);
+	}
+
+	let usernameAvailableAlert: JSX.Element;
+	if (profile?.username !== username && isCheckingAvailability) {
+		usernameAvailableAlert = (
+			<Button
+				h='full'
+				isLoading={isCheckingAvailability}
+				variant='ghost'
+			/>
+		);
+	} else if (
+		usernameAvailabilityStatus === 'available' &&
+		profile?.username !== username &&
+		!isCheckingAvailability
+	) {
+		usernameAvailableAlert = (
+			<Button h='full' variant='ghost'>
+				<Icon as={Check} color='green.200' />
+			</Button>
+		);
+	} else if (
+		usernameAvailabilityStatus === 'not_available' &&
+		profile?.username !== username &&
+		!isCheckingAvailability
+	) {
+		usernameAvailableAlert = (
+			<Button h='full' variant='ghost'>
+				<Icon as={X} color='red.200' />
+			</Button>
+		);
+	} else {
+		usernameAvailableAlert = null;
 	}
 
 	return (
@@ -77,14 +138,19 @@ export default function Settings(props) {
 				</FormControl>
 				<FormControl>
 					<FormLabel>Username</FormLabel>
-					<Input
-						name='username'
-						type='text'
-						w='full'
-						h={12}
-						onChange={(e) => setUsername(e.target.value)}
-						value={username}
-					/>
+					<InputGroup>
+						<Input
+							name='username'
+							type='text'
+							w='full'
+							h={12}
+							onChange={(e) => setUsername(e.target.value)}
+							value={username}
+						/>
+						<InputRightElement h='full'>
+							{usernameAvailableAlert}
+						</InputRightElement>
+					</InputGroup>
 				</FormControl>
 				<FormControl>
 					<FormLabel>Email Address</FormLabel>
@@ -119,6 +185,7 @@ export default function Settings(props) {
 					size='lg'
 					onClick={saveProfile}
 					isLoading={isSaving}
+					disabled={usernameAvailabilityStatus === 'not_available'}
 				>
 					{isSaving ? 'Saving...' : 'Save'}
 				</Button>
