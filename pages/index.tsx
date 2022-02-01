@@ -81,7 +81,6 @@ export default function Index(props) {
 			StarterKit.configure({
 				heading: { levels: [1, 2, 3] },
 			}),
-			SocialEmbed,
 		],
 		onUpdate({ editor }) {
 			const html = editor.getHTML();

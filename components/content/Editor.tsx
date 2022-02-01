@@ -68,26 +68,26 @@ export default function Editor(props) {
 										h={1}
 									/>
 								</MenuItem>
-								<MenuItem
-									w='full'
-									h={12}
-									onClick={() =>
-										showEmbedComponent('youtube')
-									}
-								>
-									<Youtube width={16} height={16} />
-									<Text ml={4}>Youtube</Text>
-								</MenuItem>
-								<MenuItem
-									w='full'
-									h={12}
-									onClick={() =>
-										showEmbedComponent('twitter')
-									}
-								>
-									<Twitter width={16} height={16} />
-									<Text ml={4}>Tweet</Text>
-								</MenuItem>
+								{/*<MenuItem*/}
+								{/*	w='full'*/}
+								{/*	h={12}*/}
+								{/*	onClick={() =>*/}
+								{/*		showEmbedComponent('youtube')*/}
+								{/*	}*/}
+								{/*>*/}
+								{/*	<Youtube width={16} height={16} />*/}
+								{/*	<Text ml={4}>Youtube</Text>*/}
+								{/*</MenuItem>*/}
+								{/*<MenuItem*/}
+								{/*	w='full'*/}
+								{/*	h={12}*/}
+								{/*	onClick={() =>*/}
+								{/*		showEmbedComponent('twitter')*/}
+								{/*	}*/}
+								{/*>*/}
+								{/*	<Twitter width={16} height={16} />*/}
+								{/*	<Text ml={4}>Tweet</Text>*/}
+								{/*</MenuItem>*/}
 							</MenuList>
 						</Menu>
 					</FloatingMenu>
