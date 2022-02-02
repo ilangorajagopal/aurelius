@@ -15,7 +15,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
-import SocialEmbed from '../components/content/SocialEmbedExtension';
+// import SocialEmbed from '../components/content/SocialEmbedExtension';
 import { Autosave } from 'react-autosave';
 import {
 	deleteFromStorage,
