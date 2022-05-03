@@ -105,16 +105,20 @@ export default function Posts(props) {
 											justifyContent='center'
 											spacing={1}
 										>
-											<Text
-												fontSize='2xl'
-												fontWeight='bold'
-												mb={2}
-												title={post.title}
-											>
-												{truncate(post.title, {
-													length: 48,
-												})}
-											</Text>
+											<NextLink href={`/edit/${post.id}`}>
+												<a>
+													<Text
+														fontSize='2xl'
+														fontWeight='bold'
+														mb={2}
+														title={post.title}
+													>
+														{truncate(post.title, {
+															length: 48,
+														})}
+													</Text>
+												</a>
+											</NextLink>
 											<HStack spacing={2}>
 												<Tag>
 													{post.published
@@ -260,23 +264,6 @@ export default function Posts(props) {
 													</PopoverContent>
 												</Portal>
 											</Popover>
-											<NextLink href={`/edit/${post.id}`}>
-												<IconButton
-													aria-label='edit post'
-													icon={
-														<Edit2
-															width={16}
-															height={16}
-														/>
-													}
-													w={10}
-													h={10}
-													d='flex'
-													alignItems='center'
-													justifyContent='center'
-													variant='ghost'
-												/>
-											</NextLink>
 											<Popover>
 												{({ isOpen, onClose }) => (
 													<>
