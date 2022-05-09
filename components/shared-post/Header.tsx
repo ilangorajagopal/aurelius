@@ -32,7 +32,7 @@ export default function Header() {
 			<Grid w='full' h='full' templateColumns='repeat(2, 1fr)' gap={4}>
 				{/* Logo */}
 				<Flex
-					align='center'
+					alignItems='center'
 					justifyContent='start'
 					fontSize='xl'
 					fontWeight='bold'
@@ -68,7 +68,7 @@ export default function Header() {
 				{/* Settings & Account */}
 				<HStack
 					h='full'
-					align='center'
+					alignItems='center'
 					justifyContent='end'
 					fontSize='xl'
 					fontWeight='bold'
@@ -82,8 +82,8 @@ export default function Header() {
 						p={0}
 						rounded='md'
 						d='flex'
-						align='center'
-						justify='center'
+						alignItems='center'
+						justifyContent='center'
 						onClick={toggleMode}
 						variant='ghost'
 					>
@@ -97,8 +97,8 @@ export default function Header() {
 						p={0}
 						rounded='md'
 						d='flex'
-						align='center'
-						justify='center'
+						alignItems='center'
+						justifyContent='center'
 						variant='ghost'
 						onClick={() =>
 							signIn(null, {

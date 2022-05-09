@@ -40,7 +40,7 @@ export default function Footer(props) {
 				{/* Details */}
 				<HStack
 					h='full'
-					align='center'
+					alignItems='center'
 					justifyContent='start'
 					fontSize='xl'
 					fontWeight='bold'
@@ -57,8 +57,8 @@ export default function Footer(props) {
 
 				<HStack
 					h='full'
-					align='center'
-					justify='end'
+					alignItems='center'
+					justifyContent='end'
 					opacity={distractionFreeMode ? '0.1' : '1'}
 					_hover={{ opacity: 1 }}
 				>
@@ -96,7 +96,7 @@ export default function Footer(props) {
 					{/* About */}
 					{!authSession ? (
 						<Flex
-							align='center'
+							alignItems='center'
 							justifyContent='end'
 							fontSize='xl'
 							fontWeight='bold'
@@ -111,8 +111,8 @@ export default function Footer(props) {
 									p={0}
 									rounded='md'
 									d='flex'
-									align='center'
-									justify='center'
+									alignItems='center'
+									justifyContent='center'
 									onClick={onOpen}
 									variant='ghost'
 								>

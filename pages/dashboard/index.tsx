@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { chakra, Flex, Heading } from '@chakra-ui/react';
-import Container from '../components/Container';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Posts from '../components/dashboard/Posts';
-import Stats from '../components/dashboard/Stats';
+import Container from '../../components/Container';
+import Header from '../../components/Header';
+import Stats from '../../components/dashboard/Stats';
+import WritingPaths from '../../components/dashboard/WritingPaths';
+import Posts from '../../components/dashboard/Posts';
+import Footer from '../../components/Footer';
 import { getSession, useSession } from 'next-auth/react';
-import { fetchUserProfile, getGreeting } from '../lib/utils';
-import { usePosts } from '../lib/hooks';
+import { fetchUserProfile, getGreeting } from '../../lib/utils';
+import { usePosts } from '../../lib/hooks';
 
 export default function Dashboard(props) {
 	const { user: authenticatedUser } = props;
@@ -64,6 +65,16 @@ export default function Dashboard(props) {
 						goal={profile?.dailyGoal}
 					/>
 				</Flex>
+				{/*<Flex*/}
+				{/*	w='full'*/}
+				{/*	maxW='container.lg'*/}
+				{/*	h='auto'*/}
+				{/*	alignItems='center'*/}
+				{/*	justifyContent='start'*/}
+				{/*	mb={16}*/}
+				{/*>*/}
+				{/*	<WritingPaths />*/}
+				{/*</Flex>*/}
 				<Posts posts={posts} profile={profile} session={authSession} />
 			</chakra.main>
 			<Footer />

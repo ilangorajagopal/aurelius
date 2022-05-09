@@ -33,17 +33,17 @@ export default function Footer() {
 				{/* Details */}
 				<HStack
 					h='full'
-					align='center'
+					alignItems='center'
 					justifyContent='start'
 					fontSize='xl'
 					fontWeight='bold'
 					color={useColorModeValue('gray.900', 'white')}
 				/>
 
-				<HStack h='full' align='center' justify='end'>
+				<HStack h='full' alignItems='center' justifyContent='end'>
 					{/* About */}
 					<Flex
-						align='center'
+						alignItems='center'
 						justifyContent='end'
 						fontSize='xl'
 						fontWeight='bold'
@@ -58,8 +58,8 @@ export default function Footer() {
 								p={0}
 								rounded='md'
 								d='flex'
-								align='center'
-								justify='center'
+								alignItems='center'
+								justifyContent='center'
 								onClick={onOpen}
 								variant='ghost'
 							>

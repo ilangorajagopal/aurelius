@@ -25,8 +25,8 @@ export default function About(props) {
 				<ModalCloseButton />
 				<ModalBody py={6}>
 					<VStack
-						align='center'
-						justify='center'
+						alignItems='center'
+						justifyContent='center'
 						color={useColorModeValue('gray.900', 'white')}
 						textAlign='center'
 						spacing={4}

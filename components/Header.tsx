@@ -159,7 +159,7 @@ export default function Header(props) {
 		);
 	} else if (session && session?.goal === 'word-count') {
 		sessionComponent = (
-			<HStack align='center' justify='center' spacing={2}>
+			<HStack alignItems='center' justifyContent='center' spacing={2}>
 				<Tooltip label='End Session'>
 					<IconButton
 						aria-label='stop session timer'
@@ -372,7 +372,7 @@ export default function Header(props) {
 			<Grid w='full' h='full' templateColumns='repeat(3, 1fr)' gap={4}>
 				{/* Logo */}
 				<Flex
-					align='center'
+					alignItems='center'
 					justifyContent='start'
 					fontSize='xl'
 					fontWeight='bold'
@@ -411,7 +411,7 @@ export default function Header(props) {
 				<HStack
 					h='full'
 					py={4}
-					align='center'
+					alignItems='center'
 					justifyContent='center'
 					fontSize='xl'
 					fontWeight='bold'
@@ -486,7 +486,7 @@ export default function Header(props) {
 				{/* Settings & Account */}
 				<HStack
 					h='full'
-					align='center'
+					alignItems='center'
 					justifyContent='end'
 					color={useColorModeValue('gray.900', 'white')}
 					spacing={4}
@@ -570,8 +570,8 @@ export default function Header(props) {
 								p={0}
 								rounded='md'
 								d='flex'
-								align='center'
-								justify='center'
+								alignItems='center'
+								justifyContent='center'
 								onClick={() => {
 									if (!isEditorEmpty) {
 										onOpen();
@@ -599,8 +599,8 @@ export default function Header(props) {
 								<ModalContent px={6} py={8}>
 									<ModalBody>
 										<VStack
-											align='center'
-											justify='center'
+											alignItems='center'
+											justifyContent='center'
 											color={useColorModeValue(
 												'gray.900',
 												'white'
@@ -679,8 +679,8 @@ export default function Header(props) {
 								p={0}
 								rounded='md'
 								d='flex'
-								align='center'
-								justify='center'
+								alignItems='center'
+								justifyContent='center'
 								onClick={setDistractionFreeMode.toggle}
 								variant='ghost'
 							>
@@ -694,8 +694,8 @@ export default function Header(props) {
 								p={0}
 								rounded='md'
 								d='flex'
-								align='center'
-								justify='center'
+								alignItems='center'
+								justifyContent='center'
 								onClick={toggleMode}
 								variant='ghost'
 							>
@@ -764,8 +764,8 @@ export default function Header(props) {
 							p={0}
 							rounded='md'
 							d='flex'
-							align='center'
-							justify='center'
+							alignItems='center'
+							justifyContent='center'
 							variant='ghost'
 							onClick={() =>
 								signIn(null, {
@@ -808,8 +808,8 @@ export default function Header(props) {
 					<ModalCloseButton />
 					<ModalBody py={6}>
 						<VStack
-							align='center'
-							justify='center'
+							alignItems='center'
+							justifyContent='center'
 							color={useColorModeValue('gray.900', 'white')}
 							textAlign='center'
 							spacing={4}
