@@ -9,6 +9,7 @@ node_modules
 .eslintcache
 
 # build files
+/.next/
 /build/
 /public/build
 /api/index.js
