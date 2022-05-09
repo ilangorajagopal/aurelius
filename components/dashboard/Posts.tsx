@@ -62,7 +62,7 @@ export default function Posts(props) {
 		<VStack
 			w='full'
 			maxW='container.lg'
-			align='start'
+			alignItems='start'
 			overflowX='hidden'
 			spacing={8}
 		>
