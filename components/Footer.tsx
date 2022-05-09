@@ -111,8 +111,8 @@ export default function Footer(props) {
 									p={0}
 									rounded='md'
 									d='flex'
-									align='center'
-									justify='center'
+									alignItems='center'
+									justifyContent='center'
 									onClick={onOpen}
 									variant='ghost'
 								>
