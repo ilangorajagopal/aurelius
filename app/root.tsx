@@ -74,7 +74,7 @@ const Document = (props: DocumentProps) => {
 				<Meta />
 				<Links />
 			</head>
-			<body className='h-full w-full bg-brand-900'>
+			<body className='h-full w-full bg-brand-900 font-sans'>
 				{props.children}
 				<ScrollRestoration />
 				<Scripts />
