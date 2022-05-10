@@ -12,7 +12,9 @@ node_modules
 /.next/
 /build/
 /public/build
-/api/index.js
+app/tailwind.css
+api/index.js
+api/index.js.map
 
 # environment variables
 .env
