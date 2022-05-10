@@ -17,7 +17,7 @@ export default function Index() {
 				</p>
 				<div className='flex items-center justify-center space-x-4'>
 					<Link to='/app'>
-						<button className='text-md inline-flex justify-center rounded-md border border-transparent bg-brand-100 px-4 py-2 font-medium text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
+						<button className='text-md inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-2 font-semibold text-brand-800 transition-all duration-200 hover:bg-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
 							Start Writing
 						</button>
 					</Link>

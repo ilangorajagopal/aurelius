@@ -1,5 +1,5 @@
 {
-  "name": "synthwave-stack",
+  "name": "aurelius",
   "private": true,
   "description": "",
   "license": "MIT",
@@ -26,9 +26,22 @@
   },
   "dependencies": {
     "@prisma/client": "^3.13.0",
+    "@radix-ui/react-accordion": "^0.1.6",
+    "@radix-ui/react-alert-dialog": "^0.1.7",
+    "@radix-ui/react-avatar": "^0.1.4",
+    "@radix-ui/react-checkbox": "^0.1.5",
+    "@radix-ui/react-dialog": "^0.1.7",
+    "@radix-ui/react-dropdown-menu": "^0.1.6",
     "@radix-ui/react-icons": "^1.1.1",
     "@radix-ui/react-navigation-menu": "^0.1.2",
     "@radix-ui/react-popover": "^0.1.6",
+    "@radix-ui/react-switch": "^0.1.5",
+    "@radix-ui/react-tabs": "^0.1.5",
+    "@radix-ui/react-toast": "^0.1.1",
+    "@radix-ui/react-toggle": "^0.1.4",
+    "@radix-ui/react-toggle-group": "^0.1.5",
+    "@radix-ui/react-toolbar": "^0.1.5",
+    "@radix-ui/react-tooltip": "^0.1.7",
     "@remix-run/node": "1.4.3",
     "@remix-run/react": "1.4.3",
     "@remix-run/vercel": "1.4.3",
@@ -64,5 +77,9 @@
   },
   "engines": {
     "node": ">=14"
-  }
+  },
+  "workspaces": [
+    "app",
+    "common"
+  ]
 }
