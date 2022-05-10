@@ -8,7 +8,7 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from '@remix-run/react'
-import styles from '../styles/tailwind.css'
+import styles from './tailwind.css'
 
 interface DocumentProps {
 	children: React.ReactNode
