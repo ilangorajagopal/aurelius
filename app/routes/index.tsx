@@ -10,7 +10,7 @@ export default function Index() {
 					src='/images/logo_dark.png'
 					alt='Aurelius Logo'
 				/>
-				<div className='flex w-full flex-col items-center justify-center'>
+				<div className='flex w-full flex-col items-center justify-center space-y-2'>
 					<p className='text-center text-lg leading-8 text-white md:w-1/2'>
 						Beautiful, minimal writing app that helps build a
 						writing habit.
