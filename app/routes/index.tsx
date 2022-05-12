@@ -31,7 +31,7 @@ export default function Index() {
 						href='https://twitter.com/aureliusdotink'
 						rel='noreferrer'
 					>
-						<button className='flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-base font-medium leading-8 text-blue-500'>
+						<button className='flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-base font-medium leading-8 text-brand-500'>
 							<span>Twitter</span>
 							<ArrowTopRightIcon className='ml-1 mt-1 h-[18px] w-[18px]' />
 						</button>
