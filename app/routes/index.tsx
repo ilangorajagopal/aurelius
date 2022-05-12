@@ -12,7 +12,7 @@ export default function Index() {
 				/>
 				<div className='flex w-full flex-col items-center justify-center space-y-2'>
 					<p className='text-center text-lg leading-8 text-white md:w-1/2'>
-						Beautiful, minimal writing app that helps build a
+						Beautiful, minimal writing app that helps you build a
 						writing habit.
 					</p>
 					<p className='text-center text-lg leading-8 text-gray-400 md:w-1/2'>
