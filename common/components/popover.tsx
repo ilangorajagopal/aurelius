@@ -1,5 +1,5 @@
-import * as PopoverPrimitive from '@radix-ui/react-popover'
 import type { FC, ReactNode } from 'react'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
 
 const PopoverRoot = PopoverPrimitive.Root
 const PopoverTrigger = PopoverPrimitive.Trigger
