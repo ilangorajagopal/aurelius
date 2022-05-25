@@ -1,11 +1,25 @@
 import { Link } from '@remix-run/react'
+import type { User } from '~/models/user.model'
 import { Popover } from '../../common/components'
 import { Root } from '@radix-ui/react-navigation-menu'
-import { CornersIcon, Cross2Icon, DownloadIcon } from '@radix-ui/react-icons'
+import Avatar from '../../common/components/avatar'
+import DropdownMenu from '../../common/components/dropdown'
+import {
+	CornersIcon,
+	Cross2Icon,
+	DownloadIcon,
+	PersonIcon,
+} from '@radix-ui/react-icons'
 
-export default function Header() {
+type HeaderProps = {
+	user?: User
+}
+
+export default function Header(props: HeaderProps) {
+	const { user } = props
+
 	return (
-		<Root className='flex h-24 w-full items-center justify-center border-b border-gray-800'>
+		<Root className='flex h-24 w-full items-center justify-center border-b border-gray-700'>
 			<div className='container grid h-full w-full grid-cols-3 gap-4 px-16'>
 				<div className='col-span-1 flex h-full items-center justify-start'>
 					<Link to='/'>
@@ -55,11 +69,32 @@ export default function Header() {
 					<button className='flex h-10 w-10 items-center justify-center'>
 						<CornersIcon className='text-white' />
 					</button>
-					<Link to='/app/login'>
-						<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
-							Login
-						</button>
-					</Link>
+					{user ? (
+						<DropdownMenu
+							items={[]}
+							trigger={
+								<button className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-600'>
+									<Avatar
+										src={user?.image || ''}
+										alt='User Profile Image'
+										fallback={
+											user?.name
+												?.charAt(0)
+												?.toUpperCase() || (
+												<PersonIcon className='text-white' />
+											)
+										}
+									/>
+								</button>
+							}
+						/>
+					) : (
+						<Link to='/login'>
+							<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
+								Login
+							</button>
+						</Link>
+					)}
 				</div>
 			</div>
 		</Root>
