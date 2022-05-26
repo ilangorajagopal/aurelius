@@ -5,9 +5,10 @@ import sendEmail from '~/services/email.server'
 import type { User } from '~/models/user.model'
 import { createUser, getUserByEmail } from '~/models/user.model'
 
-let secret = process.env.MAGIC_LINK_SECRET
+const MAGIC_LINK_SECRET = process.env.MAGIC_LINK_SECRET
 
-if (!secret) throw new Error('Missing MAGIC_LINK_SECRET environment variable')
+if (!MAGIC_LINK_SECRET)
+	throw new Error('Missing MAGIC_LINK_SECRET environment variable')
 
 export let auth = new Authenticator<User>(sessionStorage)
 
@@ -16,7 +17,7 @@ auth.use(
 	new EmailLinkStrategy(
 		{
 			sendEmail,
-			secret,
+			secret: MAGIC_LINK_SECRET,
 			callbackURL: '/verify',
 			validateSessionMagicLink: true,
 		},

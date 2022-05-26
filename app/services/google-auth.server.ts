@@ -1,9 +1,18 @@
 import { GoogleStrategy } from 'remix-auth-google'
-import * as User from '~/models/user.model'
-import { auth } from '~/services/auth.server'
+import type { User } from '~/models/user.model'
+import { Authenticator } from 'remix-auth'
+import { sessionStorage } from '~/services/session.server'
+import { findOrCreate } from '~/models/user.model'
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string
+
+if (!GOOGLE_CLIENT_ID)
+	throw new Error('Missing GOOGLE_CLIENT_ID environment variable')
+if (!GOOGLE_CLIENT_SECRET)
+	throw new Error('Missing GOOGLE_CLIENT_SECRET environment variable')
+
+export let auth = new Authenticator<User>(sessionStorage)
 
 auth.use(
 	// @ts-ignore
@@ -14,7 +23,7 @@ auth.use(
 			callbackURL: 'http://localhost:3000/auth/google/callback',
 		},
 		async ({ accessToken, refreshToken, extraParams, profile }) => {
-			return User.findOrCreate({ email: profile.emails[0].value })
+			return findOrCreate({ email: profile.emails[0].value })
 		}
 	)
 )
