@@ -1,8 +1,8 @@
 import { Authenticator } from 'remix-auth'
 import { TwitterStrategy } from 'remix-auth-twitter'
-import type { User } from '~/models/user.model'
+import type { User } from '../models/user.server'
 import { sessionStorage } from '~/services/session.server'
-import { findOrCreate } from '~/models/user.model'
+import { findOrCreate } from '../models/user.server'
 
 const TWITTER_API_KEY = process.env.TWITTER_API_KEY as string
 const TWITTER_API_KEY_SECRET = process.env.TWITTER_API_KEY_SECRET as string

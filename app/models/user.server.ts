@@ -1,5 +1,4 @@
 import { prisma } from '../db.server'
-
 export type { User } from '@prisma/client'
 
 export async function getUserById(id: string) {
@@ -28,9 +27,11 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function createUser(email: string) {
-	return prisma.user.create({
+	const user = await prisma.user.create({
 		data: {
 			email,
 		},
 	})
+
+	return user
 }

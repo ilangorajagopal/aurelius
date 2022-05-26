@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import TipTap from '~/routes/tiptap'
+import { useOutletContext } from '@remix-run/react'
+import type { ContextType } from '~/routes/app'
+import TipTap from './tiptap'
 
 export default function Index() {
-	const [content, setContent] = useState('')
-	const [title, setTitle] = useState('')
-	const [wordCount, setWordCount] = useState(0)
+	const { content, setContent, title, setTitle, setWordCount } =
+		useOutletContext<ContextType>()
 
 	return (
 		<section className='flex h-full w-full flex-grow flex-col items-center justify-start'>

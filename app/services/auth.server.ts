@@ -2,8 +2,8 @@ import { Authenticator } from 'remix-auth'
 import { EmailLinkStrategy } from 'remix-auth-email-link'
 import { sessionStorage } from '~/services/session.server'
 import sendEmail from '~/services/email.server'
-import type { User } from '~/models/user.model'
-import { createUser, getUserByEmail } from '~/models/user.model'
+import type { User } from '~/models/user.server'
+import { createUser, getUserByEmail } from '~/models/user.server'
 
 const MAGIC_LINK_SECRET = process.env.MAGIC_LINK_SECRET
 

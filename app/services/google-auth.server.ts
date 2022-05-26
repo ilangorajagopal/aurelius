@@ -1,8 +1,8 @@
 import { GoogleStrategy } from 'remix-auth-google'
-import type { User } from '~/models/user.model'
+import type { User } from '~/models/user.server'
 import { Authenticator } from 'remix-auth'
 import { sessionStorage } from '~/services/session.server'
-import { findOrCreate } from '~/models/user.model'
+import { findOrCreate } from '~/models/user.server'
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string
