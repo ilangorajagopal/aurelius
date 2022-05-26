@@ -7,21 +7,30 @@ export const DropdownMenuContent = DropdownMenuPrimitive.Content
 export const DropdownMenuItem = DropdownMenuPrimitive.Item
 export const DropdownMenuArrow = DropdownMenuPrimitive.Arrow
 
-type DropdownMenuItemProps = {
-	label: string
-	onClick: () => void
-}
-
 type DropdownMenuProps = {
-	items: DropdownMenuItemProps[]
+	arrowClassName: string | undefined
+	children: ReactNode
+	contentClassName: string
 	trigger: ReactNode
 }
 
-const DropdownMenu: FC<DropdownMenuProps> = ({ items, trigger }) => {
+const DropdownMenu: FC<DropdownMenuProps> = ({
+	arrowClassName,
+	children,
+	contentClassName,
+	trigger,
+}) => {
 	return (
 		<DropdownMenuRoot>
 			<DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
-			<DropdownMenuContent></DropdownMenuContent>
+			<DropdownMenuContent
+				align='end'
+				className={contentClassName}
+				sideOffset={5}
+			>
+				{children}
+				<DropdownMenuArrow className={arrowClassName} offset={14} />
+			</DropdownMenuContent>
 		</DropdownMenuRoot>
 	)
 }

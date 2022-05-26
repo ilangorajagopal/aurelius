@@ -7031,11 +7031,6 @@ remix-utils@^2.2.0:
     type-fest "^2.5.2"
     uuid "^8.3.2"
 
-remix@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/remix/-/remix-1.4.3.tgz#5c671ce4876989d579ff8738accb0a01ef688407"
-  integrity sha512-2MG6y6IrfE9//mm41urKFYZNKfMOnrglSBCmMB1XyvcSQiXrHpOmuMITm7H5LujHwNlqU8REOWpKe/LQABUVHg==
-
 repeat-element@^1.1.2:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/repeat-element/-/repeat-element-1.1.4.tgz#be681520847ab58c7568ac75fbfad28ed42d39e9"

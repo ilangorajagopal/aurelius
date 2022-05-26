@@ -1,7 +1,5 @@
-import { Authenticator } from 'remix-auth'
+import { auth } from '~/services/auth.server'
 import { TwitterStrategy } from 'remix-auth-twitter'
-import type { User } from '../models/user.server'
-import { sessionStorage } from '~/services/session.server'
 import { findOrCreate } from '../models/user.server'
 
 const TWITTER_API_KEY = process.env.TWITTER_API_KEY as string
@@ -11,8 +9,6 @@ if (!TWITTER_API_KEY)
 	throw new Error('Missing TWITTER_API_KEY environment variable')
 if (!TWITTER_API_KEY_SECRET)
 	throw new Error('Missing TWITTER_API_KEY_SECRET environment variable')
-
-export let auth = new Authenticator<User>(sessionStorage)
 
 auth.use(
 	// @ts-ignore

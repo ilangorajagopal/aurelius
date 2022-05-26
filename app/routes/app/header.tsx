@@ -1,9 +1,11 @@
-import { Link } from '@remix-run/react'
+import type { ActionFunction } from '@remix-run/node'
+import { Form, Link } from '@remix-run/react'
+import { Root } from '@radix-ui/react-navigation-menu'
 import type { User } from '~/models/user.server'
 import { Popover } from '../../../common/components'
-import { Root } from '@radix-ui/react-navigation-menu'
 import Avatar from '../../../common/components/avatar'
 import DropdownMenu from '../../../common/components/dropdown'
+import { DropdownMenuItem } from '../../../common/components/dropdown'
 import {
 	CornersIcon,
 	Cross2Icon,
@@ -32,20 +34,20 @@ export default function Header(props: HeaderProps) {
 					</Link>
 				</div>
 				<div className='col-span-1 flex items-center justify-center space-x-4'>
-					{false ? (
+					{false && (
 						<>
 							<Link to='/app'>
-								<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
+								<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-white hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
 									Write
 								</button>
 							</Link>
 							<Link to='/app/dashboard'>
-								<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
+								<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-white hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
 									Dashboard
 								</button>
 							</Link>
 						</>
-					) : null}
+					)}
 				</div>
 				<div className='col-span-1 flex h-full items-center justify-end space-x-4'>
 					{isSaving && (
@@ -99,7 +101,8 @@ export default function Header(props: HeaderProps) {
 					</button>
 					{user ? (
 						<DropdownMenu
-							items={[]}
+							arrowClassName='fill-white'
+							contentClassName='relative h-auto w-[220px] rounded-md bg-white p-2 shadow-md'
 							trigger={
 								<button className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-600'>
 									<Avatar
@@ -115,10 +118,23 @@ export default function Header(props: HeaderProps) {
 									/>
 								</button>
 							}
-						/>
+						>
+							<DropdownMenuItem
+								className='flex items-center justify-start rounded-md outline-none hover:bg-brand-500 hover:text-white'
+								onSelect={(e) => e.preventDefault()}
+							>
+								<div className='h-full w-full'>
+									<Form action='/logout' method='post'>
+										<button className='flex h-full w-full items-center justify-start px-4 py-1'>
+											Logout
+										</button>
+									</Form>
+								</div>
+							</DropdownMenuItem>
+						</DropdownMenu>
 					) : (
 						<Link to='/login'>
-							<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
+							<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-white hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
 								Login
 							</button>
 						</Link>
