@@ -47,6 +47,7 @@ export async function createUser({
 			email,
 			image,
 			name,
+			// @ts-ignore
 			provider,
 		},
 	})
