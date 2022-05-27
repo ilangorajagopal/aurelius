@@ -1,7 +1,6 @@
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -21,6 +20,7 @@ model User {
   image          String?
   role           String?          @default("user")
   dailyGoal      Int?             @default(300)
+  provider       String?
   Post           Post[]
   WritingSession WritingSession[]
 }
@@ -42,7 +42,7 @@ model Post {
   userId         String
   createdAt      DateTime         @default(now())
   updatedAt      DateTime?        @default(now()) @updatedAt
-  wordCount     Int
+  wordCount      Int
   slug           String
   shareId        String
   WritingSession WritingSession[]

@@ -7,5 +7,6 @@ export let loader: LoaderFunction = () => redirect('/login')
 export let action: ActionFunction = ({ request }) => {
 	return auth.authenticate('twitter', request, {
 		successRedirect: '/app',
+		failureRedirect: '/login',
 	})
 }

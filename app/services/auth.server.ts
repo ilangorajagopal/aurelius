@@ -34,7 +34,7 @@ auth.use(
 			if (user) {
 				return user
 			} else {
-				const newUser = await createUser(email)
+				const newUser = await createUser({ email })
 				return newUser
 			}
 		}

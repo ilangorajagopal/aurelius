@@ -93,10 +93,10 @@ export default function Header(props: HeaderProps) {
 					>
 						<h4>New Session</h4>
 					</Popover>
-					<button className='flex h-10 w-10 items-center justify-center'>
+					<button className='flex h-8 w-8 items-center justify-center'>
 						<DownloadIcon className='text-white' />
 					</button>
-					<button className='flex h-10 w-10 items-center justify-center'>
+					<button className='flex h-8 w-8 items-center justify-center'>
 						<CornersIcon className='text-white' />
 					</button>
 					{user ? (
@@ -104,7 +104,7 @@ export default function Header(props: HeaderProps) {
 							arrowClassName='fill-white'
 							contentClassName='relative h-auto w-[220px] rounded-md bg-white p-2 shadow-md'
 							trigger={
-								<button className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-600'>
+								<button className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-600'>
 									<Avatar
 										src={user?.image || ''}
 										alt='User Profile Image'
