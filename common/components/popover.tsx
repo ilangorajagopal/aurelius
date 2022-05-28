@@ -8,10 +8,10 @@ const PopoverArrow = PopoverPrimitive.Arrow
 const PopoverClose = PopoverPrimitive.Close
 
 type PopoverProps = {
-	arrowClassName: string | undefined
-	close: ReactNode | undefined
+	arrowClassName?: string | undefined
+	close?: ReactNode | undefined
 	children: string | ReactNode
-	contentClassName: string
+	contentClassName?: string
 	trigger: ReactNode
 }
 

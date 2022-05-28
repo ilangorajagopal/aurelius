@@ -8,9 +8,9 @@ export const DropdownMenuItem = DropdownMenuPrimitive.Item
 export const DropdownMenuArrow = DropdownMenuPrimitive.Arrow
 
 type DropdownMenuProps = {
-	arrowClassName: string | undefined
+	arrowClassName?: string | undefined
 	children: ReactNode
-	contentClassName: string
+	contentClassName?: string
 	trigger: ReactNode
 }
 
