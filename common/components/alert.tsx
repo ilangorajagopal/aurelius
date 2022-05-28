@@ -34,8 +34,6 @@ const Alert: FC<AlertProps> = ({
 	trigger = null,
 	contentClassName = '',
 }) => {
-	console.log(open)
-
 	return (
 		<AlertRoot open={open} onOpenChange={setOpen}>
 			{trigger && <AlertTrigger>{trigger}</AlertTrigger>}
