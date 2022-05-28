@@ -6,7 +6,6 @@ import {
 	CodeIcon,
 	FontBoldIcon,
 	FontItalicIcon,
-	HeadingIcon,
 	Link2Icon,
 	LinkBreak2Icon,
 	QuoteIcon,
