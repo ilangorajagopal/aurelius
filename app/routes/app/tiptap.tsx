@@ -1,17 +1,19 @@
 import type { Dispatch, FC, SetStateAction } from 'react'
+import { useOutletContext } from '@remix-run/react'
 import { useEffect, useState } from 'react'
-import { useEditor, EditorContent } from '@tiptap/react'
-import { BubbleMenu } from '@tiptap/extension-bubble-menu'
+import { useEditor, BubbleMenu, EditorContent } from '@tiptap/react'
+import BubbleMenuExt from '@tiptap/extension-bubble-menu'
 import { Image } from '@tiptap/extension-image'
 import { Link } from '@tiptap/extension-link'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import { deleteFromStorage, useLocalStorage } from '@rehooks/local-storage'
-import Alert from '../../../common/components/alert'
-import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
-import { useOutletContext } from '@remix-run/react'
-import type { ContextType } from '~/routes/app'
+import Alert from '@components/alert'
 import { ButtonDanger, ButtonPrimary } from '@components/buttons'
+import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
+import type { ContextType } from '~/routes/app'
+import { Editor } from '@tiptap/core'
+import EditorToolbar from '~/routes/app/editor-toolbar'
 
 type TipTapProps = {
 	content: string
@@ -38,13 +40,13 @@ const TipTap: FC<TipTapProps> = ({
 			},
 		},
 		extensions: [
-			BubbleMenu.configure({
+			BubbleMenuExt.configure({
 				tippyOptions: {
 					arrow: true,
 				},
 			}),
 			Image,
-			Link.configure({ openOnClick: false }),
+			Link.configure({ linkOnPaste: true, openOnClick: false }),
 			Placeholder.configure({
 				placeholder: 'Start writing...',
 			}),
@@ -98,6 +100,11 @@ const TipTap: FC<TipTapProps> = ({
 	return (
 		<>
 			<div className='h-auto min-h-max w-full'>
+				{editor && (
+					<BubbleMenu editor={editor}>
+						<EditorToolbar editor={editor} />
+					</BubbleMenu>
+				)}
 				<EditorContent editor={editor} />
 			</div>
 			<Alert
