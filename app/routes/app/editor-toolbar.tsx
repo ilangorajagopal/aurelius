@@ -102,7 +102,8 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 				{toggleLink ? (
 					<div className='flex h-full w-full items-center justify-center space-x-2'>
 						<input
-							className='h-full w-auto px-2 py-1'
+							className='h-full w-auto bg-transparent px-2 py-1 text-white outline-white'
+							onBlur={() => setToggleLink(false)}
 							onChange={(e) => setLink(e.target.value)}
 							onKeyUp={linkChangeHandler}
 							ref={linkInputRef}
@@ -119,7 +120,7 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 									setToggleLink(false)
 								}}
 								padding='p-0'
-								textColor='text-white'
+								textColor='text-black'
 							>
 								<LinkBreak2Icon />
 							</Button>
