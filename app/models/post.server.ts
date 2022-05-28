@@ -14,28 +14,24 @@ export async function getAllPostsFromAuthor(userId: string) {
 }
 
 export async function getPost(id: string) {
-	const post = await prisma.post.findUnique({
+	return await prisma.post.findUnique({
 		where: {
 			id: id,
 		},
 	})
-
-	return post
 }
 
 export async function updatePost(id: string, data: any) {
-	const post = await prisma.post.update({
+	return await prisma.post.update({
 		data,
 		where: {
 			id,
 		},
 	})
-
-	return post
 }
 
 export async function deletePost(id: string) {
-	const deletedPost = await prisma.post.delete({
+	await prisma.post.delete({
 		where: {
 			id,
 		},
@@ -44,7 +40,7 @@ export async function deletePost(id: string) {
 		},
 	})
 
-	const deletedWritingSessions = await prisma.writingSession.deleteMany({
+	await prisma.writingSession.deleteMany({
 		where: {
 			postId: id,
 		},
@@ -53,10 +49,31 @@ export async function deletePost(id: string) {
 	return { message: 'deleted' }
 }
 
-export async function createPost(data: any) {
-	const post = await prisma.post.create({
-		data,
-	})
+type CreatePostParams = {
+	title: string
+	content: string
+	wordCount: number
+	slug: string
+	shareId: string
+	userId: string
+}
 
-	return post
+export async function createPost({
+	title,
+	content,
+	wordCount,
+	slug,
+	shareId,
+	userId,
+}: CreatePostParams) {
+	return await prisma.post.create({
+		data: {
+			title,
+			content,
+			wordCount,
+			slug,
+			shareId,
+			userId,
+		},
+	})
 }

@@ -1,29 +1,42 @@
 import { nanoid } from 'nanoid'
 import type { User } from '~/models/user.server'
-import type { Post } from '~/models/post.server'
-import { createPost, updatePost } from '~/models/post.server'
 
 type Params = {
-	post: Post | null
+	postId: string
 	update: any
 	userId: User['id']
 }
 
 export async function savePostToDb(params: Params) {
-	const { post, update, userId } = params
-	if (post) {
-		const updatedPost = await updatePost(post.id, update)
+	const { postId, update, userId } = params
+	if (postId) {
+		const response = await fetch(`/posts/${postId}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ data: update }),
+		})
+		const data = await response.json()
+		const { post } = data
 
-		return updatedPost
+		return post
 	} else {
+		const { title } = update
 		const id = nanoid(32)
-		const slug = update.title.toLowerCase().split(' ').join('-')
-		const shareId = `${update.title
-			.toLowerCase()
-			.split(' ')
-			.join('-')}-${id}`
+		const slug = title.toLowerCase().split(' ').join('-')
+		const shareId = `${title.toLowerCase().split(' ').join('-')}-${id}`
 		const record = { ...update, slug, shareId, userId }
-		const post = await createPost(record)
+
+		const response = await fetch('/posts', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ data: record }),
+		})
+		const data = await response.json()
+		const { post } = data
 
 		return post
 	}

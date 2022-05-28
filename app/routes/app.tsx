@@ -30,7 +30,7 @@ export default function App() {
 	const { user } = useLoaderData<{ user: User }>()
 	const [content, setContent] = useState('')
 	const [isSaving, setIsSaving] = useState(false)
-	const [post, setPost] = useState(null)
+	const [postId, setPostId] = useState('')
 	const [title, setTitle] = useState('')
 	const [wordCount, setWordCount] = useState(0)
 	const [localPost] = useLocalStorage('aurelius_guest_user_post')
@@ -47,7 +47,7 @@ export default function App() {
 	const savePost = async (data: any) => {
 		if (data.title && data.content && data.wordCount) {
 			setIsSaving(true)
-
+			const { title, content, wordCount } = data
 			const update = {
 				title,
 				content,
@@ -55,13 +55,13 @@ export default function App() {
 			}
 
 			if (user) {
-				const data = await savePostToDb({
-					post,
+				const { id } = await savePostToDb({
+					postId: data.postId,
 					update,
 					userId: user.id,
 				})
-				// @ts-ignore
-				setPost(data)
+
+				setPostId(id)
 			} else {
 				writeStorage('aurelius_guest_user_post', update)
 			}
@@ -70,7 +70,7 @@ export default function App() {
 	}
 
 	const autoSavePost = useCallback(savePost, [])
-	const autoSaveData = { post, title, content, wordCount }
+	const autoSaveData = { postId, title, content, wordCount }
 
 	return (
 		<main className='flex h-full w-full flex-col items-center justify-start'>
