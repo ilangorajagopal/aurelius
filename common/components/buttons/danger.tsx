@@ -16,6 +16,7 @@ const ButtonDanger: FC<ButtonDangerProps> = ({
 	loadingText,
 	onClick,
 	shadow = '',
+	textColor = 'text-white',
 }) => {
 	return (
 		<Button
@@ -25,6 +26,7 @@ const ButtonDanger: FC<ButtonDangerProps> = ({
 			isLoading={isLoading}
 			loadingText={loadingText}
 			onClick={onClick}
+			textColor={textColor}
 		>
 			{children}
 		</Button>

@@ -16,6 +16,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
 	loadingText,
 	onClick,
 	shadow = 'shadow-md',
+	textColor = 'text-white',
 }) => {
 	return (
 		<Button
@@ -25,6 +26,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
 			isLoading={isLoading}
 			loadingText={loadingText}
 			onClick={onClick}
+			textColor={textColor}
 		>
 			{children}
 		</Button>

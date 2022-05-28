@@ -15,9 +15,11 @@ export type ButtonProps = {
 	isDisabled?: boolean
 	isLoading?: boolean
 	loadingText?: string
-	onClick: React.MouseEventHandler<HTMLButtonElement>
+	onClick?: React.MouseEventHandler<HTMLButtonElement>
+	padding?: string
 	leftIcon?: ReactNode
 	rightIcon?: ReactNode
 	shadow?: string
 	size?: ButtonSize
+	textColor?: string
 }
