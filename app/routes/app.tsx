@@ -1,22 +1,25 @@
 import { Outlet, useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { LoaderFunction } from '@remix-run/node'
+import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useState } from 'react'
-import { useLocalStorage, writeStorage } from '@rehooks/local-storage'
+import { writeStorage } from '@rehooks/local-storage'
 import { Autosave } from 'react-autosave'
-import { auth } from '~/services/auth.server'
 import type { User } from '~/models/user.server'
+import { auth } from '~/services/auth.server'
 import Header from '~/routes/app/header'
 import Footer from '~/routes/app/footer'
 import { savePostToDb } from '../../common/utils/save-post'
+import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
 
 export type ContextType = {
 	content: string
-	setContent: (content: string) => void
+	setContent: Dispatch<SetStateAction<string>>
 	title: string
-	setTitle: (title: string) => void
+	setTitle: Dispatch<SetStateAction<string>>
 	wordCount: number
-	setWordCount: (wordCount: number) => void
+	setWordCount: Dispatch<SetStateAction<number>>
+	user: User
 }
 
 export let loader: LoaderFunction = async ({ request }) => {
@@ -33,7 +36,6 @@ export default function App() {
 	const [postId, setPostId] = useState('')
 	const [title, setTitle] = useState('')
 	const [wordCount, setWordCount] = useState(0)
-	const [localPost] = useLocalStorage('aurelius_guest_user_post')
 
 	const context: ContextType = {
 		content,
@@ -42,6 +44,7 @@ export default function App() {
 		setTitle,
 		wordCount,
 		setWordCount,
+		user,
 	}
 
 	const savePost = async (data: any) => {
@@ -63,7 +66,7 @@ export default function App() {
 
 				setPostId(id)
 			} else {
-				writeStorage('aurelius_guest_user_post', update)
+				writeStorage(POST_LOCAL_STORAGE_KEY, update)
 			}
 			setIsSaving(false)
 		}

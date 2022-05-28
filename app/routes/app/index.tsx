@@ -21,6 +21,7 @@ export default function Index() {
 				<TipTap
 					content={content}
 					setContent={setContent}
+					setTitle={setTitle}
 					setWordCount={setWordCount}
 				/>
 			</div>
