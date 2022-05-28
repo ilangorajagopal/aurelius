@@ -96,9 +96,9 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 	return (
 		<Toolbar
 			ariaLabel='Text Formatting Options'
-			className='rounded-md bg-white'
+			className='rounded-md bg-gray-800'
 		>
-			<div className='flex h-12 items-center justify-center space-x-1 overflow-hidden rounded-md p-2'>
+			<div className='flex h-12 items-center justify-center space-x-1 overflow-hidden rounded-md p-2 shadow-md'>
 				{toggleLink ? (
 					<div className='flex h-full w-full items-center justify-center space-x-2'>
 						<input
@@ -119,7 +119,7 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 									setToggleLink(false)
 								}}
 								padding='p-0'
-								textColor='text-black'
+								textColor='text-white'
 							>
 								<LinkBreak2Icon />
 							</Button>
@@ -139,7 +139,7 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 							}`}
 							onClick={option.onClick}
 							padding='p-0'
-							textColor='text-black'
+							textColor='text-white'
 						>
 							{option.node}
 						</Button>
