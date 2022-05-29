@@ -7,6 +7,18 @@ type Params = {
 	userId: User['id']
 }
 
+// @ts-ignore
+export async function uploadImageToS3(data) {
+	const response = await fetch('/upload', {
+		method: 'POST',
+		body: data,
+	})
+	const imageData = await response.json()
+	console.log(imageData.url)
+
+	return imageData.url.replace('s3.eu-west-1.amazonaws.com/', '')
+}
+
 export async function savePostToDb(params: Params) {
 	const { postId, update, userId } = params
 	if (postId) {

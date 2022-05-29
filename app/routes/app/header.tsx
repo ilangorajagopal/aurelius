@@ -103,6 +103,7 @@ export default function Header(props: HeaderProps) {
 						<DropdownMenu
 							arrowClassName='fill-white'
 							contentClassName='relative h-auto w-[220px] rounded-md bg-white p-2 shadow-md'
+							sideOffset={5}
 							trigger={
 								<button className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-600'>
 									<Avatar

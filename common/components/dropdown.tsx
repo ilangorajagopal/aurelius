@@ -8,25 +8,34 @@ export const DropdownMenuItem = DropdownMenuPrimitive.Item
 export const DropdownMenuArrow = DropdownMenuPrimitive.Arrow
 
 type DropdownMenuProps = {
+	align?: 'end' | 'start' | 'center' | undefined
 	arrowClassName?: string | undefined
 	children: ReactNode
 	contentClassName?: string
+	rootClassName?: string
+	side?: 'top' | 'right' | 'bottom' | 'left'
+	sideOffset?: number
 	trigger: ReactNode
 }
 
 const DropdownMenu: FC<DropdownMenuProps> = ({
+	align = 'end',
 	arrowClassName,
 	children,
 	contentClassName,
+	rootClassName = '',
+	side = 'bottom',
+	sideOffset,
 	trigger,
 }) => {
 	return (
 		<DropdownMenuRoot>
 			<DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
 			<DropdownMenuContent
-				align='end'
+				align={align}
 				className={contentClassName}
-				sideOffset={5}
+				side={side}
+				sideOffset={sideOffset}
 			>
 				{children}
 				<DropdownMenuArrow className={arrowClassName} offset={14} />

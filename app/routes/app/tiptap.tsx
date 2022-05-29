@@ -1,19 +1,27 @@
 import type { Dispatch, FC, SetStateAction } from 'react'
 import { useOutletContext } from '@remix-run/react'
-import { useEffect, useState } from 'react'
-import { useEditor, BubbleMenu, EditorContent } from '@tiptap/react'
+import { useEffect, useRef, useState } from 'react'
+import {
+	useEditor,
+	BubbleMenu,
+	EditorContent,
+	FloatingMenu,
+} from '@tiptap/react'
 import BubbleMenuExt from '@tiptap/extension-bubble-menu'
 import { Image } from '@tiptap/extension-image'
 import { Link } from '@tiptap/extension-link'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
+import SuperImage from '../../../common/extensions/super-image'
 import { deleteFromStorage, useLocalStorage } from '@rehooks/local-storage'
+import type { ContextType } from '~/routes/app'
 import Alert from '@components/alert'
 import { ButtonDanger, ButtonPrimary } from '@components/buttons'
 import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
-import type { ContextType } from '~/routes/app'
-import { Editor } from '@tiptap/core'
 import EditorToolbar from '~/routes/app/editor-toolbar'
+import ImageToolbar from '~/routes/app/image-toolbar'
+import EditorFloatingMenu from '~/routes/app/editor-floating-menu'
+import { uploadImageToS3 } from '../../../common/utils/save-post'
 
 type TipTapProps = {
 	content: string
@@ -30,6 +38,7 @@ const TipTap: FC<TipTapProps> = ({
 }) => {
 	const [localPost] = useLocalStorage(POST_LOCAL_STORAGE_KEY)
 	const { user } = useOutletContext<ContextType>()
+	const fileUploadInputRef = useRef(null)
 	const [localPostAlertOpen, setLocalPostAlertOpen] = useState(false)
 
 	const editor = useEditor({
@@ -45,14 +54,15 @@ const TipTap: FC<TipTapProps> = ({
 					arrow: true,
 				},
 			}),
-			Image,
+			SuperImage,
 			Link.configure({ linkOnPaste: true, openOnClick: false }),
 			Placeholder.configure({
 				placeholder: 'Start writing...',
 			}),
+			// @ts-ignore
 			StarterKit.configure({
 				heading: {
-					levels: [1, 2, 3],
+					levels: [2, 3],
 				},
 			}),
 		],
@@ -97,13 +107,48 @@ const TipTap: FC<TipTapProps> = ({
 		}
 	}
 
+	// @ts-ignore
+	const uploadImage = async (event) => {
+		const file = event.target.files[0]
+
+		if (file) {
+			const formData = new FormData()
+			formData.append('image', file)
+
+			const url = await uploadImageToS3(formData)
+			if (url) {
+				editor?.chain().focus().setImage({ src: url }).run()
+			}
+		}
+	}
+
 	return (
 		<>
 			<div className='h-auto min-h-max w-full'>
 				{editor && (
-					<BubbleMenu editor={editor}>
-						<EditorToolbar editor={editor} />
-					</BubbleMenu>
+					<>
+						<BubbleMenu editor={editor}>
+							{editor.isActive('super-image') ? (
+								<ImageToolbar editor={editor} />
+							) : (
+								<EditorToolbar editor={editor} />
+							)}
+						</BubbleMenu>
+						<FloatingMenu editor={editor}>
+							<EditorFloatingMenu
+								editor={editor}
+								fileUploadInputRef={fileUploadInputRef}
+							/>
+							<input
+								accept='image/*'
+								className='hidden'
+								multiple={false}
+								onChange={uploadImage}
+								ref={fileUploadInputRef}
+								type='file'
+							/>
+						</FloatingMenu>
+					</>
 				)}
 				<EditorContent editor={editor} />
 			</div>

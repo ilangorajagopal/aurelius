@@ -1,5 +1,4 @@
 import type { FC, KeyboardEventHandler } from 'react'
-import type { Editor } from '@tiptap/core'
 import { useEffect, useRef, useState } from 'react'
 import Toolbar from '@components/toolbar'
 import {
@@ -13,7 +12,7 @@ import {
 import { Button } from '@components/buttons'
 
 type EditorToolbarProps = {
-	editor: Editor | null
+	editor: any | null
 }
 
 const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
@@ -102,7 +101,11 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 					<div className='flex h-full w-full items-center justify-center space-x-2'>
 						<input
 							className='h-full w-auto bg-transparent px-2 py-1 text-white outline-white'
-							onBlur={() => setToggleLink(false)}
+							onBlur={() => {
+								if (!editor?.getAttributes('link').href) {
+									setToggleLink(false)
+								}
+							}}
 							onChange={(e) => setLink(e.target.value)}
 							onKeyUp={linkChangeHandler}
 							ref={linkInputRef}
@@ -115,7 +118,7 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 								bg='bg-gray-300'
 								className='flex h-full w-8 items-center justify-center rounded-md'
 								onClick={() => {
-									editor.chain().focus().unsetLink().run()
+									editor?.chain().focus().unsetLink().run()
 									setToggleLink(false)
 								}}
 								padding='p-0'
@@ -126,8 +129,9 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
 						)}
 					</div>
 				) : (
-					toolbarOptions.map((option) => (
+					toolbarOptions.map((option, index) => (
 						<Button
+							key={index}
 							aria-label={option.label}
 							bg='bg-transparent'
 							className={`flex h-8 w-8 items-center justify-center rounded-md ${

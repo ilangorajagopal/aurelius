@@ -81,11 +81,21 @@
 	color: #68cef8;
 }
 
-.ProseMirror img {
-	max-width: 100%;
-	height: auto;
-}
-
 .ProseMirror img.ProseMirror-selectednode {
 	outline: 3px solid #68CEF8;
+}
+
+.ProseMirror img.super-image-small {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.ProseMirror img.super-image-medium {
+	max-width: 100%;
+}
+
+.ProseMirror img.super-image-large {
+	max-width: 100vw;
+	margin-right: auto;
+	margin-left: auto;
 }
