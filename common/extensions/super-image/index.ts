@@ -1,6 +1,7 @@
 import { Image } from '@tiptap/extension-image'
 import { mergeAttributes } from '@tiptap/core'
 
+// inspired by: https://github.com/ueberdosis/tiptap/issues/1283
 export default Image.extend({
 	name: 'super-image',
 
