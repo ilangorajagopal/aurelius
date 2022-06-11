@@ -47,6 +47,26 @@ const TipTap: FC<TipTapProps> = ({
 			attributes: {
 				class: '',
 			},
+			// @ts-ignore
+			handlePaste(view, event, slice) {
+				// allow other handlers a chance to deal with this input if we don't take it
+				let handle = false
+
+				// in our case we only want to deal with urls pasted in by themselves
+				// so, we bail if the thing pasted is more than just a single bit of text
+				if (slice.content.childCount > 1) return handle
+
+				slice.content.descendants((node, pos, parent) => {
+					if (node.type.name === 'text') {
+						console.log(node.text)
+						handle = true
+					}
+				})
+
+				const text =
+					// @ts-ignore
+					slice.content?.content[0]?.content?.content[0]?.text
+			},
 		},
 		extensions: [
 			BubbleMenuExt.configure({
