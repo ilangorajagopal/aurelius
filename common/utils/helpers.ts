@@ -12,7 +12,7 @@ export const generateEmbedUrl = (url: string) => {
 	return `https://youtube.com/embed/${videoId}`
 }
 
-export function nodePasteRule(editor: Editor, name: string) {
+export function youtubeEmbedPlugin(editor: Editor, name: string) {
 	const handler = (view: EditorView, slice: Slice) => {
 		if (slice.content.childCount > 1) return false
 

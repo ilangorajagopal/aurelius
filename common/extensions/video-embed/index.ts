@@ -1,7 +1,10 @@
 import type { Editor } from '@tiptap/core'
 import { Node } from '@tiptap/core'
-import { generateEmbedUrl, nodePasteRule } from '../../utils/helpers'
+import { generateEmbedUrl, youtubeEmbedPlugin } from '../../utils/helpers'
 
+// code shamelessly inspired by these two:
+// https://www.codemzy.com/blog/tiptap-video-embed-extension
+// https://gist.github.com/forresto/733db674953fb7dd4f46ab131137423d
 const VideoEmbed = Node.create({
 	name: 'video-embed',
 	group: 'block',
@@ -61,7 +64,7 @@ const VideoEmbed = Node.create({
 	},
 
 	addProseMirrorPlugins() {
-		return [nodePasteRule(this.editor, this.name)]
+		return [youtubeEmbedPlugin(this.editor, this.name)]
 	},
 
 	// @ts-ignore
