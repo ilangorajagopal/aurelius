@@ -8,11 +8,11 @@ import {
 	FloatingMenu,
 } from '@tiptap/react'
 import BubbleMenuExt from '@tiptap/extension-bubble-menu'
-import { Image } from '@tiptap/extension-image'
 import { Link } from '@tiptap/extension-link'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
-import SuperImage from '../../../common/extensions/super-image'
+import SuperImage from '@extensions/super-image'
+import VideoEmbed from '@extensions/video-embed'
 import { deleteFromStorage, useLocalStorage } from '@rehooks/local-storage'
 import type { ContextType } from '~/routes/app'
 import Alert from '@components/alert'
@@ -47,26 +47,6 @@ const TipTap: FC<TipTapProps> = ({
 			attributes: {
 				class: '',
 			},
-			// @ts-ignore
-			handlePaste(view, event, slice) {
-				// allow other handlers a chance to deal with this input if we don't take it
-				let handle = false
-
-				// in our case we only want to deal with urls pasted in by themselves
-				// so, we bail if the thing pasted is more than just a single bit of text
-				if (slice.content.childCount > 1) return handle
-
-				slice.content.descendants((node, pos, parent) => {
-					if (node.type.name === 'text') {
-						console.log(node.text)
-						handle = true
-					}
-				})
-
-				const text =
-					// @ts-ignore
-					slice.content?.content[0]?.content?.content[0]?.text
-			},
 		},
 		extensions: [
 			BubbleMenuExt.configure({
@@ -75,6 +55,7 @@ const TipTap: FC<TipTapProps> = ({
 				},
 			}),
 			SuperImage,
+			VideoEmbed,
 			Link.configure({ linkOnPaste: true, openOnClick: false }),
 			Placeholder.configure({
 				placeholder: 'Start writing...',
@@ -142,18 +123,22 @@ const TipTap: FC<TipTapProps> = ({
 		}
 	}
 
+	let activeToolbar = null
+	if (editor?.isActive('super-image')) {
+		activeToolbar = <ImageToolbar editor={editor} />
+	} else if (
+		!editor?.isActive('super-image') &&
+		!editor?.isActive('video-embed')
+	) {
+		activeToolbar = <EditorToolbar editor={editor} />
+	}
+
 	return (
 		<>
 			<div className='h-auto min-h-max w-full'>
 				{editor && (
 					<>
-						<BubbleMenu editor={editor}>
-							{editor.isActive('super-image') ? (
-								<ImageToolbar editor={editor} />
-							) : (
-								<EditorToolbar editor={editor} />
-							)}
-						</BubbleMenu>
+						<BubbleMenu editor={editor}>{activeToolbar}</BubbleMenu>
 						<FloatingMenu editor={editor}>
 							<EditorFloatingMenu
 								editor={editor}

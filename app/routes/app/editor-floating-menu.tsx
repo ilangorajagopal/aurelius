@@ -1,6 +1,5 @@
-import type { ChangeEventHandler, FC } from 'react'
-import { Fragment, useRef, useState } from 'react'
-import { Form } from '@remix-run/react'
+import type { FC } from 'react'
+import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { PlusIcon } from '@radix-ui/react-icons'
 
@@ -57,6 +56,13 @@ const EditorFloatingMenu: FC<EditorFloatingMenuProps> = ({
 								className={`group flex w-full items-center rounded-md px-2 py-2 text-sm text-white hover:bg-brand-400`}
 							>
 								Bookmark
+							</button>
+						</Menu.Item>
+						<Menu.Item>
+							<button
+								className={`group flex w-full items-center rounded-md px-2 py-2 text-sm text-white hover:bg-brand-400`}
+							>
+								Youtube
 							</button>
 						</Menu.Item>
 					</div>
