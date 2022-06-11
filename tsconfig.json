@@ -12,7 +12,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
-      "@components/*": ["./common/components/*"]
+      "@components/*": ["./common/components/*"],
+      "@extensions/*": ["./common/extensions/*"]
     },
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
