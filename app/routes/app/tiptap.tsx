@@ -121,6 +121,7 @@ const TipTap: FC<TipTapProps> = ({
 			const url = await uploadImageToS3(formData)
 			if (url) {
 				editor?.chain().focus().setImage({ src: url }).run()
+				event.target.value = ''
 			}
 		}
 	}
