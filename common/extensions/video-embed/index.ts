@@ -1,6 +1,6 @@
 import type { Editor } from '@tiptap/core'
 import { Node } from '@tiptap/core'
-import { generateEmbedUrl, youtubeEmbedPlugin } from '../../utils/helpers'
+import { generateEmbedUrl, youtubeEmbedPlugin } from './helpers'
 
 // code shamelessly inspired by these two:
 // https://www.codemzy.com/blog/tiptap-video-embed-extension
