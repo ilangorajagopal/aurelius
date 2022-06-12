@@ -75,6 +75,13 @@ const Document = (props: DocumentProps) => {
 				<Links />
 			</head>
 			<body className='h-full w-full bg-brand-900 font-sans'>
+				{process.env.NODE_ENV === 'production' ? (
+					<script
+						defer
+						data-domain='aurelius.ink'
+						src='https://plausible.io/js/plausible.js'
+					></script>
+				) : null}
 				{props.children}
 				<ScrollRestoration />
 				<Scripts />
