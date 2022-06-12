@@ -22,6 +22,7 @@ import EditorToolbar from '~/routes/app/editor-toolbar'
 import ImageToolbar from '~/routes/app/image-toolbar'
 import EditorFloatingMenu from '~/routes/app/editor-floating-menu'
 import { uploadImageToS3 } from '../../../common/utils/save-post'
+import VisualBookmark from '@extensions/visual-bookmark'
 
 type TipTapProps = {
 	content: string
@@ -56,6 +57,7 @@ const TipTap: FC<TipTapProps> = ({
 			}),
 			SuperImage,
 			VideoEmbed,
+			VisualBookmark,
 			Link.configure({ linkOnPaste: true, openOnClick: false }),
 			Placeholder.configure({
 				placeholder: 'Start writing...',
@@ -128,7 +130,8 @@ const TipTap: FC<TipTapProps> = ({
 		activeToolbar = <ImageToolbar editor={editor} />
 	} else if (
 		!editor?.isActive('super-image') &&
-		!editor?.isActive('video-embed')
+		!editor?.isActive('video-embed') &&
+		!editor?.isActive('visual-bookmark')
 	) {
 		activeToolbar = <EditorToolbar editor={editor} />
 	}

@@ -1,60 +1,103 @@
-import { Plugin, PluginKey } from 'prosemirror-state'
-import type { Editor } from '@tiptap/core'
-import type { EditorView } from 'prosemirror-view'
-import type { Slice } from 'prosemirror-model'
+import cheerio from 'cheerio'
+import { extract, hasProvider } from 'oembed-parser'
 
-export const youtubeRegExp =
-	/^(?:(?:https?:)?\/\/)?(?:www\.)?(?:m\.)?(?:youtu(?:be)?\.com\/(?:v\/|embed\/|watch(?:\/|\?v=))|youtu\.be\/)((?:\w|-){11})(?:\S+)?$/g
+export const findUrlWithProvider = (url: string) => {
+	let provider
 
-export const generateEmbedUrl = (url: string) => {
-	const match = youtubeRegExp.exec(url)
-	const videoId = match?.[1]
-	return `https://youtube.com/embed/${videoId}`
-}
+	// build up a list of URL variations to test against because the oembed
+	// providers list is not always up to date with scheme or www vs non-www
+	let baseUrl = url.replace(/^\/\/|^https?:\/\/(?:www\.)?/, '')
+	let testUrls = [
+		`http://${baseUrl}`,
+		`https://${baseUrl}`,
+		`http://www.${baseUrl}`,
+		`https://www.${baseUrl}`,
+	]
 
-export function youtubeEmbedPlugin(editor: Editor, name: string) {
-	const handler = (view: EditorView, slice: Slice) => {
-		if (slice.content.childCount > 1) return false
-
-		const { state } = view
-		const { selection } = state
-		const { empty } = selection
-
-		if (!empty) return false
-
-		const pos = selection.$head
-		const node = pos.node()
-
-		if (node.content.size > 0) return false
-
-		let textContent = ''
-
-		slice.content.forEach((node) => {
-			textContent += node.textContent
-		})
-
-		const src = generateEmbedUrl(textContent)
-
-		editor
-			.chain()
-			.focus()
-			.insertContentAt(pos.before(), [
-				{
-					type: name,
-					attrs: { src, provider: 'youtube' },
-				},
-			])
-			.run()
-
-		return true
+	for (let testUrl of testUrls) {
+		provider = hasProvider(testUrl)
+		if (provider) {
+			url = testUrl
+			break
+		}
 	}
 
-	return new Plugin({
-		key: new PluginKey<any>('handlePasteVideoURL'),
-		props: {
-			handlePaste: (view, event, slice) => {
-				return handler(view, slice)
-			},
-		},
+	return { url, provider }
+}
+
+export const getOembed = async (url: string) => {
+	try {
+		const oembed = await extract(url)
+		return oembed
+	} catch (e) {
+		console.trace(e)
+		return null
+	}
+}
+
+export const getOembedFromLink = async (url: string) => {
+	// if provider is not in the list, then check to see if there's an oembed link tag
+	const response = await fetch(url, {
+		method: 'GET',
+		redirect: 'follow',
 	})
+	const data = await response.text()
+	try {
+		const html = cheerio.parseHTML(data)
+		const oembedUrl = cheerio(
+			'link[type="application/json+oembed"]',
+			html
+		).attr('href')
+
+		if (!oembedUrl) return null
+
+		const oembedResponse = fetch(oembedUrl, {
+			method: 'GET',
+			redirect: 'follow',
+		})
+
+		console.log('response: ', oembedResponse)
+		return {}
+	} catch (e) {
+		console.trace(e)
+		return null
+	}
+}
+
+export const getOembedDataFromScraper = async (url: string) => {
+	const metascraper = require('metascraper')([
+		require('metascraper-url')(),
+		require('metascraper-title')(),
+		require('metascraper-description')(),
+		require('metascraper-author')(),
+		require('metascraper-publisher')(),
+		require('metascraper-image')(),
+		require('metascraper-logo-favicon')(),
+		require('metascraper-logo')(),
+	])
+	const response = await fetch(url, {
+		method: 'GET',
+		redirect: 'follow',
+	})
+	const data = await response.text()
+
+	try {
+		const html = cheerio.parseHTML(data)
+		const scraperResponse = await metascraper({ html, url })
+		const metadata = Object.assign({}, scraperResponse, {
+			thumbnail: scraperResponse.image,
+			icon: scraperResponse.logo,
+		})
+
+		delete metadata.image
+		delete metadata.logo
+
+		return {
+			url,
+			metadata,
+		}
+	} catch (e) {
+		console.trace(e)
+		return null
+	}
 }
