@@ -93,9 +93,9 @@ export default function Header(props: HeaderProps) {
 					>
 						<h4>New Session</h4>
 					</Popover>
-					<button className='flex h-8 w-8 items-center justify-center'>
-						<DownloadIcon className='text-white' />
-					</button>
+					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}
+					{/*	<DownloadIcon className='text-white' />*/}
+					{/*</button>*/}
 					<button className='flex h-8 w-8 items-center justify-center'>
 						<CornersIcon className='text-white' />
 					</button>
