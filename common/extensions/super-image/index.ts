@@ -17,7 +17,7 @@ export default Image.extend({
 			// @ts-ignore
 			...Image.config.addAttributes(),
 			size: {
-				default: 'medium',
+				default: 'small',
 				rendered: false,
 			},
 		}

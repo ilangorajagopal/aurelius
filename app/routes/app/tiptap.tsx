@@ -138,7 +138,7 @@ const TipTap: FC<TipTapProps> = ({
 
 	return (
 		<>
-			<div className='h-auto min-h-max w-full'>
+			<div className='editor-wrapper flex h-auto min-h-max w-full items-start justify-center'>
 				{editor && (
 					<>
 						<BubbleMenu editor={editor}>{activeToolbar}</BubbleMenu>

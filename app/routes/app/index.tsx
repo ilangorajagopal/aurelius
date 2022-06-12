@@ -8,8 +8,8 @@ export default function Index() {
 
 	return (
 		<section className='flex h-full w-full flex-grow flex-col items-center justify-start'>
-			<div className='h-full w-full max-w-3xl space-y-4 py-16'>
-				<div className='w-full'>
+			<div className='flex h-full w-full flex-col items-center justify-start space-y-4 py-16'>
+				<div className='w-full max-w-3xl'>
 					<input
 						className='h-24 w-full bg-transparent text-5xl font-semibold text-white focus:outline-none'
 						onChange={(e) => setTitle(e.target.value)}
