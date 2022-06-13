@@ -12,17 +12,24 @@ import {
 	DownloadIcon,
 	PersonIcon,
 } from '@radix-ui/react-icons'
+import type { Dispatch, SetStateAction } from 'react'
 
 type HeaderProps = {
+	focusMode: boolean
+	setFocusMode: Dispatch<SetStateAction<boolean>>
 	isSaving: boolean
 	user?: User
 }
 
 export default function Header(props: HeaderProps) {
-	const { isSaving, user } = props
+	const { focusMode, setFocusMode, isSaving, user } = props
 
 	return (
-		<Root className='flex h-24 w-full items-center justify-center border-b border-gray-700'>
+		<Root
+			className={`flex h-24 w-full items-center justify-center border-b border-gray-700 transition-all duration-200 hover:opacity-100 ${
+				focusMode ? 'opacity-5' : 'opacity-100'
+			}`}
+		>
 			<div className='container grid h-full w-full grid-cols-3 gap-4 px-16'>
 				<div className='col-span-1 flex h-full items-center justify-start'>
 					<Link to='/'>
@@ -96,7 +103,10 @@ export default function Header(props: HeaderProps) {
 					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}
 					{/*	<DownloadIcon className='text-white' />*/}
 					{/*</button>*/}
-					<button className='flex h-8 w-8 items-center justify-center'>
+					<button
+						className='flex h-8 w-8 items-center justify-center'
+						onClick={() => setFocusMode(!focusMode)}
+					>
 						<CornersIcon className='text-white' />
 					</button>
 					{user ? (

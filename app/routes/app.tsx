@@ -32,6 +32,7 @@ export let loader: LoaderFunction = async ({ request }) => {
 export default function App() {
 	const { user } = useLoaderData<{ user: User }>()
 	const [content, setContent] = useState('')
+	const [focusMode, setFocusMode] = useState(false)
 	const [isSaving, setIsSaving] = useState(false)
 	const [postId, setPostId] = useState('')
 	const [title, setTitle] = useState('')
@@ -77,14 +78,19 @@ export default function App() {
 
 	return (
 		<main className='flex h-full w-full flex-col items-center justify-start'>
-			<Header isSaving={isSaving} user={user} />
+			<Header
+				focusMode={focusMode}
+				setFocusMode={setFocusMode}
+				isSaving={isSaving}
+				user={user}
+			/>
 			<Autosave
 				data={autoSaveData}
 				interval={5000}
 				onSave={autoSavePost}
 			/>
 			<Outlet context={context} />
-			<Footer wordCount={wordCount} />
+			<Footer focusMode={focusMode} wordCount={wordCount} />
 		</main>
 	)
 }
