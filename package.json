@@ -76,6 +76,7 @@
     "metascraper-title": "^5.29.7",
     "metascraper-url": "^5.29.7",
     "nanoid": "3.3.4",
+    "nprogress": "^0.2.0",
     "oembed-parser": "^3.0.4",
     "prosemirror-state": "^1.4.0",
     "react": "17.0.2",

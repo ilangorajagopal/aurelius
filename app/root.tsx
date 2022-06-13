@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import {
 	Links,
@@ -7,7 +7,10 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useTransition,
 } from '@remix-run/react'
+import NProgress from 'nprogress'
+import nProgressStyles from 'nprogress/nprogress.css'
 import styles from './tailwind.css'
 
 interface DocumentProps {
@@ -68,6 +71,16 @@ export const meta: MetaFunction = () => ({
 })
 
 const Document = (props: DocumentProps) => {
+	const transition = useTransition()
+
+	useEffect(() => {
+		// when the state is idle then we can to complete the progress bar
+		if (transition.state === 'idle') NProgress.done()
+		// and when it's something else it means it's either submitting a form or
+		// waiting for the loaders of the next location, so we start it
+		else NProgress.start()
+	}, [transition.state])
+
 	return (
 		<html lang='en' className='h-full'>
 			<head>
