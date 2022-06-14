@@ -2,10 +2,11 @@ import type { ActionFunction } from '@remix-run/node'
 import { Form, Link } from '@remix-run/react'
 import { Root } from '@radix-ui/react-navigation-menu'
 import type { User } from '~/models/user.server'
-import { Popover } from '../../../common/components'
-import Avatar from '../../../common/components/avatar'
-import DropdownMenu from '../../../common/components/dropdown'
-import { DropdownMenuItem } from '../../../common/components/dropdown'
+import Popover from '@components/popover'
+import Avatar from '@components/avatar'
+import DropdownMenu from '@components/dropdown'
+import { DropdownMenuItem } from '@components/dropdown'
+import RadioGroup from '@components/radio-group'
 import {
 	CornersIcon,
 	Cross2Icon,
@@ -13,6 +14,19 @@ import {
 	PersonIcon,
 } from '@radix-ui/react-icons'
 import type { Dispatch, SetStateAction } from 'react'
+
+const sessionGoalOptions = [
+	{
+		id: 'duration',
+		label: 'Duration',
+		value: 'duration',
+	},
+	{
+		id: 'wordCount',
+		label: 'Word Count',
+		value: 'wordCount',
+	},
+]
 
 type HeaderProps = {
 	focusMode: boolean
@@ -85,20 +99,37 @@ export default function Header(props: HeaderProps) {
 						</div>
 					)}
 					<Popover
-						arrowClassName='fill-white'
+						arrowClassName='fill-black'
 						close={
 							<button className='absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-transparent transition-colors duration-200 hover:bg-brand-100'>
 								<Cross2Icon />
 							</button>
 						}
-						contentClassName='relative h-72 w-96 rounded-md bg-white p-4'
+						contentClassName='relative h-72 w-96 rounded-md bg-black text-white p-4'
 						trigger={
 							<button className='inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-1 text-sm font-semibold text-gray-200 hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 focus-visible:ring-offset-2'>
 								New Session
 							</button>
 						}
 					>
-						<h4>New Session</h4>
+						<h4 className='text-white'>New Session</h4>
+						<form
+							className='grid grid-cols-5'
+							action='/session/new'
+							method='post'
+						>
+							<label
+								htmlFor='session_goal'
+								className='col-span-3'
+							>
+								Session Goal
+							</label>
+							<RadioGroup
+								className='col-span-2'
+								defaultValue='duration'
+								options={sessionGoalOptions}
+							/>
+						</form>
 					</Popover>
 					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}
 					{/*	<DownloadIcon className='text-white' />*/}
