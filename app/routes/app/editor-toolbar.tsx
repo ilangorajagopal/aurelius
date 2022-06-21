@@ -11,7 +11,7 @@ import {
 } from '@radix-ui/react-icons'
 import { Button } from '@components/buttons'
 
-type EditorToolbarProps = {
+interface EditorToolbarProps {
 	editor: any | null
 }
 

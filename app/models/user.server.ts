@@ -29,7 +29,7 @@ export async function getUserByEmail(email: string) {
 	return user
 }
 
-type CreateUserParams = {
+interface CreateUserParams {
 	email: string
 	image?: string
 	name?: string

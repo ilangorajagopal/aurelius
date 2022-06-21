@@ -12,7 +12,7 @@ import Footer from '~/routes/app/footer'
 import { savePostToDb } from '../../common/utils/save-post'
 import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
 
-export type ContextType = {
+export interface ContextType {
 	content: string
 	setContent: Dispatch<SetStateAction<string>>
 	title: string

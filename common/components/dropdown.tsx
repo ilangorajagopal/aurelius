@@ -7,7 +7,7 @@ export const DropdownMenuContent = DropdownMenuPrimitive.Content
 export const DropdownMenuItem = DropdownMenuPrimitive.Item
 export const DropdownMenuArrow = DropdownMenuPrimitive.Arrow
 
-type DropdownMenuProps = {
+interface DropdownMenuProps {
 	align?: 'end' | 'start' | 'center' | undefined
 	arrowClassName?: string | undefined
 	children: ReactNode

@@ -9,6 +9,7 @@ import {
 	ScrollRestoration,
 	useTransition,
 } from '@remix-run/react'
+// @ts-ignore
 import NProgress from 'nprogress'
 import nProgressStyles from 'nprogress/nprogress.css'
 import styles from './tailwind.css'

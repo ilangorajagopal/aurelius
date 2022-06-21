@@ -5,7 +5,7 @@ export const AvatarRoot = AvatarPrimitive.Root
 export const AvatarImage = AvatarPrimitive.Image
 export const AvatarFallback = AvatarPrimitive.Fallback
 
-type AvatarProps = {
+interface AvatarProps {
 	src?: string
 	alt?: string
 	fallback?: ReactNode | string

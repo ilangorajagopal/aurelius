@@ -7,7 +7,7 @@ export const ToolbarLink = ToolbarPrimitive.Link
 export const ToolbarToggleGroup = ToolbarPrimitive.ToggleGroup
 export const ToolbarToggleItem = ToolbarPrimitive.ToggleItem
 
-type ToolbarProps = {
+interface ToolbarProps {
 	ariaLabel: string
 	children: ReactNode
 	className?: string

@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { PlusIcon } from '@radix-ui/react-icons'
 
-type EditorFloatingMenuProps = {
+interface EditorFloatingMenuProps {
 	editor: any
 	fileUploadInputRef: any
 }

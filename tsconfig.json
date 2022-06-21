@@ -13,7 +13,8 @@
     "paths": {
       "~/*": ["./app/*"],
       "@components/*": ["./common/components/*"],
-      "@extensions/*": ["./common/extensions/*"]
+      "@extensions/*": ["./common/extensions/*"],
+      "@utils/*": ["./common/utils/*"]
     },
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,

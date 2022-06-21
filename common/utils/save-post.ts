@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import type { User } from '~/models/user.server'
 
-type Params = {
+interface Params {
 	postId: string
 	update: any
 	userId: User['id']

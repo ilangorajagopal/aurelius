@@ -7,7 +7,7 @@ const PopoverContent = PopoverPrimitive.Content
 const PopoverArrow = PopoverPrimitive.Arrow
 const PopoverClose = PopoverPrimitive.Close
 
-type PopoverProps = {
+interface PopoverProps {
 	arrowClassName?: string | undefined
 	close?: ReactNode | undefined
 	children: string | ReactNode

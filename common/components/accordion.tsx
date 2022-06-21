@@ -10,7 +10,7 @@ const AccordionContent = AccordionPrimitive.Content
 const AccordionItem = AccordionPrimitive.Item
 const AccordionTrigger = AccordionPrimitive.Trigger
 
-type AccordionItemType = {
+interface AccordionItemType {
 	id: string
 	title: string | ReactNode
 	content: string | ReactNode

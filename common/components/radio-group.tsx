@@ -26,15 +26,17 @@ const RadioGroup: FC<RadioGroupProps> = ({
 	return (
 		<RadioGroupRoot className={className} defaultValue={defaultValue}>
 			{options.map((option) => (
-				<RadioGroupItem
-					className='flex items-center space-x-2'
-					key={option.id}
-					id={option.id}
-					value={option.value}
-				>
-					<RadioGroupIndicator />
+				<div className='flex items-center space-x-2'>
+					<RadioGroupItem
+						className='h-6 w-6 rounded-full border-2 border-brand-500 hover:bg-brand-50 hover:bg-opacity-20'
+						key={option.id}
+						id={option.id}
+						value={option.value}
+					>
+						<RadioGroupIndicator className='relative flex h-full w-full items-center justify-center after:block after:h-3 after:w-3 after:rounded-full after:bg-brand-500 after:content-[""]' />
+					</RadioGroupItem>
 					<label htmlFor={option.id}>{option.label}</label>
-				</RadioGroupItem>
+				</div>
 			))}
 		</RadioGroupRoot>
 	)

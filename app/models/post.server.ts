@@ -49,7 +49,7 @@ export async function deletePost(id: string) {
 	return { message: 'deleted' }
 }
 
-type CreatePostParams = {
+interface CreatePostParams {
 	title: string
 	content: string
 	wordCount: number

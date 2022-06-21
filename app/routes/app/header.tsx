@@ -14,6 +14,8 @@ import {
 	PersonIcon,
 } from '@radix-ui/react-icons'
 import type { Dispatch, SetStateAction } from 'react'
+import { Switch } from '@radix-ui/react-switch'
+import { Button } from '@components/buttons'
 
 const sessionGoalOptions = [
 	{
@@ -98,23 +100,42 @@ export default function Header(props: HeaderProps) {
 							</span>
 						</div>
 					)}
+					{/*<Popover*/}
+					{/*	arrowClassName='fill-gray-800'*/}
+					{/*	close={*/}
+					{/*		<button className='absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-transparent transition-colors duration-200 hover:bg-brand-100'>*/}
+					{/*			<Cross2Icon />*/}
+					{/*		</button>*/}
+					{/*	}*/}
+					{/*	contentClassName='relative h-72 w-96 rounded-md bg-gray-800 text-white p-4 space-y-4'*/}
+					{/*	trigger={*/}
+					{/*		<button className='inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-1 text-sm font-semibold text-gray-200 hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 focus-visible:ring-offset-2'>*/}
+					{/*			New Session*/}
+					{/*		</button>*/}
+					{/*	}>*/}
+					{/*	<h4 className='font-semibold text-white'>*/}
+					{/*		New Session*/}
+					{/*	</h4>*/}
+					{/*</Popover>*/}
 					<Popover
-						arrowClassName='fill-black'
+						arrowClassName='fill-gray-800'
 						close={
 							<button className='absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-transparent transition-colors duration-200 hover:bg-brand-100'>
 								<Cross2Icon />
 							</button>
 						}
-						contentClassName='relative h-72 w-96 rounded-md bg-black text-white p-4'
+						contentClassName='relative h-72 w-96 rounded-md bg-gray-800 text-white p-4 space-y-4'
 						trigger={
 							<button className='inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-1 text-sm font-semibold text-gray-200 hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 focus-visible:ring-offset-2'>
 								New Session
 							</button>
 						}
 					>
-						<h4 className='text-white'>New Session</h4>
+						<h4 className='font-semibold text-white'>
+							New Session
+						</h4>
 						<form
-							className='grid grid-cols-5'
+							className='grid grid-cols-5 gap-4'
 							action='/session/new'
 							method='post'
 						>
@@ -122,13 +143,38 @@ export default function Header(props: HeaderProps) {
 								htmlFor='session_goal'
 								className='col-span-3'
 							>
-								Session Goal
+								Session Type
 							</label>
 							<RadioGroup
-								className='col-span-2'
+								className='col-span-2 space-y-2'
 								defaultValue='duration'
 								options={sessionGoalOptions}
 							/>
+							<label
+								htmlFor='session_target'
+								className='col-span-3'
+							>
+								Target
+							</label>
+							<div className='col-span-2 space-x-2'>
+								<input />
+								<span>minutes</span>
+							</div>
+							<label
+								htmlFor='session_end_notification'
+								className='col-span-3'
+							>
+								Notify when session ends
+							</label>
+							<Switch />
+							<label
+								htmlFor='session_music'
+								className='col-span-3'
+							>
+								Music
+							</label>
+							<Switch />
+							<Button>Start</Button>
 						</form>
 					</Popover>
 					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}

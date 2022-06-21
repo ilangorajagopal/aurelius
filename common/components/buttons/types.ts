@@ -8,9 +8,9 @@ export enum ButtonSize {
 	XS,
 }
 
-export type ButtonProps = {
+export interface ButtonProps {
 	bg?: string
-	children: ReactNode | string
+	children?: ReactNode | string
 	className?: string
 	isDisabled?: boolean
 	isLoading?: boolean
