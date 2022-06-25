@@ -1,7 +1,5 @@
-import React from 'react'
 import type { FC } from 'react'
 import type { ButtonProps } from './types'
-import { ButtonSize } from './types'
 
 const Button: FC<ButtonProps> = ({
 	bg = 'bg-gray-700',
@@ -13,7 +11,6 @@ const Button: FC<ButtonProps> = ({
 	onClick,
 	padding = 'px-4 py-1',
 	shadow = '',
-	size = ButtonSize.MD,
 	textColor = 'text-gray-200',
 }) => {
 	return (
