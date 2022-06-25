@@ -16,7 +16,7 @@ import VideoEmbed from '@extensions/video-embed'
 import { deleteFromStorage, useLocalStorage } from '@rehooks/local-storage'
 import type { ContextType } from '~/routes/app'
 import Alert from '@components/alert'
-import { ButtonDanger, ButtonPrimary } from '@components/buttons'
+import { DangerButton, PrimaryButton } from '@components/buttons'
 import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
 import EditorToolbar from '~/routes/app/editor-toolbar'
 import ImageToolbar from '~/routes/app/image-toolbar'
@@ -165,14 +165,14 @@ const TipTap: FC<TipTapProps> = ({
 				open={localPostAlertOpen}
 				setOpen={setLocalPostAlertOpen}
 				cancel={
-					<ButtonDanger onClick={discardLocalPost}>
+					<DangerButton onClick={discardLocalPost}>
 						Discard Post
-					</ButtonDanger>
+					</DangerButton>
 				}
 				action={
-					<ButtonPrimary onClick={loadLocalPost}>
+					<PrimaryButton onClick={loadLocalPost}>
 						Load Saved Post
-					</ButtonPrimary>
+					</PrimaryButton>
 				}
 				description='We found your post from a previous session. Do you want to load it?'
 				contentClassName='fixed top-28 right-1/2 translate-x-1/2 z-10 w-[960px] h-[4rem] flex items-center justify-between bg-gray-800 text-white px-8'

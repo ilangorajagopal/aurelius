@@ -1,10 +1,11 @@
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Form, useLoaderData } from '@remix-run/react'
+import { Form, useLoaderData, useTransition } from '@remix-run/react'
 import { auth } from '~/services/auth.server'
 import { sessionStorage } from '~/services/session.server'
 import { Container } from '~/routes/index'
-import { FaTwitter } from 'react-icons/fa'
+import { PrimaryButton } from '@components/buttons'
+// import { FaTwitter } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 
 export let loader: LoaderFunction = async ({ request }) => {
@@ -27,6 +28,7 @@ export let action: ActionFunction = async ({ request }) => {
 
 export default function () {
 	let { magicLinkSent } = useLoaderData<{ magicLinkSent: boolean }>()
+	const transition = useTransition()
 
 	return (
 		<Container>
@@ -57,12 +59,17 @@ export default function () {
 								required
 							/>
 						</div>
-						<button className='flex h-12 w-full items-center justify-center rounded-md bg-brand-500'>
+						<PrimaryButton
+							className='h-12 w-full'
+							isLoading={transition.state === 'submitting'}
+							loadingText=''
+							type='submit'
+						>
 							Sign In
-						</button>
+						</PrimaryButton>
 					</div>
 					{magicLinkSent && (
-						<div className='my-4 w-96 text-center'>
+						<div className='mt-4 flex h-16 w-96 items-center justify-center rounded-lg border border-brand-500 bg-brand-50 bg-opacity-20 text-left text-sm text-brand-500'>
 							<p>
 								A sign in link has been sent to your email
 								address.

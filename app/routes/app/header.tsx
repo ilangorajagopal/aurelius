@@ -1,21 +1,14 @@
-import type { ActionFunction } from '@remix-run/node'
 import { Form, Link } from '@remix-run/react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Root } from '@radix-ui/react-navigation-menu'
 import type { User } from '~/models/user.server'
 import Popover from '@components/popover'
 import Avatar from '@components/avatar'
 import DropdownMenu from '@components/dropdown'
-import { DropdownMenuItem } from '@components/dropdown'
 import RadioGroup from '@components/radio-group'
-import {
-	CornersIcon,
-	Cross2Icon,
-	DownloadIcon,
-	PersonIcon,
-} from '@radix-ui/react-icons'
-import type { Dispatch, SetStateAction } from 'react'
-import { Switch } from '@radix-ui/react-switch'
-import { Button } from '@components/buttons'
+import Switch from '@components/switch'
+import { CornersIcon, ExitIcon, PersonIcon } from '@radix-ui/react-icons'
+import { PrimaryButton } from '@components/buttons'
 
 const sessionGoalOptions = [
 	{
@@ -39,6 +32,20 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
 	const { focusMode, setFocusMode, isSaving, user } = props
+
+	const profileMenuItems = [
+		{
+			icon: (<ExitIcon />) as ReactNode,
+			label: (
+				<Form action='/logout' method='post'>
+					<button className='flex h-full w-full items-center justify-start px-4 py-1'>
+						Logout
+					</button>
+				</Form>
+			) as ReactNode,
+			onSelect: (e: Event) => e.preventDefault(),
+		},
+	]
 
 	return (
 		<Root
@@ -118,64 +125,69 @@ export default function Header(props: HeaderProps) {
 					{/*	</h4>*/}
 					{/*</Popover>*/}
 					<Popover
-						arrowClassName='fill-gray-800'
-						close={
-							<button className='absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-transparent transition-colors duration-200 hover:bg-brand-100'>
-								<Cross2Icon />
-							</button>
-						}
-						contentClassName='relative h-72 w-96 rounded-md bg-gray-800 text-white p-4 space-y-4'
+						title='New Session'
 						trigger={
 							<button className='inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-1 text-sm font-semibold text-gray-200 hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 focus-visible:ring-offset-2'>
 								New Session
 							</button>
 						}
 					>
-						<h4 className='font-semibold text-white'>
-							New Session
-						</h4>
-						<form
-							className='grid grid-cols-5 gap-4'
-							action='/session/new'
-							method='post'
-						>
-							<label
-								htmlFor='session_goal'
-								className='col-span-3'
+						<div className='mt-4 w-96'>
+							<form
+								className='grid w-full grid-cols-5 gap-4'
+								action='/session/new'
+								method='post'
 							>
-								Session Type
-							</label>
-							<RadioGroup
-								className='col-span-2 space-y-2'
-								defaultValue='duration'
-								options={sessionGoalOptions}
-							/>
-							<label
-								htmlFor='session_target'
-								className='col-span-3'
-							>
-								Target
-							</label>
-							<div className='col-span-2 space-x-2'>
-								<input />
-								<span>minutes</span>
-							</div>
-							<label
-								htmlFor='session_end_notification'
-								className='col-span-3'
-							>
-								Notify when session ends
-							</label>
-							<Switch />
-							<label
-								htmlFor='session_music'
-								className='col-span-3'
-							>
-								Music
-							</label>
-							<Switch />
-							<Button>Start</Button>
-						</form>
+								<label
+									htmlFor='session_goal'
+									className='col-span-3 text-sm'
+								>
+									Session Type
+								</label>
+								<RadioGroup
+									className='col-span-2 space-y-2'
+									defaultValue='duration'
+									options={sessionGoalOptions}
+								/>
+								<label
+									htmlFor='session_target'
+									className='col-span-3 text-sm'
+								>
+									Target
+								</label>
+								<div className='col-span-2 flex items-center justify-start space-x-2'>
+									<input
+										className='h-8 w-16 rounded-md border border-white bg-transparent px-2 py-1 text-sm'
+										defaultValue={30}
+										type='number'
+									/>
+									<span className='text-sm'>minutes</span>
+								</div>
+								<label
+									htmlFor='session_end_notification'
+									className='col-span-3 text-sm'
+								>
+									Notify when session ends
+								</label>
+								<div className='col-span-2'>
+									<Switch />
+								</div>
+								<label
+									htmlFor='session_music'
+									className='col-span-3 text-sm'
+								>
+									Music
+								</label>
+								<div className='col-span-2'>
+									<Switch />
+								</div>
+								<div className='col-span-5 flex justify-end'>
+									<PrimaryButton type='submit'>
+										<span className='text-sm'>Start</span>
+									</PrimaryButton>
+								</div>
+							</form>
+						</div>
 					</Popover>
 					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}
 					{/*	<DownloadIcon className='text-white' />*/}
@@ -188,9 +200,7 @@ export default function Header(props: HeaderProps) {
 					</button>
 					{user ? (
 						<DropdownMenu
-							arrowClassName='fill-white'
-							contentClassName='relative h-auto w-[220px] rounded-md bg-white p-2 shadow-md'
-							sideOffset={5}
+							items={profileMenuItems}
 							trigger={
 								<button className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-600'>
 									<Avatar
@@ -206,20 +216,7 @@ export default function Header(props: HeaderProps) {
 									/>
 								</button>
 							}
-						>
-							<DropdownMenuItem
-								className='flex items-center justify-start rounded-md outline-none hover:bg-brand-500 hover:text-white'
-								onSelect={(e) => e.preventDefault()}
-							>
-								<div className='h-full w-full'>
-									<Form action='/logout' method='post'>
-										<button className='flex h-full w-full items-center justify-start px-4 py-1'>
-											Logout
-										</button>
-									</Form>
-								</div>
-							</DropdownMenuItem>
-						</DropdownMenu>
+						/>
 					) : (
 						<Link to='/login'>
 							<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-white hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
