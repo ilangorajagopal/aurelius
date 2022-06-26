@@ -69,7 +69,7 @@ const PostItem: FC<PostItemProps> = ({ post }) => {
 					</span>
 				</div>
 			</div>
-			<div className='col-span-1 flex h-full w-full items-center justify-end'>
+			<div className='col-span-1 flex h-full w-full items-center justify-end space-x-4'>
 				<CopyToClipboard text={shareLink} />
 				<DropdownMenu
 					items={postDropdownItems}

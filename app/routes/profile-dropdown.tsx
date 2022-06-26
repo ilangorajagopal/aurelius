@@ -3,7 +3,12 @@ import { Form, Link } from '@remix-run/react'
 import type { User } from '~/models/user.server'
 import DropdownMenu from '@components/dropdown'
 import Avatar from '@components/avatar'
-import { ExitIcon, LayersIcon, PersonIcon } from '@radix-ui/react-icons'
+import {
+	ExitIcon,
+	GearIcon,
+	LayersIcon,
+	PersonIcon,
+} from '@radix-ui/react-icons'
 
 interface Props {
 	user: User
@@ -19,6 +24,15 @@ export default function ProfileDropdown(props: Props) {
 			link: '/dashboard',
 			onSelect: (e: Event) => e.preventDefault(),
 		},
+		{
+			icon: <GearIcon />,
+			label: 'Settings',
+			link: '/settings',
+			onSelect: (e: Event) => e.preventDefault(),
+		},
+	]
+
+	const profileMenuSecondaryItems = [
 		{
 			icon: (<ExitIcon />) as ReactNode,
 			label: (
@@ -37,6 +51,7 @@ export default function ProfileDropdown(props: Props) {
 			{user ? (
 				<DropdownMenu
 					items={profileMenuItems}
+					secondaryItems={profileMenuSecondaryItems}
 					trigger={
 						<button className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-600'>
 							<Avatar
