@@ -30,7 +30,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
 	trigger,
 }) => {
 	return (
-		<div className='relative inline-block text-left'>
+		<div className='relative inline-flex text-left'>
 			<DropdownMenuRoot>
 				<DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
 				<DropdownMenuContent

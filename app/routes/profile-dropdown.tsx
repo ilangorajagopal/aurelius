@@ -33,7 +33,7 @@ export default function ProfileDropdown(props: Props) {
 	]
 
 	return (
-		<div className='col-span-1 flex h-full items-center justify-end space-x-4'>
+		<div className='flex h-full items-center justify-end'>
 			{user ? (
 				<DropdownMenu
 					items={profileMenuItems}
