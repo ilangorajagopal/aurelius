@@ -9,7 +9,7 @@ import type { User } from '~/models/user.server'
 import { auth } from '~/services/auth.server'
 import Header from '~/routes/app/header'
 import Footer from '~/routes/app/footer'
-import { savePostToDb } from '../../common/utils/save-post'
+import { savePostToDb } from '../common/utils/save-post'
 import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
 
 export interface ContextType {

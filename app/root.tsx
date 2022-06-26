@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react'
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import { useEffect } from 'react'
+import type {
+	LinksFunction,
+	MetaFunction,
+	LoaderFunction,
+} from '@remix-run/node'
 import {
 	Links,
 	LiveReload,
@@ -13,10 +17,8 @@ import {
 import NProgress from 'nprogress'
 import nProgressStyles from 'nprogress/nprogress.css'
 import styles from './tailwind.css'
-
-interface DocumentProps {
-	children: React.ReactNode
-}
+import { json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 
 export const links: LinksFunction = () => {
 	return [
@@ -71,7 +73,17 @@ export const meta: MetaFunction = () => ({
 	viewport: 'width=device-width,initial-scale=1',
 })
 
-const Document = (props: DocumentProps) => {
+export let loader: LoaderFunction = async ({ request }) => {
+	// read next public url and make it available for use everywhere
+	return json({
+		ENV: {
+			NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
+		},
+	})
+}
+
+export default function App() {
+	const data = useLoaderData()
 	const transition = useTransition()
 
 	useEffect(() => {
@@ -96,19 +108,16 @@ const Document = (props: DocumentProps) => {
 						src='https://plausible.io/js/plausible.js'
 					></script>
 				) : null}
-				{props.children}
+				<Outlet />
 				<ScrollRestoration />
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+					}}
+				/>
 				<Scripts />
 				{process.env.NODE_ENV === 'development' ? <LiveReload /> : null}
 			</body>
 		</html>
-	)
-}
-
-export default function App() {
-	return (
-		<Document>
-			<Outlet />
-		</Document>
 	)
 }

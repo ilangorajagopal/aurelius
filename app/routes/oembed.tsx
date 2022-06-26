@@ -5,7 +5,7 @@ import {
 	getOembed,
 	getOembedDataFromScraper,
 	getOembedFromLink,
-} from '../../common/utils/helpers'
+} from '../common/utils/helpers'
 
 export let loader: LoaderFunction = async ({ request, params }) => {
 	switch (request.method) {

@@ -21,7 +21,7 @@ import { POST_LOCAL_STORAGE_KEY } from '~/lib/constants'
 import EditorToolbar from '~/routes/app/editor-toolbar'
 import ImageToolbar from '~/routes/app/image-toolbar'
 import EditorFloatingMenu from '~/routes/app/editor-floating-menu'
-import { uploadImageToS3 } from '../../../common/utils/save-post'
+import { uploadImageToS3 } from '../../common/utils/save-post'
 import VisualBookmark from '@extensions/visual-bookmark'
 
 type TipTapProps = {

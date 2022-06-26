@@ -3,12 +3,11 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Root } from '@radix-ui/react-navigation-menu'
 import type { User } from '~/models/user.server'
 import Popover from '@components/popover'
-import Avatar from '@components/avatar'
-import DropdownMenu from '@components/dropdown'
 import RadioGroup from '@components/radio-group'
 import Switch from '@components/switch'
-import { CornersIcon, ExitIcon, PersonIcon } from '@radix-ui/react-icons'
+import { CornersIcon } from '@radix-ui/react-icons'
 import { PrimaryButton } from '@components/buttons'
+import ProfileDropdown from '~/routes/profile-dropdown'
 
 const sessionGoalOptions = [
 	{
@@ -24,28 +23,14 @@ const sessionGoalOptions = [
 ]
 
 type HeaderProps = {
-	focusMode: boolean
-	setFocusMode: Dispatch<SetStateAction<boolean>>
-	isSaving: boolean
-	user?: User
+	focusMode?: boolean
+	setFocusMode?: Dispatch<SetStateAction<boolean>>
+	isSaving?: boolean
+	user: User
 }
 
 export default function Header(props: HeaderProps) {
 	const { focusMode, setFocusMode, isSaving, user } = props
-
-	const profileMenuItems = [
-		{
-			icon: (<ExitIcon />) as ReactNode,
-			label: (
-				<Form action='/logout' method='post'>
-					<button className='flex h-full w-full items-center justify-start px-4 py-1'>
-						Logout
-					</button>
-				</Form>
-			) as ReactNode,
-			onSelect: (e: Event) => e.preventDefault(),
-		},
-	]
 
 	return (
 		<Root
@@ -107,23 +92,6 @@ export default function Header(props: HeaderProps) {
 							</span>
 						</div>
 					)}
-					{/*<Popover*/}
-					{/*	arrowClassName='fill-gray-800'*/}
-					{/*	close={*/}
-					{/*		<button className='absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-transparent transition-colors duration-200 hover:bg-brand-100'>*/}
-					{/*			<Cross2Icon />*/}
-					{/*		</button>*/}
-					{/*	}*/}
-					{/*	contentClassName='relative h-72 w-96 rounded-md bg-gray-800 text-white p-4 space-y-4'*/}
-					{/*	trigger={*/}
-					{/*		<button className='inline-flex justify-center rounded-md border border-transparent bg-gray-700 px-4 py-1 text-sm font-semibold text-gray-200 hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-800 focus-visible:ring-offset-2'>*/}
-					{/*			New Session*/}
-					{/*		</button>*/}
-					{/*	}>*/}
-					{/*	<h4 className='font-semibold text-white'>*/}
-					{/*		New Session*/}
-					{/*	</h4>*/}
-					{/*</Popover>*/}
 					<Popover
 						title='New Session'
 						trigger={
@@ -189,41 +157,13 @@ export default function Header(props: HeaderProps) {
 							</form>
 						</div>
 					</Popover>
-					{/*<button className='flex h-8 w-8 items-center justify-center'>*/}
-					{/*	<DownloadIcon className='text-white' />*/}
-					{/*</button>*/}
 					<button
 						className='flex h-8 w-8 items-center justify-center'
-						onClick={() => setFocusMode(!focusMode)}
+						onClick={() => setFocusMode?.(!focusMode)}
 					>
 						<CornersIcon className='text-white' />
 					</button>
-					{user ? (
-						<DropdownMenu
-							items={profileMenuItems}
-							trigger={
-								<button className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-600'>
-									<Avatar
-										src={user?.image || ''}
-										alt='User Profile Image'
-										fallback={
-											user?.name
-												?.charAt(0)
-												?.toUpperCase() || (
-												<PersonIcon className='text-white' />
-											)
-										}
-									/>
-								</button>
-							}
-						/>
-					) : (
-						<Link to='/login'>
-							<button className='inline-flex justify-center rounded-md border border-transparent bg-brand-500 px-4 py-1 text-sm font-semibold text-white hover:bg-brand-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'>
-								Login
-							</button>
-						</Link>
-					)}
+					<ProfileDropdown user={user} />
 				</div>
 			</div>
 		</Root>
